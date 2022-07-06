@@ -1,0 +1,7 @@
+gensim==3.8.3
+pytest
+pytest-cov
+sphinx
+sphinx-rtd-theme
+sphinx-markdown-builder
+pandas
