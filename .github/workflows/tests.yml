@@ -20,8 +20,9 @@ jobs:
       run: pip install nox
     - name: Run tests with tensorflow latest
       run: nox --sessions tests_tensorflow_latest
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
+    - name: Codecov
+      uses: codecov/codecov-action@v3
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: coverage.xml
+        files: ./coverage.xml
+        fail_ci_if_error: true
+        verbose: true
