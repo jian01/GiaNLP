@@ -1,4 +1,4 @@
-name: Run tests on latest tensorflow version
+name: Tests on latest tensorflow version
 
 on: [push]
 
