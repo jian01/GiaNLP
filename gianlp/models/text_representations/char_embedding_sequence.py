@@ -8,9 +8,12 @@ from collections import Counter
 from typing import Optional, Dict, Union, List
 
 import numpy as np
+
+# pylint: disable=no-name-in-module
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing import sequence as keras_seq
+# pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
 from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
@@ -40,7 +43,8 @@ class CharEmbeddingSequence(TextRepresentation):
     MAX_SAMPLE_TO_FIT = 200000
     CHAR_EMB_UNK_TOKEN = "UNK"
 
-    def __init__(self, embedding_dimension: int = 256, sequence_maxlen: int = 80, min_freq_percentile: int = 5, random_state: int = 42):
+    def __init__(self, embedding_dimension: int = 256, sequence_maxlen: int = 80, min_freq_percentile: int = 5,
+                 random_state: int = 42):
         """
 
         :param embedding_dimension: The char embedding dimension
@@ -68,7 +72,7 @@ class CharEmbeddingSequence(TextRepresentation):
         """
         assert self._char_indexes
 
-        tokenized = [[c for c in text] for text in texts]
+        tokenized = [list(text) for text in texts]
         tokenized = [
             [
                 self._char_indexes[c] if c in self._char_indexes else self._char_indexes[self.CHAR_EMB_UNK_TOKEN]
@@ -92,14 +96,15 @@ class CharEmbeddingSequence(TextRepresentation):
             random.shuffle(text_sample)
             text_sample = text_sample[: min(len(text_sample), self.MAX_SAMPLE_TO_FIT)]
 
-            char_ocurrences = [[c for c in text] for text in text_sample]
+            char_ocurrences = [list(text) for text in text_sample]
             char_ocurrence_counter = Counter()  # type: ignore
             for seq in char_ocurrences:
                 char_ocurrence_counter.update(seq)
             p_freq = np.percentile(list(char_ocurrence_counter.values()), self._min_freq_percentile)
             char_ocurrence_dict = {k: v for k, v in char_ocurrence_counter.items() if v >= p_freq}
             self._char_indexes = {
-                count[0]: i + 1 for i, count in enumerate(Counter(char_ocurrence_dict).most_common(len(char_ocurrence_dict)))
+                count[0]: i + 1 for i, count in
+                enumerate(Counter(char_ocurrence_dict).most_common(len(char_ocurrence_dict)))
             }
             self._char_indexes[self.CHAR_EMB_UNK_TOKEN] = len(self._char_indexes) + 1
             self.__init_keras_model()
@@ -163,7 +168,9 @@ class CharEmbeddingSequence(TextRepresentation):
 
         :return: a Serializable Model
         """
-        _char_indexes, model_bytes, embedding_dimension, sequence_maxlen, min_freq_percentile, random_state, _built = pickle.loads(data)
+        _char_indexes, model_bytes, embedding_dimension, sequence_maxlen, min_freq_percentile, random_state, \
+        _built = pickle.loads(
+            data)
         obj = cls(embedding_dimension, sequence_maxlen, min_freq_percentile, random_state)
         obj._char_indexes = _char_indexes
         if model_bytes:

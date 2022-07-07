@@ -3,9 +3,11 @@ Module for RNN Digest model
 """
 from typing import Union
 
+# pylint: disable=no-name-in-module,import-error
 from tensorflow.keras.layers import Input, GRU, LSTM, Masking, Bidirectional
 from tensorflow.keras.models import Sequential
 from tensorflow.random import set_seed
+# pylint: enable=no-name-in-module,import-error
 
 from gianlp.models.base_model import BaseModel, ModelInputs
 from gianlp.models.keras_wrapper import KerasWrapper
@@ -17,16 +19,16 @@ class RNNDigest(KerasWrapper):
     """
 
     def __new__(
-        cls,
-        inputs: Union[ModelInputs, BaseModel],
-        units_per_layer: int,
-        rnn_type: str,
-        stacked_layers: int = 1,
-        masking: bool = True,
-        bidirectional: bool = False,
-        return_sequences: bool = False,
-        random_seed: int = 42,
-        **kwargs
+            cls,
+            inputs: Union[ModelInputs, BaseModel],
+            units_per_layer: int,
+            rnn_type: str,
+            stacked_layers: int = 1,
+            masking: bool = True,
+            bidirectional: bool = False,
+            return_sequences: bool = False,
+            random_seed: int = 42,
+            **kwargs
     ):
         """
 

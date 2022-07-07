@@ -1,2 +1,11 @@
 [run]
 source = giannlp
+omit =
+	tests/*
+	.nox/*
+	.eggs/*
+	.pytest_cache/*
+	build/*
+	docs/*
+	noxfile.py
+	setup.py

@@ -5,9 +5,11 @@ import pickle
 from queue import Queue
 from typing import List, Union, Optional, Iterator
 
+# pylint: disable=no-name-in-module
 from tensorflow import Tensor
 from tensorflow.keras.layers import Input, Concatenate
 from tensorflow.keras.models import Model
+# pylint: enable=no-name-in-module
 
 from gianlp.logging import warning
 from gianlp.models.base_model import BaseModel, ModelInputs, SimpleTypeTexts, ModelIOShape
@@ -37,13 +39,14 @@ class KerasWrapper(TrainableModel):
                 if isinstance(model, tuple):
                     raise ValueError("Can't mix named inputs with unnamed inputs in the list.")
                 if model.has_multi_text_input() != inputs[0].has_multi_text_input():
-                    raise ValueError("Some models in the input list have multi-text input and others don't. This is not allowed.")
+                    raise ValueError("Some models in the input list have multi-text input and others don't. "
+                                     "This is not allowed.")
             return inputs
-        elif isinstance(inputs, list) and isinstance(inputs[0], tuple):
+        if isinstance(inputs, list) and isinstance(inputs[0], tuple):
             if len(inputs) == 1:
                 raise ValueError("Multi-text input should be used with at least two types of texts.")
-            for name, l in inputs:
-                for model in l:
+            for _, models in inputs:
+                for model in models:
                     if model.has_multi_text_input():
                         raise ValueError("Some models in the input dict have multi-text input. This is not allowed.")
             return inputs
@@ -56,7 +59,8 @@ class KerasWrapper(TrainableModel):
         dict indicating which text name is assigned to which inputs.
         If a list, all should have multi-text input or don't have it. If it's a dict all shouldn't have multi-text
         input.
-        :param wrapped_model: the keras model to wrap. if it has multiple inputs, inputs parameter should have the same len
+        :param wrapped_model: the keras model to wrap. if it has multiple inputs, inputs parameter
+        should have the same len
         :param random_seed: random seed used in training
         :raises:
             ValueError:
@@ -106,7 +110,8 @@ class KerasWrapper(TrainableModel):
         return shapes
 
     @staticmethod
-    def __compute_output_shape(output: Tensor, wrapped_model: Model, input_iterator: Iterator[BaseModel]) -> ModelIOShape:
+    def __compute_output_shape(output: Tensor, wrapped_model: Model,
+                               input_iterator: Iterator[BaseModel]) -> ModelIOShape:
         """
         Compute the output shape for a single output of the wrapped model
 
@@ -130,7 +135,8 @@ class KerasWrapper(TrainableModel):
 
         if len(inputs_out_shapes[0].shape) > len(wrapped_initial_input):  # TimeDistributed case
             return ModelIOShape(
-                inputs_out_shapes[0].shape[: len(inputs_out_shapes[0].shape) - len(wrapped_initial_input)] + wrapped_output,
+                inputs_out_shapes[0].shape[: len(inputs_out_shapes[0].shape) - len(wrapped_initial_input)]
+                + wrapped_output,
                 output.dtype,
             )
         return ModelIOShape(wrapped_output, output.dtype)
@@ -174,7 +180,8 @@ class KerasWrapper(TrainableModel):
             inputs = []
             middle = []
             for model in self._iterate_model_inputs(self.inputs):
-                input_shapes = [model.inputs_shape] if isinstance(model.inputs_shape, ModelIOShape) else model.inputs_shape
+                input_shapes = [model.inputs_shape] if isinstance(model.inputs_shape, ModelIOShape) \
+                    else model.inputs_shape
                 model_inps = [Input(shape.shape, dtype=shape.dtype) for shape in input_shapes]
                 inputs += model_inps
                 model_out = model(model_inps)
@@ -245,7 +252,8 @@ class KerasWrapper(TrainableModel):
         """
         inputs_bytes, wrapped_model_bytes, keras_model_bytes, random_seed, _built = pickle.loads(data)
         if isinstance(inputs_bytes[0], tuple):
-            inputs = [(name, [BaseModel.deserialize(inp_bytes) for inp_bytes in inps_bytes]) for name, inps_bytes in inputs_bytes]
+            inputs = [(name, [BaseModel.deserialize(inp_bytes) for inp_bytes in inps_bytes]) for name, inps_bytes in
+                      inputs_bytes]
         else:
             inputs = [BaseModel.deserialize(inp_bytes) for inp_bytes in inputs_bytes]
         obj = cls(inputs, cls.get_model_from_bytes(wrapped_model_bytes))

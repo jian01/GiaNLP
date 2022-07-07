@@ -7,9 +7,12 @@ from typing import List, Optional, Callable, Union
 
 import numpy as np
 from gensim.models import KeyedVectors
+
+# pylint: disable=no-name-in-module
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing import sequence as keras_seq
+# pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
 from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
@@ -35,10 +38,10 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
     WORD_UNKNOWN_TOKEN = "<UNK>"
 
     def __init__(
-        self,
-        word2vec_src: Union[str, KeyedVectors],
-        tokenizer: Callable[[str], List[str]],
-        sequence_maxlen: int = 20,
+            self,
+            word2vec_src: Union[str, KeyedVectors],
+            tokenizer: Callable[[str], List[str]],
+            sequence_maxlen: int = 20,
     ):
         """
 
@@ -70,7 +73,8 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
         tokenized_texts = [self._tokenizer(text) for text in texts]
         words = keras_seq.pad_sequences(
             [
-                [self._word2vec.wv.vocab[w].index + 2 if w in self._word2vec.wv.vocab else 1 for w in words[: self._sequence_maxlen]]
+                [self._word2vec.wv.vocab[w].index + 2 if w in self._word2vec.wv.vocab else 1 for w in
+                 words[: self._sequence_maxlen]]
                 for words in tokenized_texts
             ],
             maxlen=self._sequence_maxlen,

@@ -27,4 +27,4 @@ from gianlp.logging import warning
 
 warning("The NLP builder disables all tensorflow-related logging")
 
-__version__ = "0.0.15"
+__version__ = "0.0.1"

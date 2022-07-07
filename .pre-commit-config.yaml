@@ -1,0 +1,13 @@
+repos:
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint gianlp
+        language: system
+        types: [python]
+        args:
+          [
+            "--rcfile=.pylintrc",
+            "--fail-under=8"
+          ]

@@ -7,9 +7,12 @@ from typing import List, Optional, Union
 
 import numpy as np
 from gensim.models import KeyedVectors
+
+# pylint: disable=no-name-in-module
 from tensorflow import int32
 from tensorflow.keras.layers import Input, Flatten, Embedding
 from tensorflow.keras.models import Model
+# pylint: enable=no-name-in-module
 
 from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation

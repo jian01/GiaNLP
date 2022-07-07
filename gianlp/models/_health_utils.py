@@ -2,10 +2,12 @@
 Health utils for models
 """
 
-import tensorflow as tf
+from typing import Dict
+
 import h5py
 import numpy as np
-from typing import Dict
+import tensorflow as tf
+
 from gianlp.logging import warning
 
 
@@ -14,7 +16,7 @@ def get_dependencies_signature() -> Dict[str, str]:
     Get a dict containing all the versions of each important module for the library
     :return: a dict of versions
     """
-    return {'tensorflow' :tf.__version__, 'h5py': h5py.__version__,
+    return {'tensorflow': tf.__version__, 'h5py': h5py.__version__,
             'numpy': np.version.version}
 
 

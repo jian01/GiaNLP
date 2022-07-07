@@ -8,9 +8,12 @@ from collections import Counter
 from typing import List, Optional, Dict, Callable, Union
 
 import numpy as np
+
+# pylint: disable=no-name-in-module
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing import sequence as keras_seq
+# pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
 from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
@@ -45,13 +48,13 @@ class CharPerWordEmbeddingSequence(TextRepresentation):
     CHAR_EMB_UNK_TOKEN = "UNK"
 
     def __init__(
-        self,
-        tokenizer: Callable[[str], List[str]],
-        embedding_dimension: int = 256,
-        word_maxlen: int = 30,
-        char_maxlen: int = 12,
-        min_freq_percentile: int = 5,
-        random_state: int = 42,
+            self,
+            tokenizer: Callable[[str], List[str]],
+            embedding_dimension: int = 256,
+            word_maxlen: int = 30,
+            char_maxlen: int = 12,
+            min_freq_percentile: int = 5,
+            random_state: int = 42,
     ):
         """
 
@@ -87,15 +90,18 @@ class CharPerWordEmbeddingSequence(TextRepresentation):
 
         tokenized = [self._tokenizer(text) for text in texts]
         tokenized = [
-            [[self._char_indexes[c] if c in self._char_indexes else self._char_indexes[self.CHAR_EMB_UNK_TOKEN] for c in w] for w in text]
+            [[self._char_indexes[c] if c in self._char_indexes else self._char_indexes[self.CHAR_EMB_UNK_TOKEN] for c in
+              w] for w in text]
             for text in tokenized
         ]
 
         tokenized = [
-            text[: self._word_maxlen] if len(text) >= self._word_maxlen else text + [[]] * (self._word_maxlen - len(text))
+            text[: self._word_maxlen] if len(text) >= self._word_maxlen else text + [[]] * (
+                    self._word_maxlen - len(text))
             for text in tokenized
         ]
-        tokenized = [keras_seq.pad_sequences(text, maxlen=self._char_maxlen, padding="post", truncating="post") for text in tokenized]
+        tokenized = [keras_seq.pad_sequences(text, maxlen=self._char_maxlen, padding="post", truncating="post") for text
+                     in tokenized]
         return np.asarray(tokenized)
 
     def _unitary_build(self, texts: SimpleTypeTexts) -> None:
@@ -110,14 +116,15 @@ class CharPerWordEmbeddingSequence(TextRepresentation):
             random.shuffle(text_sample)
             text_sample = text_sample[: min(len(text_sample), self.MAX_SAMPLE_TO_FIT)]
 
-            char_ocurrences = [[c for c in text] for text in text_sample]
+            char_ocurrences = [list(text) for text in text_sample]
             char_ocurrence_counter = Counter()  # type: ignore
             for seq in char_ocurrences:
                 char_ocurrence_counter.update(seq)
             p_freq = np.percentile(list(char_ocurrence_counter.values()), self._min_freq_percentile)
             char_ocurrence_dict = {k: v for k, v in char_ocurrence_counter.items() if v > p_freq}
             self._char_indexes = {
-                count[0]: i + 1 for i, count in enumerate(Counter(char_ocurrence_dict).most_common(len(char_ocurrence_dict)))
+                count[0]: i + 1 for i, count in
+                enumerate(Counter(char_ocurrence_dict).most_common(len(char_ocurrence_dict)))
             }
             self._char_indexes[self.CHAR_EMB_UNK_TOKEN] = len(self._char_indexes) + 1
             self.__init_keras_model()

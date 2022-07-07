@@ -12,6 +12,7 @@ from typing import Union, List, Dict, Iterator, NamedTuple, Tuple, Optional
 
 import numpy as np
 import pandas as pd
+# pylint: disable=no-name-in-module
 from tensorflow import Tensor
 from tensorflow.keras import backend as K
 from tensorflow.keras.backend import clear_session, floatx
@@ -20,8 +21,10 @@ from tensorflow.keras.layers import Layer
 from tensorflow.keras.models import Model, load_model, clone_model
 
 from gianlp.logging import warning
-from gianlp.models._report_utils import model_list_to_summary_string
 from gianlp.models._health_utils import get_dependencies_signature, warn_for_dependencies_signature
+from gianlp.models._report_utils import model_list_to_summary_string
+
+# pylint: enable=no-name-in-module
 
 MODEL_DATA_PATHNAME = "model_data"
 
@@ -106,7 +109,7 @@ class BaseModel(ABC):
         """
         if not self._built:
             return None
-        return sum([K.count_params(w) for w in self._get_keras_model().weights])
+        return sum(K.count_params(w) for w in self._get_keras_model().weights)
 
     @property
     def trainable_weights_amount(self) -> Optional[int]:
@@ -117,7 +120,7 @@ class BaseModel(ABC):
         """
         if not self._built:
             return None
-        return sum([K.count_params(w) for w in self._get_keras_model().trainable_weights])
+        return sum(K.count_params(w) for w in self._get_keras_model().trainable_weights)
 
     def __model_finder(self, model) -> List["BaseModel"]:
         """
@@ -233,9 +236,10 @@ class BaseModel(ABC):
             raise ValueError("This model has not yet been built.")
 
         keras_model = self._get_keras_model()
-        if type(inputs).__module__ == np.__name__ or (isinstance(inputs, list) and type(inputs[0]).__module__ == np.__name__):
+        if type(inputs).__module__ == np.__name__ or (isinstance(inputs, list) and
+                                                      type(inputs[0]).__module__ == np.__name__):
             return keras_model.predict(inputs)
-        elif isinstance(inputs, list) and len(keras_model.inputs) != len(inputs):
+        if isinstance(inputs, list) and len(keras_model.inputs) != len(inputs):
             outputs = []
             for layer in inputs:
                 outputs.append(self._call_keras_layer(keras_model, layer))
@@ -372,13 +376,9 @@ class BaseModel(ABC):
         :return: a keras model
         """
         input_tarfile = tarfile.open(fileobj=BytesIO(data))
-        output_dir = TemporaryDirectory()
-
-        input_tarfile.extractall(output_dir.name)
-
-        model = load_model(os.path.join(output_dir.name, MODEL_DATA_PATHNAME))
-
-        output_dir.cleanup()
+        with TemporaryDirectory() as output_dir:
+            input_tarfile.extractall(output_dir)
+            model = load_model(os.path.join(output_dir, MODEL_DATA_PATHNAME))
         return model
 
     @abstractmethod

@@ -3,8 +3,11 @@ Masked embedding class module
 """
 
 import tensorflow as tf
+
+# pylint: disable=no-name-in-module
 import tensorflow.keras.backend as K
 from tensorflow.keras.layers import Embedding
+# pylint: enable=no-name-in-module
 
 
 @tf.keras.utils.register_keras_serializable()

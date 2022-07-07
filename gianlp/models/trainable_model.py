@@ -7,13 +7,16 @@ from typing import Union, Generator, List, Tuple, Optional, Any, Callable
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
+
+# pylint: disable=no-name-in-module
 from tensorflow.keras.callbacks import Callback, History
 from tensorflow.keras.losses import Loss
 from tensorflow.keras.metrics import Metric
 from tensorflow.keras.optimizers import Optimizer
-from tensorflow.keras.utils import Sequence as KerasSequence
 from tensorflow.keras.utils import OrderedEnqueuer, GeneratorEnqueuer
+from tensorflow.keras.utils import Sequence as KerasSequence
+from tqdm import tqdm
+# pylint: enable=no-name-in-module
 
 from gianlp.logging import warning
 from gianlp.models.base_model import BaseModel, KerasInputOutput, TextsInput
@@ -170,8 +173,7 @@ class TrainableModel(BaseModel, ABC):
 
         if isinstance(text_input, dict):
             return {k: v[low:high] for k, v in text_input.items()}
-        else:
-            return text_input[low:high]
+        return text_input[low:high]
 
     @staticmethod
     def __texts_input_length(text_input: TextsInput) -> int:
@@ -187,8 +189,7 @@ class TrainableModel(BaseModel, ABC):
 
         if isinstance(text_input, dict):
             return len(text_input[list(text_input.keys())[0]])
-        else:
-            return len(text_input)
+        return len(text_input)
 
     @staticmethod
     def __shuffle_fit_data(data: Tuple[TextsInput, KerasInputOutput]) -> Tuple[TextsInput, KerasInputOutput]:
@@ -289,7 +290,8 @@ class TrainableModel(BaseModel, ABC):
 
         :param x: Input data. Could be:
             1. A generator that yields (x, y) where x is any valid format for x and y is the target numpy array
-            2. A gianlp.utils.Sequence object that generates (x, y) where x is any valid format for x and y is the target numpy array
+            2. A gianlp.utils.Sequence object that generates (x, y) where x is any valid format for x and y is the
+            target numpy array
             3. A list of texts
             4. A pandas Series
             5. A pandas Dataframe
@@ -308,8 +310,11 @@ class TrainableModel(BaseModel, ABC):
         :param validation_steps: Amount of generator steps to consider to feed each validation evaluation.
                                 Ignored if validation_data is not a generator
         :param max_queue_size: Maximum size for the generator queue. If unspecified, max_queue_size will default to 10.
-        :param workers: Maximum number of processes to spin up when using process-based threading. If unspecified, workers will default to 1.
-        :param use_multiprocessing: If True, use process-based threading. If unspecified, use_multiprocessing will default to False. Note that because this implementation relies on multiprocessing, you should not pass non-picklable arguments to the generator as they can't be passed easily to children processes.
+        :param workers: Maximum number of processes to spin up when using process-based threading. If unspecified,
+        workers will default to 1.
+        :param use_multiprocessing: If True, use process-based threading. If unspecified, use_multiprocessing will
+        default to False. Note that because this implementation relies on multiprocessing, you should not pass
+        non-picklable arguments to the generator as they can't be passed easily to children processes.
         :return: A History object. Its History.history attribute is a record of training loss values and metrics values
         at successive epochs, as well as validation loss values and validation metrics values (if applicable).
         """
@@ -341,7 +346,8 @@ class TrainableModel(BaseModel, ABC):
             train_generator = self._fit_generator(train_data, batch_size)
             steps_per_epoch = self.__texts_input_length(train_data[0]) // batch_size
 
-        valid_generator, validation_steps = self._get_validation_generator(validation_data, batch_size, validation_steps)
+        valid_generator, validation_steps = self._get_validation_generator(validation_data, batch_size,
+                                                                           validation_steps)
 
         if use_multiprocessing and isinstance(validation_data, types.GeneratorType):
             enq = GeneratorEnqueuer(valid_generator, use_multiprocessing=True,
@@ -377,7 +383,7 @@ class TrainableModel(BaseModel, ABC):
             while True:
                 try:
                     texts = next(x)
-                except StopIteration as e:
+                except StopIteration:
                     break
                 if isinstance(texts, tuple):
                     # ignore a generator that also feeds labels
@@ -436,8 +442,11 @@ class TrainableModel(BaseModel, ABC):
         ignored if x is a generator or a gianlp.utils.Sequence
         :param steps: steps for the generator, ignored if x is not a generator
         :param max_queue_size: Maximum size for the generator queue. If unspecified, max_queue_size will default to 10.
-        :param workers: Maximum number of processes to spin up when using process-based threading. If unspecified, workers will default to 1.
-        :param use_multiprocessing: If True, use process-based threading. If unspecified, use_multiprocessing will default to False. Note that because this implementation relies on multiprocessing, you should not pass non-picklable arguments to the generator as they can't be passed easily to children processes.
+        :param workers: Maximum number of processes to spin up when using process-based threading. If unspecified,
+        workers will default to 1.
+        :param use_multiprocessing: If True, use process-based threading. If unspecified, use_multiprocessing will
+        default to False. Note that because this implementation relies on multiprocessing, you should not pass
+        non-picklable arguments to the generator as they can't be passed easily to children processes.
         :param verbose: 0, 1, or 2. Verbosity mode. 0 = silent, 1 = progress bar, 2 = single line.
         :return: the output of the keras model
         """
@@ -450,7 +459,7 @@ class TrainableModel(BaseModel, ABC):
                 enq.start(workers=workers, max_queue_size=max_queue_size)
                 predict_generator = enq.get()
             else:
-                predict_generator = predict_generator.__iter__()
+                predict_generator = iter(predict_generator)
         else:
             predict_generator = self._predict_generator(x, inference_batch)
             if use_multiprocessing and isinstance(x, types.GeneratorType):
@@ -480,10 +489,8 @@ class TrainableModel(BaseModel, ABC):
         if not isinstance(x, types.GeneratorType) and not isinstance(x, Sequence):
             if isinstance(preds, list):
                 return [p[:self.__texts_input_length(x)] for p in preds]
-            else:
-                return preds[:self.__texts_input_length(x)]
-        else:
-            return preds
+            return preds[:self.__texts_input_length(x)]
+        return preds
 
     def freeze(self) -> None:
         """
@@ -495,7 +502,7 @@ class TrainableModel(BaseModel, ABC):
         if not self._built:
             raise ValueError("Can't freeze a model that has not been built")
         model = self._get_keras_model()
-        for k, v in model._get_trainable_state().items():
+        for k, _ in model._get_trainable_state().items():
             k.trainable = False
         for inp in self._iterate_model_inputs(self.inputs):
             if isinstance(inp, TrainableModel):

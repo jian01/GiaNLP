@@ -4,7 +4,6 @@ Report utils module
 
 from typing import List, Any
 
-
 MODEL_NAME_LENGTH = 21
 SHAPE_LENGTH = 23
 WEIGHTS_LENGTH = 9
@@ -12,7 +11,8 @@ CONNECTION_LENGTH = 20
 LINE_FORMAT = "{model_name}|{input_shape}|{output_shape}|{trainable_weights}|{weights}|{connection}"
 
 
-def _produce_line(model_name: str, input_shape: str, output_shape: str, trainable_weights: str, weights: str, connection: str):
+def _produce_line(model_name: str, input_shape: str, output_shape: str, trainable_weights: str, weights: str,
+                  connection: str):
     """
     Creates a summary line
 
@@ -64,7 +64,8 @@ def model_list_to_summary_string(models: List[Any]) -> str:
             inputs_shape = [str(m.outputs_shape) for m in inputs]
             connection = [repr(m) for m in inputs]
         if not inputs:
-            inputs_shape = [str(inp) for inp in model.inputs_shape] if isinstance(model.inputs_shape, list) else [str(model.inputs_shape)]
+            inputs_shape = [str(inp) for inp in model.inputs_shape] if isinstance(model.inputs_shape, list) else [
+                str(model.inputs_shape)]
         line_length = max(len(connection), len(inputs_shape), 1)
         for _ in range(line_length):
             out_lines.append(

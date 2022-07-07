@@ -6,8 +6,11 @@ import pickle
 from typing import List, Callable, Optional, Union
 
 import numpy as np
+
+# pylint: disable=no-name-in-module
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
+# pylint: enable=no-name-in-module
 
 from gianlp.models.base_model import BaseModel
 from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
@@ -91,7 +94,8 @@ class PerChunkSequencer(TextRepresentation):
 
         :return: a list of shape tuple or shape tuple
         """
-        return ModelIOShape((self._chunking_maxlen,) + self._sequencer.outputs_shape.shape, self._sequencer.outputs_shape.dtype)
+        return ModelIOShape((self._chunking_maxlen,) + self._sequencer.outputs_shape.shape,
+                            self._sequencer.outputs_shape.dtype)
 
     def dumps(self) -> bytes:
         """
