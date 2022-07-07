@@ -97,7 +97,7 @@ def tests_tensorflow_latest(session):
     session.install(".")
     session.install("-r", "./requirements.txt")
 
-    cmd = ["pytest", "--cov=.", "--cov-report", "xml"]
+    cmd = ["pytest", "--cov=.", "--cov-report", "xml", "--cov-fail-under=97"]
     if session.posargs:
         cmd.extend(session.posargs)
     session.run(*cmd)
