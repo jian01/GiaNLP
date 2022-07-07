@@ -18,9 +18,9 @@ jobs:
       - name: "💫  Dynamic Template Render"
         uses: varunsridharan/action-dynamic-readme@main
         with:
-          commit-message: 'Dynamic markdown update'
-          committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
-          author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+          commit_message: 'Dynamic markdown update'
+          committer_name: github-actions[bot]
+          committer_email: github-actions[bot]@users.noreply.github.com
           GLOBAL_TEMPLATE_REPOSITORY: jian01/gianlp
           files: |
             md_templates/README.md=README.md
