@@ -1,6 +1,6 @@
 name: Tests on latest tensorflow version
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:

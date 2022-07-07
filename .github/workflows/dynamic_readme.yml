@@ -20,6 +20,6 @@ jobs:
         with:
           GLOBAL_TEMPLATE_REPOSITORY: jian01/gianlp
           files: |
-            README.md
+            md_templates/README.md=README.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
