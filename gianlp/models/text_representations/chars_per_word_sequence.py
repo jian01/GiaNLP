@@ -6,6 +6,7 @@ from typing import List, Optional, Callable
 
 # pylint: disable=no-name-in-module
 from tensorflow.keras.models import Model
+
 # pylint: enable=no-name-in-module
 
 from gianlp.models.text_representations.text_representation import TextRepresentation
@@ -28,13 +29,13 @@ class CharPerWordEmbeddingSequence(TextRepresentation):
     _chunking_maxlen: int
 
     def __new__(
-            cls,
-            tokenizer: Callable[[str], List[str]],
-            embedding_dimension: int = 256,
-            word_maxlen: int = 30,
-            char_maxlen: int = 12,
-            min_freq_percentile: int = 5,
-            random_state: int = 42
+        cls,
+        tokenizer: Callable[[str], List[str]],
+        embedding_dimension: int = 256,
+        word_maxlen: int = 30,
+        char_maxlen: int = 12,
+        min_freq_percentile: int = 5,
+        random_state: int = 42,
     ):
         """
 
@@ -49,8 +50,10 @@ class CharPerWordEmbeddingSequence(TextRepresentation):
         :param random_state: random seed
         :returns: a PerChunkSequencer with your tokenizer and a CharEmbeddingSequence as sequencer
         """
-        char_embedding = CharEmbeddingSequence(embedding_dimension=embedding_dimension,
-                                               sequence_maxlen=char_maxlen,
-                                               min_freq_percentile=min_freq_percentile,
-                                               random_state=random_state)
+        char_embedding = CharEmbeddingSequence(
+            embedding_dimension=embedding_dimension,
+            sequence_maxlen=char_maxlen,
+            min_freq_percentile=min_freq_percentile,
+            random_state=random_state,
+        )
         return PerChunkSequencer(char_embedding, tokenizer, chunking_maxlen=word_maxlen)

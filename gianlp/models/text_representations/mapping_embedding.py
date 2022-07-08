@@ -12,6 +12,7 @@ from gensim.models import KeyedVectors
 from tensorflow import int32
 from tensorflow.keras.layers import Input, Flatten, Embedding
 from tensorflow.keras.models import Model
+
 # pylint: enable=no-name-in-module
 
 from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
@@ -32,10 +33,7 @@ class MappingEmbedding(TextRepresentation):
 
     UNKNOWN_TOKEN = "<UNK>"
 
-    def __init__(
-            self,
-            word2vec_src: Union[str, KeyedVectors]
-    ):
+    def __init__(self, word2vec_src: Union[str, KeyedVectors]):
         """
 
         :param word2vec_src: path to word2vec format .txt file or gensim KeyedVectors
@@ -57,9 +55,9 @@ class MappingEmbedding(TextRepresentation):
         """
         assert self._keyed_vectors
 
-        words = [[self._keyed_vectors.key_to_index[t] + 1
-                  if t in self._keyed_vectors.key_to_index else 0]
-                 for t in texts]
+        words = [
+            [self._keyed_vectors.key_to_index[t] + 1 if t in self._keyed_vectors.key_to_index else 0] for t in texts
+        ]
         return np.asarray(words)
 
     def _unitary_build(self, texts: SimpleTypeTexts) -> None:
@@ -72,7 +70,9 @@ class MappingEmbedding(TextRepresentation):
             embeddings = np.concatenate(
                 (
                     np.mean(self._keyed_vectors.vectors, axis=0, keepdims=True),
-                    np.random.normal(0, 1, size=(len(self._keyed_vectors.key_to_index), self._keyed_vectors.vector_size)),
+                    np.random.normal(
+                        0, 1, size=(len(self._keyed_vectors.key_to_index), self._keyed_vectors.vector_size)
+                    ),
                 )
             )
             embeddings[1:] = self._keyed_vectors.vectors

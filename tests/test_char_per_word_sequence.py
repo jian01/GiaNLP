@@ -22,7 +22,9 @@ class TestCharPerWordEmbeddingSequence(unittest.TestCase):
         """
         Creates a test embedding
         """
-        char_emb = CharPerWordEmbeddingSequence(tokenizer=split_tokenizer, word_maxlen=4, char_maxlen=5, random_state=random_seed)
+        char_emb = CharPerWordEmbeddingSequence(
+            tokenizer=split_tokenizer, word_maxlen=4, char_maxlen=5, random_state=random_seed
+        )
         char_emb.build(LOREM_IPSUM.split("\n"))
         return char_emb
 

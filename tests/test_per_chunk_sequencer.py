@@ -23,7 +23,9 @@ class TestPerChunkSequencer(unittest.TestCase):
         """
         Creates a test embedding
         """
-        char_emb = CharPerWordEmbeddingSequence(tokenizer=split_tokenizer, word_maxlen=4, char_maxlen=5, random_state=random_seed)
+        char_emb = CharPerWordEmbeddingSequence(
+            tokenizer=split_tokenizer, word_maxlen=4, char_maxlen=5, random_state=random_seed
+        )
         per_chunk_sequencer = PerChunkSequencer(char_emb, newline_chunker, 2)
         per_chunk_sequencer.build(LOREM_IPSUM.split("\n"))
         return per_chunk_sequencer

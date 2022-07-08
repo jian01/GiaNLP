@@ -17,7 +17,9 @@ class TestCharEmbeddingSequence(unittest.TestCase):
     """
 
     @staticmethod
-    def create_char_emb(embedding_dimension: int = 16, sequence_maxlen: int = 10, random_state: int = 42) -> CharEmbeddingSequence:
+    def create_char_emb(
+        embedding_dimension: int = 16, sequence_maxlen: int = 10, random_state: int = 42
+    ) -> CharEmbeddingSequence:
         """
         Creates a char embedding
         """

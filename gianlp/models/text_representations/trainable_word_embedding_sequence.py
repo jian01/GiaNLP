@@ -16,6 +16,7 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input, Lambda, Add, Multiply
 from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing import sequence as keras_seq
+
 # pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
@@ -55,15 +56,15 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
     MAX_SAMPLE_TO_FIT = 5000000
 
     def __init__(
-            self,
-            tokenizer: Callable[[str], List[str]],
-            embedding_dimension: int,
-            word2vec_src: Optional[Union[str, KeyedVectors]] = None,
-            sequence_maxlen: int = 20,
-            min_freq_percentile: float = 5,
-            max_vocabulary: Optional[int] = None,
-            pretrained_trainable: bool = False,
-            random_state: int = 42,
+        self,
+        tokenizer: Callable[[str], List[str]],
+        embedding_dimension: int,
+        word2vec_src: Optional[Union[str, KeyedVectors]] = None,
+        sequence_maxlen: int = 20,
+        min_freq_percentile: float = 5,
+        max_vocabulary: Optional[int] = None,
+        pretrained_trainable: bool = False,
+        random_state: int = 42,
     ):
         """
         :param tokenizer: a tokenizer function that transforms each string into a list of string tokens
@@ -145,8 +146,10 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             tokenized_texts = [token for text in text_sample for token in self._tokenizer(text)]
             frequencies = Counter(tokenized_texts)
             p_freq = np.percentile(list(frequencies.values()), self._min_freq_percentile)
-            if not self._max_vocabulary is None and (1 - (self._min_freq_percentile / 100)) * len(
-                    frequencies) > self._max_vocabulary:
+            if (
+                not self._max_vocabulary is None
+                and (1 - (self._min_freq_percentile / 100)) * len(frequencies) > self._max_vocabulary
+            ):
                 frequencies = frequencies.most_common(self._max_vocabulary)
             else:
                 frequencies = [(k, v) for k, v in frequencies.items() if v >= p_freq]
@@ -181,8 +184,10 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             )
 
             new_embeddings = MaskedEmbedding(
-                input_dim=new_embeddings.shape[0], output_dim=new_embeddings.shape[1], weights=[new_embeddings],
-                trainable=True
+                input_dim=new_embeddings.shape[0],
+                output_dim=new_embeddings.shape[1],
+                weights=[new_embeddings],
+                trainable=True,
             )
 
             new_index_words = Lambda(lambda x: K.relu(x - (len(known_words) + 1)))(inp)

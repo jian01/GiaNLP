@@ -135,7 +135,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -155,7 +157,12 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         Test that the pre trained embeddings are trainable when setted as trainable
         """
         emb = TrainableWordEmbeddingSequence(
-            split_tokenizer, 3, "tests/resources/test_word2vec.txt", sequence_maxlen=10, min_freq_percentile=0, pretrained_trainable=True
+            split_tokenizer,
+            3,
+            "tests/resources/test_word2vec.txt",
+            sequence_maxlen=10,
+            min_freq_percentile=0,
+            pretrained_trainable=True,
         )
         texts = [
             "hola como va",
@@ -169,7 +176,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -203,7 +212,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -234,7 +245,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -247,7 +260,12 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         self.assertNotEqual(preproc_embs[0], preproc_embs2[0])
 
         emb = TrainableWordEmbeddingSequence(
-            split_tokenizer, 3, "tests/resources/test_word2vec.txt", sequence_maxlen=10, min_freq_percentile=0, pretrained_trainable=True
+            split_tokenizer,
+            3,
+            "tests/resources/test_word2vec.txt",
+            sequence_maxlen=10,
+            min_freq_percentile=0,
+            pretrained_trainable=True,
         )
         texts = [
             "hola como va",
@@ -261,7 +279,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -292,7 +312,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -329,7 +351,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso importa nada mas intención"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -361,7 +385,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola nada mas no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -393,7 +419,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         ]
         emb.build(texts)
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -414,7 +442,12 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         Test that the max vocabulary parameter works
         """
         emb = TrainableWordEmbeddingSequence(
-            split_tokenizer, 3, "tests/resources/test_word2vec.txt", sequence_maxlen=10, min_freq_percentile=0, max_vocabulary=6
+            split_tokenizer,
+            3,
+            "tests/resources/test_word2vec.txt",
+            sequence_maxlen=10,
+            min_freq_percentile=0,
+            max_vocabulary=6,
         )
         texts = [
             "hola como va",
@@ -454,18 +487,30 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
             "no te quedes mirandome andate aca",
         ]
         word_emb = TrainableWordEmbeddingSequence(
-            split_tokenizer, 3, "tests/resources/test_word2vec.txt", sequence_maxlen=10, min_freq_percentile=0,
-            random_state=12
+            split_tokenizer,
+            3,
+            "tests/resources/test_word2vec.txt",
+            sequence_maxlen=10,
+            min_freq_percentile=0,
+            random_state=12,
         )
         word_emb.build(texts)
         word_emb2 = TrainableWordEmbeddingSequence(
-            split_tokenizer, 3, "tests/resources/test_word2vec.txt", sequence_maxlen=10, min_freq_percentile=0,
-            random_state=12
+            split_tokenizer,
+            3,
+            "tests/resources/test_word2vec.txt",
+            sequence_maxlen=10,
+            min_freq_percentile=0,
+            random_state=12,
         )
         word_emb2.build(texts)
         word_emb_diff_seed = TrainableWordEmbeddingSequence(
-            split_tokenizer, 3, "tests/resources/test_word2vec.txt", sequence_maxlen=10, min_freq_percentile=0,
-            random_state=33
+            split_tokenizer,
+            3,
+            "tests/resources/test_word2vec.txt",
+            sequence_maxlen=10,
+            min_freq_percentile=0,
+            random_state=33,
         )
         word_emb_diff_seed.build(texts)
 

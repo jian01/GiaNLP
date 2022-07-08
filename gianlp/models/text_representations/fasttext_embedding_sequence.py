@@ -16,6 +16,7 @@ from gensim.models.fasttext import load_facebook_model
 from tensorflow.keras.layers import Input, Lambda, Add, Multiply
 from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing import sequence as keras_seq
+
 # pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
@@ -53,13 +54,13 @@ class FasttextEmbeddingSequence(TextRepresentation):
     MAX_SAMPLE_TO_FIT = 5000000
 
     def __init__(
-            self,
-            tokenizer: Callable[[str], List[str]],
-            fasttext_src: Optional[Union[str, FastText]] = None,
-            sequence_maxlen: int = 20,
-            min_freq_percentile: float = 5,
-            max_vocabulary: Optional[int] = None,
-            random_state: int = 42,
+        self,
+        tokenizer: Callable[[str], List[str]],
+        fasttext_src: Optional[Union[str, FastText]] = None,
+        sequence_maxlen: int = 20,
+        min_freq_percentile: float = 5,
+        max_vocabulary: Optional[int] = None,
+        random_state: int = 42,
     ):
         """
         :param tokenizer: a tokenizer function that transforms each string into a list of string tokens
@@ -127,8 +128,10 @@ class FasttextEmbeddingSequence(TextRepresentation):
             tokenized_texts = [token for text in text_sample for token in self._tokenizer(text)]
             frequencies = Counter(tokenized_texts)
             p_freq = np.percentile(list(frequencies.values()), self._min_freq_percentile)
-            if not self._max_vocabulary is None and (1 - (self._min_freq_percentile / 100)) * len(
-                    frequencies) > self._max_vocabulary:
+            if (
+                not self._max_vocabulary is None
+                and (1 - (self._min_freq_percentile / 100)) * len(frequencies) > self._max_vocabulary
+            ):
                 frequencies = frequencies.most_common(self._max_vocabulary)
             else:
                 frequencies = [(k, v) for k, v in frequencies.items() if v >= p_freq]
@@ -159,8 +162,10 @@ class FasttextEmbeddingSequence(TextRepresentation):
             inp = Input(shape=(self._sequence_maxlen,), dtype="int32")
 
             auxiliar_embs = MaskedEmbedding(
-                input_dim=auxiliar_matrix.shape[0], output_dim=auxiliar_matrix.shape[1], weights=[auxiliar_matrix],
-                trainable=True
+                input_dim=auxiliar_matrix.shape[0],
+                output_dim=auxiliar_matrix.shape[1],
+                weights=[auxiliar_matrix],
+                trainable=True,
             )
 
             embeddings = MaskedEmbedding(

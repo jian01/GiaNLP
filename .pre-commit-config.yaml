@@ -11,13 +11,16 @@ repos:
             "--rcfile=.pylintrc",
             "--fail-under=8"
           ]
+        exclude: docs/*
       - id: darglint
         name: darglint
         entry: darglint -v 2 gianlp
         language: system
         types: [python]
+        exclude: (docs|tests)/*
       - id: black
         name: black
-        entry: black --line-length 120 gianlp tests
+        entry: black --line-length 120
         language: system
         types: [python]
+        exclude: docs/*

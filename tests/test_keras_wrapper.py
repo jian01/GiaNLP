@@ -28,7 +28,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         self.assertEqual(model.inputs_shape.shape, (10,))
         self.assertEqual(model.outputs_shape.shape, (1,))
@@ -42,7 +44,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         model.build(LOREM_IPSUM.split("\n"))
         preds1 = model.predict(pd.Series(["asd", "fgh"]))
@@ -56,7 +60,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         self.assertEqual(model.inputs_shape.shape, (10,))
         model.build(pd.Series(LOREM_IPSUM.split("\n")))
@@ -71,7 +77,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         self.assertEqual(model.inputs_shape.shape, (10,))
         model.build(pd.Series(LOREM_IPSUM.split("\n")))
@@ -116,7 +124,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(15, activation="tanh")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(15, activation="tanh")]
+        )
         encoder = KerasWrapper(char_emb, model)
 
         siamese = Sequential([Input((30,)), Dense(1, activation="sigmoid")])
@@ -136,7 +146,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(15, activation="tanh")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(15, activation="tanh")]
+        )
         encoder = KerasWrapper(char_emb, model)
 
         inp1 = Input(encoder.outputs_shape.shape)
@@ -161,7 +173,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        encoder = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")])
+        encoder = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")]
+        )
         encoder = KerasWrapper(char_emb, encoder)
 
         classifier = Sequential([Input((10,)), Dense(1, activation="sigmoid")])
@@ -186,7 +200,9 @@ class TestKerasWrapper(unittest.TestCase):
         set_seed(42)
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         model.build(LOREM_IPSUM.split("\n"))
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
@@ -203,7 +219,9 @@ class TestKerasWrapper(unittest.TestCase):
         set_seed(42)
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10, min_freq_percentile=95)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         model.build(LOREM_IPSUM.split("\n"))
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
@@ -232,7 +250,9 @@ class TestKerasWrapper(unittest.TestCase):
             texts = []
             labels = []
             for i in range(64):
-                texts += ["".join(random.choice(letter_with_no_vocals + string.digits) for _ in range(random.randint(2, 8)))]
+                texts += [
+                    "".join(random.choice(letter_with_no_vocals + string.digits) for _ in range(random.randint(2, 8)))
+                ]
             for i in range(64):
                 if random.randint(0, 1) == 1:
                     texts[i] = texts[i][1:] + random.choice(vocals)
@@ -252,7 +272,9 @@ class TestKerasWrapper(unittest.TestCase):
         gru_digest = Sequential([Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh")])
         gru_digest = KerasWrapper(char_emb, gru_digest)
 
-        cnn_digest = Sequential([Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()])
+        cnn_digest = Sequential(
+            [Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()]
+        )
         cnn_digest = KerasWrapper(char_emb, cnn_digest)
 
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
@@ -283,7 +305,9 @@ class TestKerasWrapper(unittest.TestCase):
         gru_digest = Sequential([Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh")])
         gru_digest = KerasWrapper(char_emb, gru_digest)
 
-        cnn_digest = Sequential([Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()])
+        cnn_digest = Sequential(
+            [Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()]
+        )
         cnn_digest = KerasWrapper(char_emb, cnn_digest)
 
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
@@ -291,11 +315,7 @@ class TestKerasWrapper(unittest.TestCase):
 
         model.build(LOREM_IPSUM.split("\n"))
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
-        hst = model.fit(
-            self.starts_with_vocal_generator(),
-            epochs=30,
-            steps_per_epoch=100
-        )
+        hst = model.fit(self.starts_with_vocal_generator(), epochs=30, steps_per_epoch=100)
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.15)
 
     def test_serialization(self) -> None:
@@ -304,7 +324,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         serialized = model.serialize()
         model: KerasWrapper = BaseModel.deserialize(serialized)
@@ -327,7 +349,14 @@ class TestKerasWrapper(unittest.TestCase):
         set_seed(42)
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh"), Dense(10, activation="tanh")])
+        model = Sequential(
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
+        )
         encoder = KerasWrapper(char_emb, model)
 
         inp1 = Input((10,))
@@ -346,7 +375,10 @@ class TestKerasWrapper(unittest.TestCase):
         siamese.build(LOREM_IPSUM.split("\n"))
         siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
         hst = siamese.fit(
-            {"text1": ["asd", "fgh"] * 2, "text2": ["asd", "asd", "fgh", "fgh"]}, np.asarray([0, 1, 1, 0]), batch_size=3, epochs=50
+            {"text1": ["asd", "fgh"] * 2, "text2": ["asd", "asd", "fgh", "fgh"]},
+            np.asarray([0, 1, 1, 0]),
+            batch_size=3,
+            epochs=50,
         )
         one_count = 0
         for acc in hst.history["accuracy"]:
@@ -360,7 +392,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         model.build(LOREM_IPSUM.split("\n"))
         preds1 = model.predict(["asd", "123", "test"])
@@ -375,7 +409,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         model.build(LOREM_IPSUM.split("\n"))
         with self.assertRaises(ValueError):
@@ -409,7 +445,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        encoder = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")])
+        encoder = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")]
+        )
         encoder = KerasWrapper(char_emb, encoder)
 
         inp = Input((10,))
@@ -440,7 +478,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         with self.assertRaises(ValueError):
             model.freeze()
@@ -451,7 +491,9 @@ class TestKerasWrapper(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(char_emb, model)
         model.build(LOREM_IPSUM.split("\n"))
         self.assertGreater(model.trainable_weights_amount, 0)

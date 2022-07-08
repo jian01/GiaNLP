@@ -116,10 +116,12 @@ def generator_from_list(l: List[Any]) -> Generator[Any, None, None]:
     for elem in l:
         yield elem
 
+
 class SequenceFromList(Sequence):
     """
     Makes a sequence object form a list
     """
+
     def __init__(self, l: List[Any]):
         """
 

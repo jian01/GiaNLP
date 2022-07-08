@@ -44,14 +44,24 @@ class TestComplexModelBuildings(unittest.TestCase):
 
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         char_digest = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(20, activation="tanh"), Dense(20, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(20, activation="tanh"),
+                Dense(20, activation="tanh"),
+            ]
         )
         char_digest = KerasWrapper(char_emb, char_digest)
 
         char_emb2 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         per_chunk_sequencer = PerChunkSequencer(char_emb2, dot_chunker, chunking_maxlen=10)
         word_digestor = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh"), Dense(10, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
         )
         word_digestor = KerasWrapper(per_chunk_sequencer, word_digestor)
         line_digest = Sequential([Input((10, 10)), GlobalMaxPooling1D()])
@@ -81,14 +91,24 @@ class TestComplexModelBuildings(unittest.TestCase):
 
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         char_digest = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(20, activation="tanh"), Dense(20, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(20, activation="tanh"),
+                Dense(20, activation="tanh"),
+            ]
         )
         char_digest = KerasWrapper(char_emb, char_digest)
 
         char_emb2 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         per_chunk_sequencer = PerChunkSequencer(char_emb2, dot_chunker, chunking_maxlen=10)
         word_digestor = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh"), Dense(10, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
         )
         word_digestor = KerasWrapper(per_chunk_sequencer, word_digestor)
         line_digest = Sequential([Input((10, 10)), GlobalMaxPooling1D()])
@@ -121,13 +141,23 @@ class TestComplexModelBuildings(unittest.TestCase):
 
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         char_digest = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(20, activation="tanh"), Dense(20, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(20, activation="tanh"),
+                Dense(20, activation="tanh"),
+            ]
         )
         char_digest = KerasWrapper(char_emb, char_digest)
 
         per_chunk_sequencer = PerChunkSequencer(char_emb, dot_chunker, chunking_maxlen=10)
         word_digestor = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh"), Dense(10, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
         )
         word_digestor = KerasWrapper(per_chunk_sequencer, word_digestor)
         line_digest = Sequential([Input((10, 10)), GlobalMaxPooling1D()])
@@ -158,7 +188,9 @@ class TestComplexModelBuildings(unittest.TestCase):
 
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")]
+        )
         encoder = KerasWrapper(char_emb, model)
 
         siamese = Sequential([Input((20,)), Dense(1, activation="sigmoid")])

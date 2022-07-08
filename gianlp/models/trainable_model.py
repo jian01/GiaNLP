@@ -16,6 +16,7 @@ from tensorflow.keras.optimizers import Optimizer
 from tensorflow.keras.utils import OrderedEnqueuer, GeneratorEnqueuer
 from tensorflow.keras.utils import Sequence as KerasSequence
 from tqdm import tqdm
+
 # pylint: enable=no-name-in-module
 
 from gianlp.logging import warning
@@ -36,8 +37,7 @@ class TrainSequenceWrapper(KerasSequence):
         x = self.preprocessor(x)
         return x, y
 
-    def __init__(self, sequence: Sequence,
-                 preprocessor: Callable[[TextsInput], KerasInputOutput]):
+    def __init__(self, sequence: Sequence, preprocessor: Callable[[TextsInput], KerasInputOutput]):
         self.sequence = sequence
         self.preprocessor = preprocessor
 
@@ -139,11 +139,11 @@ class TrainableModel(BaseModel, ABC):
         return texts_preprocessed
 
     def compile(
-            self,
-            optimizer: Union[str, Optimizer] = "rmsprop",
-            loss: Optional[Union[str, Loss]] = None,
-            metrics: Optional[List[Union[str, Metric]]] = None,
-            **kwargs: Any
+        self,
+        optimizer: Union[str, Optimizer] = "rmsprop",
+        loss: Optional[Union[str, Loss]] = None,
+        metrics: Optional[List[Union[str, Metric]]] = None,
+        **kwargs: Any,
     ) -> None:
         """
         Compiles the Keras model and prepares the text inputs to be used
@@ -214,10 +214,9 @@ class TrainableModel(BaseModel, ABC):
         return x, y
 
     def _fit_generator(
-            self,
-            data: Union[
-                Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[TextsInput, KerasInputOutput]],
-            batch_size: int = 32,
+        self,
+        data: Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[TextsInput, KerasInputOutput]],
+        batch_size: int = 32,
     ) -> Generator[Tuple[KerasInputOutput, KerasInputOutput], None, None]:
         """
         Internal generator for training
@@ -240,7 +239,7 @@ class TrainableModel(BaseModel, ABC):
                     iter_range = iter(range(0, self.__texts_input_length(data[0]), batch_size))
                     i = next(iter_range)
                     data = self.__shuffle_fit_data(data)
-                batch_x, batch_y = self.__slice_texts_input(data[0], i, i + batch_size), data[1][i: i + batch_size]
+                batch_x, batch_y = self.__slice_texts_input(data[0], i, i + batch_size), data[1][i : i + batch_size]
                 if self.__texts_input_length(batch_x) < batch_size:  # pragma: no cover
                     sliced_extra = self.__slice_texts_input(data[0], 0, batch_size - self.__texts_input_length(batch_x))
                     if isinstance(batch_x, dict):
@@ -248,16 +247,21 @@ class TrainableModel(BaseModel, ABC):
                     else:
                         batch_x += sliced_extra
                     batch_y = batch_y.tolist()
-                    batch_y += data[1][0: batch_size - len(batch_y)].tolist()
+                    batch_y += data[1][0 : batch_size - len(batch_y)].tolist()
                     batch_y = np.asarray(batch_y)
 
             inputs = self.preprocess_texts(batch_x)
 
             yield inputs, batch_y
 
-    def _get_validation_generator(self, validation_data: Optional[
-        Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[
-            TextsInput, KerasInputOutput]]], batch_size, validation_steps):
+    def _get_validation_generator(
+        self,
+        validation_data: Optional[
+            Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[TextsInput, KerasInputOutput]]
+        ],
+        batch_size,
+        validation_steps,
+    ):
         if validation_data is None:
             valid_generator = None
         elif isinstance(validation_data, types.GeneratorType):
@@ -268,24 +272,22 @@ class TrainableModel(BaseModel, ABC):
         return valid_generator, validation_steps
 
     def fit(
-            self,
-            x: Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None],
-                     TextsInput,
-                     Sequence] = None,
-            y: Optional[np.array] = None,
-            batch_size: int = 32,
-            epochs: int = 1,
-            verbose: Union[str, int] = "auto",
-            callbacks: List[Callback] = None,
-            validation_split: Optional[float] = 0.0,
-            validation_data: Optional[
-                Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[TextsInput, KerasInputOutput]]
-            ] = None,
-            steps_per_epoch: Optional[int] = None,
-            validation_steps: Optional[int] = None,
-            max_queue_size: int = 10,
-            workers: int = 1,
-            use_multiprocessing: bool = False
+        self,
+        x: Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], TextsInput, Sequence] = None,
+        y: Optional[np.array] = None,
+        batch_size: int = 32,
+        epochs: int = 1,
+        verbose: Union[str, int] = "auto",
+        callbacks: List[Callback] = None,
+        validation_split: Optional[float] = 0.0,
+        validation_data: Optional[
+            Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[TextsInput, KerasInputOutput]]
+        ] = None,
+        steps_per_epoch: Optional[int] = None,
+        validation_steps: Optional[int] = None,
+        max_queue_size: int = 10,
+        workers: int = 1,
+        use_multiprocessing: bool = False,
     ) -> History:
         """
         Fits the model
@@ -331,8 +333,7 @@ class TrainableModel(BaseModel, ABC):
         elif isinstance(x, types.GeneratorType):
             train_generator = self._fit_generator(x)
             if use_multiprocessing:
-                enq = GeneratorEnqueuer(train_generator, use_multiprocessing=True,
-                                        random_seed=self._random_seed)
+                enq = GeneratorEnqueuer(train_generator, use_multiprocessing=True, random_seed=self._random_seed)
                 enq.start(workers=workers, max_queue_size=max_queue_size)
                 train_generator = enq.get()
         else:
@@ -344,17 +345,19 @@ class TrainableModel(BaseModel, ABC):
 
                 valid_amount = int(round(validation_split * self.__texts_input_length(x)))
                 validation_data = (
-                    self.__slice_texts_input(x, -valid_amount, self.__texts_input_length(x)), y[-valid_amount:])
+                    self.__slice_texts_input(x, -valid_amount, self.__texts_input_length(x)),
+                    y[-valid_amount:],
+                )
                 train_data = (self.__slice_texts_input(x, 0, -valid_amount), y[:-valid_amount])
             train_generator = self._fit_generator(train_data, batch_size)
             steps_per_epoch = self.__texts_input_length(train_data[0]) // batch_size
 
-        valid_generator, validation_steps = self._get_validation_generator(validation_data, batch_size,
-                                                                           validation_steps)
+        valid_generator, validation_steps = self._get_validation_generator(
+            validation_data, batch_size, validation_steps
+        )
 
         if use_multiprocessing and isinstance(validation_data, types.GeneratorType):
-            enq = GeneratorEnqueuer(valid_generator, use_multiprocessing=True,
-                                    random_seed=self._random_seed)
+            enq = GeneratorEnqueuer(valid_generator, use_multiprocessing=True, random_seed=self._random_seed)
             enq.start(workers=workers, max_queue_size=max_queue_size)
             valid_generator = enq.get()
 
@@ -369,12 +372,12 @@ class TrainableModel(BaseModel, ABC):
             validation_steps=validation_steps,
             max_queue_size=max_queue_size,
             workers=(1 if use_multiprocessing else workers),
-            use_multiprocessing=False
+            use_multiprocessing=False,
         )
 
-    def _predict_generator(self, x: Union[Generator[TextsInput, None, None],
-                                          TextsInput],
-                           inference_batch: int) -> Generator[KerasInputOutput, None, None]:
+    def _predict_generator(
+        self, x: Union[Generator[TextsInput, None, None], TextsInput], inference_batch: int
+    ) -> Generator[KerasInputOutput, None, None]:
         """
         # noqa: DAR202
 
@@ -423,15 +426,14 @@ class TrainableModel(BaseModel, ABC):
         return old_preds
 
     def predict(
-            self,
-            x: Union[Generator[TextsInput, None, None],
-                     TextsInput, Sequence],
-            inference_batch: int = 256,
-            steps: Optional[int] = None,
-            max_queue_size: int = 10,
-            workers: int = 1,
-            use_multiprocessing: bool = False,
-            verbose: int = 0
+        self,
+        x: Union[Generator[TextsInput, None, None], TextsInput, Sequence],
+        inference_batch: int = 256,
+        steps: Optional[int] = None,
+        max_queue_size: int = 10,
+        workers: int = 1,
+        use_multiprocessing: bool = False,
+        verbose: int = 0,
     ) -> KerasInputOutput:
         """
         Predicts using the model
@@ -469,12 +471,13 @@ class TrainableModel(BaseModel, ABC):
         else:
             predict_generator = self._predict_generator(x, inference_batch)
             if use_multiprocessing and isinstance(x, types.GeneratorType):
-                warning("Keras API allows prediction generators with multiprocessing, so does this method, "
-                        "but be aware this completely looses track of which predictions are from which label "
-                        "since order will be lost by concurrency. We recommend using a utils.Sequence object for"
-                        " multiprocessing.")
-                enq = GeneratorEnqueuer(predict_generator, use_multiprocessing=True,
-                                        random_seed=self._random_seed)
+                warning(
+                    "Keras API allows prediction generators with multiprocessing, so does this method, "
+                    "but be aware this completely looses track of which predictions are from which label "
+                    "since order will be lost by concurrency. We recommend using a utils.Sequence object for"
+                    " multiprocessing."
+                )
+                enq = GeneratorEnqueuer(predict_generator, use_multiprocessing=True, random_seed=self._random_seed)
                 enq.start(workers=workers, max_queue_size=max_queue_size)
                 predict_generator = enq.get()
             if not steps:
@@ -494,8 +497,8 @@ class TrainableModel(BaseModel, ABC):
                 print(f"{i}/{steps} Batch predicted")
         if not isinstance(x, types.GeneratorType) and not isinstance(x, Sequence):
             if isinstance(preds, list):
-                return [p[:self.__texts_input_length(x)] for p in preds]
-            return preds[:self.__texts_input_length(x)]
+                return [p[: self.__texts_input_length(x)] for p in preds]
+            return preds[: self.__texts_input_length(x)]
         return preds
 
     def freeze(self) -> None:

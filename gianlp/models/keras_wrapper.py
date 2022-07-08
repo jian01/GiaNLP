@@ -9,6 +9,7 @@ from typing import List, Union, Optional, Iterator
 from tensorflow import Tensor
 from tensorflow.keras.layers import Input, Concatenate
 from tensorflow.keras.models import Model
+
 # pylint: enable=no-name-in-module
 
 from gianlp.logging import warning
@@ -39,8 +40,9 @@ class KerasWrapper(TrainableModel):
                 if isinstance(model, tuple):
                     raise ValueError("Can't mix named inputs with unnamed inputs in the list.")
                 if model.has_multi_text_input() != inputs[0].has_multi_text_input():
-                    raise ValueError("Some models in the input list have multi-text input and others don't. "
-                                     "This is not allowed.")
+                    raise ValueError(
+                        "Some models in the input list have multi-text input and others don't. " "This is not allowed."
+                    )
             return inputs
         if isinstance(inputs, list) and isinstance(inputs[0], tuple):
             if len(inputs) == 1:
@@ -109,8 +111,9 @@ class KerasWrapper(TrainableModel):
         return shapes
 
     @staticmethod
-    def __compute_output_shape(output: Tensor, wrapped_model: Model,
-                               input_iterator: Iterator[BaseModel]) -> ModelIOShape:
+    def __compute_output_shape(
+        output: Tensor, wrapped_model: Model, input_iterator: Iterator[BaseModel]
+    ) -> ModelIOShape:
         """
         Compute the output shape for a single output of the wrapped model
 
@@ -181,8 +184,9 @@ class KerasWrapper(TrainableModel):
             inputs = []
             middle = []
             for model in self._iterate_model_inputs(self.inputs):
-                input_shapes = [model.inputs_shape] if isinstance(model.inputs_shape, ModelIOShape) \
-                    else model.inputs_shape
+                input_shapes = (
+                    [model.inputs_shape] if isinstance(model.inputs_shape, ModelIOShape) else model.inputs_shape
+                )
                 model_inps = [Input(shape.shape, dtype=shape.dtype) for shape in input_shapes]
                 inputs += model_inps
                 model_out = model(model_inps)
@@ -231,8 +235,7 @@ class KerasWrapper(TrainableModel):
                             name_inputs += [ti.serialize() for ti in inp._find_text_inputs()]
                     inputs_bytes.append((name, name_inputs))
             else:
-                inputs_bytes = [(name, [inp.serialize() for inp in inps])
-                                for name, inps in self.inputs]
+                inputs_bytes = [(name, [inp.serialize() for inp in inps]) for name, inps in self.inputs]
         else:
             if self._keras_model:
                 inputs_bytes = [inp.serialize() for inp in self._find_text_inputs()]
@@ -254,8 +257,10 @@ class KerasWrapper(TrainableModel):
         """
         inputs_bytes, wrapped_model_bytes, keras_model_bytes, random_seed, _built = pickle.loads(data)
         if isinstance(inputs_bytes[0], tuple):
-            inputs = [(name, [BaseModel.deserialize(inp_bytes) for inp_bytes in inps_bytes]) for name, inps_bytes in
-                      inputs_bytes]
+            inputs = [
+                (name, [BaseModel.deserialize(inp_bytes) for inp_bytes in inps_bytes])
+                for name, inps_bytes in inputs_bytes
+            ]
         else:
             inputs = [BaseModel.deserialize(inp_bytes) for inp_bytes in inputs_bytes]
         obj = cls(inputs, cls.get_model_from_bytes(wrapped_model_bytes))

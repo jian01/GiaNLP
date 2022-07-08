@@ -32,8 +32,8 @@ class TestSpamSequence(Sequence):
         return len(self.texts) // 256
 
     def __getitem__(self, index: int):
-        texts = self.texts[index * self.batch_size:(index + 1) * self.batch_size]
-        labels = self.labels[index * self.batch_size:(index + 1) * self.batch_size]
+        texts = self.texts[index * self.batch_size : (index + 1) * self.batch_size]
+        labels = self.labels[index * self.batch_size : (index + 1) * self.batch_size]
 
         return texts, np.asarray(labels)
 
@@ -67,16 +67,24 @@ class TestMultiprocessing(unittest.TestCase):
 
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         char_digest = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(20, activation="tanh"),
-             Dense(20, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(20, activation="tanh"),
+                Dense(20, activation="tanh"),
+            ]
         )
         char_digest = KerasWrapper(char_emb, char_digest)
 
         char_emb2 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         per_chunk_sequencer = PerChunkSequencer(char_emb2, dot_chunker, chunking_maxlen=10)
         word_digestor = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh"),
-             Dense(10, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
         )
         word_digestor = KerasWrapper(per_chunk_sequencer, word_digestor)
         line_digest = Sequential([Input((10, 10)), GlobalMaxPooling1D()])
@@ -91,10 +99,15 @@ class TestMultiprocessing(unittest.TestCase):
         model.build(texts)
         sequence_x = TestSpamSequence(texts, labels, batch_size=256)
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
-        hst = model.fit(sequence_x, epochs=6,
-                        steps_per_epoch=len(texts) // 256,
-                        validation_data=(val_texts, np.asarray(val_labels)),
-                        max_queue_size=10, workers=2, use_multiprocessing=True)
+        hst = model.fit(
+            sequence_x,
+            epochs=6,
+            steps_per_epoch=len(texts) // 256,
+            validation_data=(val_texts, np.asarray(val_labels)),
+            max_queue_size=10,
+            workers=2,
+            use_multiprocessing=True,
+        )
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.1)
         self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.1)
         preds1 = model.predict(["prueba 1", "prueba. prueba 2"])
@@ -111,16 +124,24 @@ class TestMultiprocessing(unittest.TestCase):
 
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         char_digest = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(20, activation="tanh"),
-             Dense(20, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(20, activation="tanh"),
+                Dense(20, activation="tanh"),
+            ]
         )
         char_digest = KerasWrapper(char_emb, char_digest)
 
         char_emb2 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
         per_chunk_sequencer = PerChunkSequencer(char_emb2, dot_chunker, chunking_maxlen=10)
         word_digestor = Sequential(
-            [Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh"),
-             Dense(10, activation="tanh")]
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
         )
         word_digestor = KerasWrapper(per_chunk_sequencer, word_digestor)
         line_digest = Sequential([Input((10, 10)), GlobalMaxPooling1D()])
@@ -135,11 +156,16 @@ class TestMultiprocessing(unittest.TestCase):
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
         with self.assertRaises(ValueError):
-            model.fit(texts, labels, epochs=6,
-                      steps_per_epoch=len(texts) // 256,
-                      validation_data=(val_texts, np.asarray(val_labels)),
-                      max_queue_size=10, workers=2, use_multiprocessing=True)
-
+            model.fit(
+                texts,
+                labels,
+                epochs=6,
+                steps_per_epoch=len(texts) // 256,
+                validation_data=(val_texts, np.asarray(val_labels)),
+                max_queue_size=10,
+                workers=2,
+                use_multiprocessing=True,
+            )
 
     @staticmethod
     def starts_with_vocal_generator():
@@ -154,8 +180,12 @@ class TestMultiprocessing(unittest.TestCase):
             texts = []
             labels = []
             for i in range(64):
-                texts += ["".join(np.random.choice(list(letter_with_no_vocals) + list(string.digits))
-                                  for _ in range(np.random.randint(2, 8)))]
+                texts += [
+                    "".join(
+                        np.random.choice(list(letter_with_no_vocals) + list(string.digits))
+                        for _ in range(np.random.randint(2, 8))
+                    )
+                ]
             for i in range(64):
                 if random.randint(0, 1) == 1:
                     texts[i] = texts[i][1:] + np.random.choice(vocals)
@@ -175,7 +205,9 @@ class TestMultiprocessing(unittest.TestCase):
         gru_digest = Sequential([Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh")])
         gru_digest = KerasWrapper(char_emb, gru_digest)
 
-        cnn_digest = Sequential([Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()])
+        cnn_digest = Sequential(
+            [Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()]
+        )
         cnn_digest = KerasWrapper(char_emb, cnn_digest)
 
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
@@ -191,7 +223,7 @@ class TestMultiprocessing(unittest.TestCase):
             validation_steps=10,
             use_multiprocessing=True,
             workers=2,
-            max_queue_size=10
+            max_queue_size=10,
         )
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.15)
         self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.15)
@@ -209,16 +241,21 @@ class TestMultiprocessing(unittest.TestCase):
         gru_digest = Sequential([Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh")])
         gru_digest = KerasWrapper(char_emb, gru_digest)
 
-        cnn_digest = Sequential([Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()])
+        cnn_digest = Sequential(
+            [Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()]
+        )
         cnn_digest = KerasWrapper(char_emb, cnn_digest)
 
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
         model.build(LOREM_IPSUM.split("\n"))
-        model.predict(generator_from_list([["A"], ["E"], ["I"], ["O"], ["U"],
-                                           ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]]),
-                      use_multiprocessing=True, workers=2, steps=10)
+        model.predict(
+            generator_from_list([["A"], ["E"], ["I"], ["O"], ["U"], ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]]),
+            use_multiprocessing=True,
+            workers=2,
+            steps=10,
+        )
 
     def test_predict_with_parallel_sequence_object(self) -> None:
         """
@@ -230,7 +267,9 @@ class TestMultiprocessing(unittest.TestCase):
         gru_digest = Sequential([Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh")])
         gru_digest = KerasWrapper(char_emb, gru_digest)
 
-        cnn_digest = Sequential([Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()])
+        cnn_digest = Sequential(
+            [Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()]
+        )
         cnn_digest = KerasWrapper(char_emb, cnn_digest)
 
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
@@ -238,11 +277,14 @@ class TestMultiprocessing(unittest.TestCase):
 
         model.build(LOREM_IPSUM.split("\n"))
         preds = model.predict(["A", "E", "I", "O", "U", "JS4DS", "S4DS", "4DS", "DS", "S"]).round(3)
-        preds2 = model.predict(SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U"],
-                                                 ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]])).round(3)
-        preds3 = model.predict(SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U"],
-                                                 ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]]),
-                               use_multiprocessing=True, workers=2).round(3)
+        preds2 = model.predict(
+            SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U"], ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]])
+        ).round(3)
+        preds3 = model.predict(
+            SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U"], ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]]),
+            use_multiprocessing=True,
+            workers=2,
+        ).round(3)
         self.assertEqual(preds.tolist(), preds2.tolist())
         self.assertEqual(preds.tolist(), preds3.tolist())
 
@@ -256,7 +298,9 @@ class TestMultiprocessing(unittest.TestCase):
         gru_digest = Sequential([Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh")])
         gru_digest = KerasWrapper(char_emb, gru_digest)
 
-        cnn_digest = Sequential([Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()])
+        cnn_digest = Sequential(
+            [Input(char_emb.outputs_shape.shape), Conv1D(10, 1, activation="tanh"), GlobalMaxPooling1D()]
+        )
         cnn_digest = KerasWrapper(char_emb, cnn_digest)
 
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
@@ -264,10 +308,13 @@ class TestMultiprocessing(unittest.TestCase):
 
         model.build(LOREM_IPSUM.split("\n"))
         preds = model.predict(["A", "E", "I", "O", "U", "JS4DS", "S4DS", "4DS", "DS", "S"]).round(3)
-        preds2 = model.predict(SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U",
-                                                 "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]])).round(3)
-        preds3 = model.predict(SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U",
-                                                 "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]]),
-                               use_multiprocessing=True, workers=2).round(3)
+        preds2 = model.predict(
+            SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U", "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]])
+        ).round(3)
+        preds3 = model.predict(
+            SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U", "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]]),
+            use_multiprocessing=True,
+            workers=2,
+        ).round(3)
         self.assertEqual(preds.tolist(), preds2.tolist())
         self.assertEqual(preds.tolist(), preds3.tolist())

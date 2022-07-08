@@ -31,8 +31,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test shapes
         """
-        emb = FasttextEmbeddingSequence(split_tokenizer, load_facebook_model("tests/resources/fasttext.bin"),
-                                        sequence_maxlen=4)
+        emb = FasttextEmbeddingSequence(
+            split_tokenizer, load_facebook_model("tests/resources/fasttext.bin"), sequence_maxlen=4
+        )
         self.assertEqual(emb.inputs_shape.shape, (4,))
         self.assertEqual(emb.outputs_shape.shape, (4, 2))
 
@@ -76,7 +77,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -105,7 +108,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -134,7 +139,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         preproc = emb.preprocess_texts(["coso hola de que no"])
         preproc_embs = emb(preproc).tolist()[0]
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -167,7 +174,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         ]
         emb.build(texts)
 
-        model = Sequential([GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")])
+        model = Sequential(
+            [GlobalAveragePooling1D(input_shape=emb.outputs_shape.shape), Dense(1, activation="sigmoid")]
+        )
         model = KerasWrapper(emb, model)
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy")
@@ -187,7 +196,9 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test that the max vocabulary parameter works
         """
-        emb = FasttextEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10, max_vocabulary=6)
+        emb = FasttextEmbeddingSequence(
+            split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10, max_vocabulary=6
+        )
         texts = [
             "hola como va",
             "hola que te importa",

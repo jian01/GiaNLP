@@ -12,6 +12,7 @@ from typing import Union, List, Dict, Iterator, NamedTuple, Tuple, Optional
 
 import numpy as np
 import pandas as pd
+
 # pylint: disable=no-name-in-module
 from tensorflow import Tensor
 from tensorflow.keras import backend as K
@@ -240,8 +241,9 @@ class BaseModel(ABC):
             raise ValueError("This model has not yet been built.")
 
         keras_model = self._get_keras_model()
-        if type(inputs).__module__ == np.__name__ or (isinstance(inputs, list) and
-                                                      type(inputs[0]).__module__ == np.__name__):
+        if type(inputs).__module__ == np.__name__ or (
+            isinstance(inputs, list) and type(inputs[0]).__module__ == np.__name__
+        ):
             return keras_model.predict(inputs)
         if isinstance(inputs, list) and len(keras_model.inputs) != len(inputs):
             outputs = []

@@ -48,7 +48,9 @@ class TestPreTrainedWordEmbeddingSequence(unittest.TestCase):
         """
         Test weights count
         """
-        char_emb = PreTrainedWordEmbeddingSequence("tests/resources/test_word2vec.txt", tokenizer=split_tokenizer, sequence_maxlen=4)
+        char_emb = PreTrainedWordEmbeddingSequence(
+            "tests/resources/test_word2vec.txt", tokenizer=split_tokenizer, sequence_maxlen=4
+        )
         self.assertIsNone(char_emb.weights_amount)
         self.assertIsNone(char_emb.trainable_weights_amount)
         char_emb.build([""])

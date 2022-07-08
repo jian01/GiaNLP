@@ -12,6 +12,7 @@ from gensim.models import KeyedVectors
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing import sequence as keras_seq
+
 # pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
@@ -38,10 +39,10 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
     WORD_UNKNOWN_TOKEN = "<UNK>"
 
     def __init__(
-            self,
-            word2vec_src: Union[str, KeyedVectors],
-            tokenizer: Callable[[str], List[str]],
-            sequence_maxlen: int = 20,
+        self,
+        word2vec_src: Union[str, KeyedVectors],
+        tokenizer: Callable[[str], List[str]],
+        sequence_maxlen: int = 20,
     ):
         """
 
@@ -49,7 +50,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
         :param tokenizer: a tokenizer function that transforms each string into a list of string tokens
                             the tokens transformed should match the keywords in the pretrained word embeddings
                             the function must support serialization through pickle
-        :param sequence_maxlen: The maximum allowed sequence length        """
+        :param sequence_maxlen: The maximum allowed sequence length"""
         super().__init__()
         if isinstance(word2vec_src, str):
             self._word2vec = KeyedVectors.load_word2vec_format(word2vec_src)
@@ -73,8 +74,10 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
         tokenized_texts = [self._tokenizer(text) for text in texts]
         words = keras_seq.pad_sequences(
             [
-                [self._word2vec.key_to_index[w] + 2 if w in self._word2vec.key_to_index else 1 for w in
-                 words[: self._sequence_maxlen]]
+                [
+                    self._word2vec.key_to_index[w] + 2 if w in self._word2vec.key_to_index else 1
+                    for w in words[: self._sequence_maxlen]
+                ]
                 for words in tokenized_texts
             ],
             maxlen=self._sequence_maxlen,

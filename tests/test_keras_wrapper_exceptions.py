@@ -74,7 +74,9 @@ class TestKerasWrapperExceptions(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")]
+        )
         encoder = KerasWrapper(char_emb, model)
 
         encoder_title_content = Sequential([Input((20,)), Dense(20, activation="tanh")])
@@ -92,7 +94,9 @@ class TestKerasWrapperExceptions(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")])
+        model = Sequential(
+            [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(10, activation="tanh")]
+        )
         encoder = KerasWrapper(char_emb, model)
 
         encoder_title_content = Sequential([Input((20,)), Dense(20, activation="tanh")])
@@ -110,7 +114,14 @@ class TestKerasWrapperExceptions(unittest.TestCase):
         """
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
-        model = Sequential([Input(char_emb.outputs_shape.shape), Masking(0.0), GRU(10, activation="tanh"), Dense(10, activation="tanh")])
+        model = Sequential(
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
+        )
         encoder = KerasWrapper(char_emb, model)
 
         inp1 = Input((10,))
