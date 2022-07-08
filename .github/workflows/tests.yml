@@ -1,6 +1,13 @@
 name: Tests on latest tensorflow version
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'gianlp/*'
+      - 'tests/*'
+  pull_request:
+    paths:
+      - '*'
 
 jobs:
   build:
