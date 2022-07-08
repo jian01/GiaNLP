@@ -20,11 +20,10 @@ class MaskedEmbedding(Embedding):
 
     def __init__(self, input_dim, output_dim, **kwargs):
         """
-
         :param input_dim:Size of the vocabulary,
         i.e. maximum integer index + 1.
         :param output_dim: Integer. Dimension of the dense embedding.
-        :param kwargs: extra arguments to pass to Embedding init
+        :param **kwargs: extra arguments to pass to Embedding init
         """
         super().__init__(input_dim, output_dim, **kwargs)
 

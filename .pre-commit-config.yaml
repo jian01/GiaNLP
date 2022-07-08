@@ -11,3 +11,8 @@ repos:
             "--rcfile=.pylintrc",
             "--fail-under=8"
           ]
+      - id: darglint
+        name: darglint
+        entry: darglint -v 2 gianlp
+        language: system
+        types: [python]

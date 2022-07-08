@@ -10,7 +10,9 @@ _logger = None
 
 
 def get_logger() -> _logging:
-    """Return logger instance. 'Inspired' 👀 by tensorflow get_logger"""
+    """Return logger instance. 'Inspired' 👀 by tensorflow get_logger
+
+    :return: A python logger instance"""
     global _logger
 
     if _logger:

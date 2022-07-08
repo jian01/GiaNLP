@@ -61,9 +61,8 @@ class KerasWrapper(TrainableModel):
         input.
         :param wrapped_model: the keras model to wrap. if it has multiple inputs, inputs parameter
         should have the same len
-        :param random_seed: random seed used in training
-        :raises:
-            ValueError:
+        :param **kwargs: extra parameters for TrainableModel init
+        :raises ValueError:
             - When the wrapped model is not a keras model
             - When the keras model to wrap does not have a defined input shape
             - When inputs is a list of models and some of the models in the input have multi-text input and others
@@ -165,6 +164,8 @@ class KerasWrapper(TrainableModel):
     def _get_keras_model(self) -> Model:
         """
         Get's the internal keras model that is being serialized
+
+        :return: The internal keras model
         """
         assert self._keras_model
 
@@ -248,6 +249,7 @@ class KerasWrapper(TrainableModel):
         """
         Loads a model
 
+        :param data: the source bytes to load the model
         :return: a Serializable Model
         """
         inputs_bytes, wrapped_model_bytes, keras_model_bytes, random_seed, _built = pickle.loads(data)

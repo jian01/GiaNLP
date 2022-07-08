@@ -77,6 +77,8 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
         :param sequence_maxlen: The maximum allowed sequence length
         :param pretrained_trainable: if the vectors pretrained will also be trained. ignored if word2vec_src is None
         :param random_state: the random seed used for random processes
+        :raises ValueError: if a pretrained embeddings is fed and it's dimension does not match
+        the one in embedding_dimension
         """
         super().__init__()
         if isinstance(word2vec_src, str):
@@ -232,6 +234,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
         """
         Loads a model
 
+        :param data: the source bytes to load the model
         :return: a Serializable Model
         """
         (
@@ -266,6 +269,8 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
     def _get_keras_model(self) -> Model:
         """
         Get's the internal keras model that is being serialized
+
+        :return: The internal keras model
         """
         assert self._keras_model
 

@@ -47,6 +47,7 @@ class CharPerWordEmbeddingSequence(TextRepresentation):
                                     If a char has a frequency lower than this percentile it
                                     would be treated as unknown.
         :param random_state: random seed
+        :returns: a PerChunkSequencer with your tokenizer and a CharEmbeddingSequence as sequencer
         """
         char_embedding = CharEmbeddingSequence(embedding_dimension=embedding_dimension,
                                                sequence_maxlen=char_maxlen,

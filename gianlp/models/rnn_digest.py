@@ -41,8 +41,8 @@ class RNNDigest(KerasWrapper):
         :param random_seed: the seed for random processes
         :param return_sequences: if True, the last RNN layer returns the sequence of states
         :param kwargs: extra arguments for the rnn layers
-        :raises:
-            ValueError: When inputs have different sequence length
+        :return: An RNN digester model inside a KerasWrapper
+        :raises ValueError: When inputs have different sequence length
         """
         set_seed(random_seed)
 

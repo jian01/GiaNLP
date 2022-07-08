@@ -213,6 +213,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
         """
         Loads a model
 
+        :param data: the source bytes to load the model
         :return: a Serializable Model
         """
         (
@@ -236,6 +237,8 @@ class FasttextEmbeddingSequence(TextRepresentation):
     def _get_keras_model(self) -> Model:
         """
         Get's the internal keras model that is being serialized
+
+        :return: The internal keras model
         """
         assert self._keras_model
 

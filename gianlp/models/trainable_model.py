@@ -43,6 +43,8 @@ class TrainSequenceWrapper(KerasSequence):
 
     def __iter__(self) -> Generator[Tuple[TextsInput, KerasInputOutput], None, None]:
         """
+        # noqa: DAR202
+
         Create a generator that iterate over the Sequence.
         :return: The generator
         """
@@ -70,6 +72,8 @@ class PredictSequenceWrapper(TrainSequenceWrapper):
 
     def __iter__(self) -> Generator[TextsInput, None, None]:
         """
+        # noqa: DAR202
+
         Create a generator that iterate over the Sequence.
         :return: The generator
         """
@@ -102,8 +106,7 @@ class TrainableModel(BaseModel, ABC):
 
         :param texts: the texts to preprocess
         :return: a numpy array or list of numpy arrays representing the texts
-        :raises:
-            ValueError:
+        :raises ValueError:
             - When the model is multi-text and x is not a dict or dataframe
             - When the model is not multi-text and x is a dict or dataframe
         """
@@ -149,8 +152,7 @@ class TrainableModel(BaseModel, ABC):
         :param loss: loss for training
         :param metrics: metrics to use while training
         :param kwargs: accepts any other parameters for use in Keras Model.compile API
-        :raises:
-            AssertionError:
+        :raises AssertionError:
                 - When the model is not built
         """
         assert self._built
@@ -317,6 +319,7 @@ class TrainableModel(BaseModel, ABC):
         non-picklable arguments to the generator as they can't be passed easily to children processes.
         :return: A History object. Its History.history attribute is a record of training loss values and metrics values
         at successive epochs, as well as validation loss values and validation metrics values (if applicable).
+        :raises ValueError: When trying to set multiprocessing but x is not a generator or Sequence
         """
         np.random.seed(self._random_seed)
         if isinstance(x, Sequence):
@@ -334,7 +337,7 @@ class TrainableModel(BaseModel, ABC):
                 train_generator = enq.get()
         else:
             if use_multiprocessing:
-                raise ValueError("Can't use multiprocessing with already generatred data.")
+                raise ValueError("Can't use multiprocessing with already generated data.")
             train_data = (x, y)
             if validation_split > 0 and not validation_data:
                 x, y = self.__shuffle_fit_data((x, y))
@@ -373,11 +376,13 @@ class TrainableModel(BaseModel, ABC):
                                           TextsInput],
                            inference_batch: int) -> Generator[KerasInputOutput, None, None]:
         """
-        Internal generator for predictions
+        # noqa: DAR202
+
+        Internal generator for predictions, transforms text input into numerical input
 
         :param x: generator of x or x text inputs
         :param inference_batch: inference batch size, ignored if x is generator
-        :return:
+        :return: a generator of numerical input of the model
         """
         if isinstance(x, types.GeneratorType):
             while True:
@@ -449,6 +454,7 @@ class TrainableModel(BaseModel, ABC):
         non-picklable arguments to the generator as they can't be passed easily to children processes.
         :param verbose: 0, 1, or 2. Verbosity mode. 0 = silent, 1 = progress bar, 2 = single line.
         :return: the output of the keras model
+        :raises ValueError: If a generator is given as x but no step amount is specified
         """
         preds = None
         if isinstance(x, Sequence):
@@ -495,8 +501,7 @@ class TrainableModel(BaseModel, ABC):
     def freeze(self) -> None:
         """
         Freezes the model weights
-        :raises:
-            ValueError:
+        :raises ValueError:
             - When the model is not built
         """
         if not self._built:

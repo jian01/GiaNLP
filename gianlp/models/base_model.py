@@ -161,6 +161,8 @@ class BaseModel(ABC):
     def _get_keras_model(self) -> Model:
         """
         Get's the internal keras model that is being serialized
+
+        :return: The internal keras model
         """
 
     @abstractmethod
@@ -176,6 +178,8 @@ class BaseModel(ABC):
         """
         Iterates model inputs in the proper order
         :param model_inputs: the model inputs
+
+        :return: An iterator of model inputs
         """
         if not model_inputs:
             return
@@ -208,7 +212,8 @@ class BaseModel(ABC):
         """
         Simple call for a keras layer for preprocessed inputs
 
-        :param inputs: a Keras layer of list of Keras layers
+        :param keras_model: the keras Model to call
+        :param inputs: a Keras layer or list of Keras layers
         :return: the keras output
         """
         if isinstance(inputs, list):
@@ -229,8 +234,7 @@ class BaseModel(ABC):
 
         :param inputs: either a keras layer, a list of keras layers or a numpy array
         :return: the output in keras format or numpy array if the input was a numpy array
-        :raises:
-            ValueError: If the model has not yet been built
+        :raises ValueError: If the model has not yet been built
         """
         if not self._built:
             raise ValueError("This model has not yet been built.")
@@ -269,6 +273,7 @@ class BaseModel(ABC):
         """
         Loads a model
 
+        :param data: the source bytes to load the model
         :return: a Serializable Model
         """
 

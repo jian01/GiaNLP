@@ -114,8 +114,6 @@ class CharEmbeddingSequence(TextRepresentation):
         """
         Creates the keras model ready to represent the output of the text
         preprocessor
-
-        :return: a keras Model
         """
         assert self._char_indexes
         if not self._keras_model:
@@ -166,6 +164,7 @@ class CharEmbeddingSequence(TextRepresentation):
         """
         Loads a model
 
+        :param data: the source bytes to load the model
         :return: a Serializable Model
         """
         _char_indexes, model_bytes, embedding_dimension, sequence_maxlen, min_freq_percentile, random_state, \
@@ -181,6 +180,8 @@ class CharEmbeddingSequence(TextRepresentation):
     def _get_keras_model(self) -> Model:
         """
         Get's the internal keras model that is being serialized
+
+        :return: The internal keras model
         """
         assert self._keras_model
 

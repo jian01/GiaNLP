@@ -17,6 +17,8 @@ class Sequence:
 
     def __iter__(self) -> Generator[Any, None, None]:
         """
+        # noqa: DAR202
+
         Create a generator that iterate over the Sequence.
         :return: The generator
         """
