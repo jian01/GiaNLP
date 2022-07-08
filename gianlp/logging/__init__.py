@@ -18,7 +18,7 @@ def get_logger() -> _logging:
     if _logger:
         return _logger
 
-    logger = _logging.getLogger("nlp_builder")
+    logger = _logging.getLogger("GiaNLP")
 
     if not _logging.getLogger().handlers:  # pragma: no cover
         # Determine whether we are in an interactive environment

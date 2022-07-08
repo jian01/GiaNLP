@@ -1,5 +1,5 @@
 """
-NLP Builder module
+GiaNLP module
 """
 import os
 
@@ -9,7 +9,7 @@ try:
 except ModuleNotFoundError:
     raise ModuleNotFoundError("tensorflow or tensorflow-gpu >=2.3.0 is needed")
 
-if not tf.__version__ >= '2.3.0':
+if not tf.__version__ >= "2.3.0":
     raise ModuleNotFoundError(f"tensorflow or tensorflow-gpu >=2.3.0 is needed. You have version {tf.__version__}.")
 
 if hasattr(tf, "get_logger"):
@@ -25,6 +25,6 @@ if "absl.logging" in sys.modules:
 
 from gianlp.logging import warning
 
-warning("The NLP builder disables all tensorflow-related logging")
+warning("GiaNLP disables all tensorflow-related logging")
 
 __version__ = "0.0.1"
