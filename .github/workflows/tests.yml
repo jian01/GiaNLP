@@ -18,23 +18,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: pip install nox
-    - name: Check if files where modified
-      id: check_files
-      run: |
-        if git diff --name-only HEAD^ HEAD | grep -E 'gianlp/|tests/';
-        then
-          echo "Modifications to code where made"
-          echo "::set-output name=run_tests::true"
-          break
-        else
-          echo "There's no need to run tests"
-          echo "::set-output name=run_tests::false"
-        fi
     - name: Run tests with tensorflow latest
-      if: needs.check.outputs.run_tests == 'true'
       run: nox --sessions tests_tensorflow_latest
     - name: Codecov
-      if: needs.check.outputs.run_tests == 'true'
       uses: codecov/codecov-action@v3
       with:
         files: ./coverage.xml
