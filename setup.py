@@ -5,11 +5,10 @@ Library setup
 from setuptools import find_packages, setup  # type: ignore
 
 # Library dependencies
-INSTALL_REQUIRES = ["gensim==3.8.3", "pandas", "tqdm"]
+INSTALL_REQUIRES = ["gensim>=4.0.0", "pandas", "tqdm"]
 
 # Testing dependencies
-TEST_REQUIRES = ["pytest", "black", "pre-commit", "flake8", "mypy", "bandit",
-                 "pytest-cov", "tensorflow>=2.3.0", "tqdm"]
+TEST_REQUIRES = ["pytest", "pytest-cov", "tensorflow>=2.3.0"]
 
 setup(
     name="GiaNLP",

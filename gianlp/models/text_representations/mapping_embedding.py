@@ -57,8 +57,8 @@ class MappingEmbedding(TextRepresentation):
         """
         assert self._keyed_vectors
 
-        words = [[self._keyed_vectors.wv.vocab[t].index + 1
-                  if t in self._keyed_vectors.wv.vocab else 0]
+        words = [[self._keyed_vectors.key_to_index[t] + 1
+                  if t in self._keyed_vectors.key_to_index else 0]
                  for t in texts]
         return np.asarray(words)
 
@@ -71,11 +71,11 @@ class MappingEmbedding(TextRepresentation):
         if not self._built:
             embeddings = np.concatenate(
                 (
-                    np.mean(self._keyed_vectors.wv.vectors, axis=0, keepdims=True),
-                    np.random.normal(0, 1, size=(len(self._keyed_vectors.wv.vocab), self._keyed_vectors.vector_size)),
+                    np.mean(self._keyed_vectors.vectors, axis=0, keepdims=True),
+                    np.random.normal(0, 1, size=(len(self._keyed_vectors.key_to_index), self._keyed_vectors.vector_size)),
                 )
             )
-            embeddings[1:] = self._keyed_vectors.wv.vectors
+            embeddings[1:] = self._keyed_vectors.vectors
             inp = Input(shape=(1,), dtype="int32")
             embedding = Embedding(
                 input_dim=embeddings.shape[0], output_dim=embeddings.shape[1], weights=[embeddings], trainable=False

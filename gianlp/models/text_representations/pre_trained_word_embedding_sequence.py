@@ -73,7 +73,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
         tokenized_texts = [self._tokenizer(text) for text in texts]
         words = keras_seq.pad_sequences(
             [
-                [self._word2vec.wv.vocab[w].index + 2 if w in self._word2vec.wv.vocab else 1 for w in
+                [self._word2vec.key_to_index[w] + 2 if w in self._word2vec.key_to_index else 1 for w in
                  words[: self._sequence_maxlen]]
                 for words in tokenized_texts
             ],
@@ -95,11 +95,11 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
             embeddings = np.concatenate(
                 (
                     np.zeros((1, self._word2vec.vector_size)),
-                    np.mean(self._word2vec.wv.vectors, axis=0, keepdims=True),
-                    np.random.normal(0, 1, size=(len(self._word2vec.wv.vocab), self._word2vec.vector_size)),
+                    np.mean(self._word2vec.vectors, axis=0, keepdims=True),
+                    np.random.normal(0, 1, size=(len(self._word2vec.key_to_index), self._word2vec.vector_size)),
                 )
             )
-            embeddings[2:] = self._word2vec.wv.vectors
+            embeddings[2:] = self._word2vec.vectors
             inp = Input(shape=(self._sequence_maxlen,), dtype="int32")
             embedding = MaskedEmbedding(
                 input_dim=embeddings.shape[0], output_dim=embeddings.shape[1], weights=[embeddings], trainable=False

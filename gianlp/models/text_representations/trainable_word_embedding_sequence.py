@@ -149,8 +149,8 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             else:
                 frequencies = [(k, v) for k, v in frequencies.items() if v >= p_freq]
 
-            known_words = [k for k, _ in frequencies if self._word2vec and k in self._word2vec.wv.vocab]
-            new_words = [k for k, _ in frequencies if not self._word2vec or not k in self._word2vec.wv.vocab]
+            known_words = [k for k, _ in frequencies if self._word2vec and k in self._word2vec.key_to_index.keys()]
+            new_words = [k for k, _ in frequencies if not self._word2vec or not k in self._word2vec.key_to_index.keys()]
             known_embeddings = np.zeros((len(known_words) + 1, self._embedding_dimension))
             np.random.seed(self._random_state)
             new_embeddings = np.concatenate(
@@ -161,7 +161,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             )
 
             for i in range(len(known_words)):
-                known_embeddings[i + 1, :] = self._word2vec.wv[known_words[i]]
+                known_embeddings[i + 1, :] = self._word2vec.vectors[self._word2vec.key_to_index[known_words[i]]]
                 self._word_indexes[known_words[i]] = i + 1
 
             self._word_indexes[self.WORD_UNKNOWN_TOKEN] = len(known_words) + 2

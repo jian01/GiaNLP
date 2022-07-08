@@ -135,6 +135,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
 
             vocabulary = known_words = [k for k, _ in frequencies]
 
+            np.random.seed(self._random_state)
             auxiliar_matrix = np.concatenate(
                 (
                     np.zeros((1, self._fasttext.vector_size)),
@@ -142,7 +143,6 @@ class FasttextEmbeddingSequence(TextRepresentation):
                 )
             )
 
-            np.random.seed(self._random_state)
             emb_matrix = np.concatenate(
                 (
                     np.zeros((2, self._fasttext.vector_size)),
@@ -174,7 +174,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
 
             self._keras_model = Model(inputs=inp, outputs=embedding)
             self._built = True
-            self._fasttext = FastText(size=self._fasttext.vector_size)
+            self._fasttext = FastText(vector_size=self._fasttext.vector_size)
 
     @property
     def outputs_shape(self) -> Union[List[ModelIOShape], ModelIOShape]:
