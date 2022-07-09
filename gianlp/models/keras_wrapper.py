@@ -13,9 +13,10 @@ from tensorflow.keras.models import Model
 # pylint: enable=no-name-in-module
 
 from gianlp.logging import warning
-from gianlp.models.base_model import BaseModel, ModelInputs, SimpleTypeTexts, ModelIOShape
+from gianlp.models.base_model import BaseModel, ModelInputs, ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
 from gianlp.models.trainable_model import TrainableModel
+from gianlp.types import SimpleTypeTexts
 
 
 class KerasWrapper(TrainableModel):
@@ -103,7 +104,7 @@ class KerasWrapper(TrainableModel):
 
         :return: a list of shape tuple or shape tuple
         """
-        shapes = []
+        shapes: List[ModelIOShape] = []
         for inp in self._iterate_model_inputs(self.inputs):
             shapes += inp.inputs_shape if isinstance(inp.inputs_shape, list) else [inp.inputs_shape]
         if len(shapes) == 1:
@@ -204,7 +205,7 @@ class KerasWrapper(TrainableModel):
         text_inputs = []
 
         # BFS until if finds text inputs
-        model_queue = Queue()
+        model_queue: Queue = Queue()
         for model in self._iterate_model_inputs(self.inputs):
             if isinstance(model, TextRepresentation):
                 text_inputs.append(model)

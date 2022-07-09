@@ -29,7 +29,7 @@ def get_logger() -> _logging:
                 _interactive = True
         except AttributeError:
             # Even now, we may be in an interactive shell with `python -i`.
-            _interactive = _sys.flags.interactive
+            _interactive = _sys.flags.interactive  # type: ignore[assignment]
 
         # If we are in an interactive environment (like Jupyter), set loglevel
         # to INFO and pipe the output to stdout.
@@ -54,4 +54,4 @@ def warning(msg: str) -> None:
     :param msg: the message to log
     """
     logger = get_logger()
-    logger.warning(msg)
+    logger.warning(msg)  # type: ignore[attr-defined]

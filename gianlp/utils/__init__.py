@@ -1,5 +1,6 @@
 from abc import abstractmethod
-from typing import Any, Generator
+from typing import Any
+from gianlp.types import YielderGenerator
 
 
 class Sequence:
@@ -15,7 +16,7 @@ class Sequence:
     def __getitem__(self, index: int) -> Any:
         pass
 
-    def __iter__(self) -> Generator[Any, None, None]:
+    def __iter__(self) -> YielderGenerator[Any]:
         """
         # noqa: DAR202
 

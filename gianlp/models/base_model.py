@@ -8,7 +8,7 @@ import tarfile
 from abc import abstractmethod, ABC
 from io import BytesIO
 from tempfile import NamedTemporaryFile, TemporaryDirectory
-from typing import Union, List, Dict, Iterator, NamedTuple, Tuple, Optional
+from typing import Iterator, NamedTuple, Optional, overload, cast, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -24,15 +24,16 @@ from tensorflow.keras.models import Model, load_model, clone_model
 from gianlp.logging import warning
 from gianlp.models._health_utils import get_dependencies_signature, warn_for_dependencies_signature
 from gianlp.models._report_utils import model_list_to_summary_string
+from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
 # pylint: enable=no-name-in-module
 
 MODEL_DATA_PATHNAME = "model_data"
 
-KerasInputOutput = Union[List[np.array], np.array]
-SimpleTypeTexts = Union[List[str], pd.Series]
-TextsInput = Union[SimpleTypeTexts, Dict[str, List[str]], pd.DataFrame]
-ModelInputs = Union[List["BaseModel"], List[Tuple[str, List["BaseModel"]]]]
+
+SimpleTypeModels = List["BaseModel"]
+MultiTypeModels = List[Tuple[str, List["BaseModel"]]]
+ModelInputs = Union[SimpleTypeModels, MultiTypeModels]
 
 
 class ModelIOShape(NamedTuple):
@@ -123,7 +124,7 @@ class BaseModel(ABC):
             return None
         return sum(K.count_params(w) for w in self._get_keras_model().trainable_weights)
 
-    def __model_finder(self, model) -> List["BaseModel"]:
+    def __model_finder(self, model: "BaseModel") -> SimpleTypeModels:
         """
         Finds all models chained to this one
 
@@ -175,6 +176,16 @@ class BaseModel(ABC):
         """
 
     @staticmethod
+    @overload
+    def _iterate_model_inputs(model_inputs: SimpleTypeModels) -> Iterator["BaseModel"]:
+        ...
+
+    @staticmethod
+    @overload
+    def _iterate_model_inputs(model_inputs: MultiTypeModels) -> Iterator["BaseModel"]:
+        ...
+
+    @staticmethod
     def _iterate_model_inputs(model_inputs: ModelInputs) -> Iterator["BaseModel"]:
         """
         Iterates model inputs in the proper order
@@ -186,11 +197,12 @@ class BaseModel(ABC):
             return
         else:
             if isinstance(model_inputs[0], tuple):
-                t: Tuple[str, List["BaseModel"]]
+                model_inputs = cast(MultiTypeModels, model_inputs)
                 for t in model_inputs:
                     for model in t[1]:
                         yield model
             else:
+                model_inputs = cast(SimpleTypeModels, model_inputs)
                 for model in model_inputs:
                     yield model
 
@@ -330,7 +342,7 @@ class BaseModel(ABC):
             if len(model.weights) == len(model_copy.weights):
                 model_copy.set_weights(model.get_weights())
             else:  # This should never happen, but it does
-                new_weights = []
+                new_weights: List = []
                 known_vars = {}
                 shared_coerced = set()
                 old_weigh_index = 0

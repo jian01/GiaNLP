@@ -5,7 +5,7 @@ Module for pre-trained word embedding sequence input
 import pickle
 import random
 from collections import Counter
-from typing import List, Optional, Callable, Union, Dict
+from typing import List, Optional, Callable, Union, Dict, Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -20,9 +20,9 @@ from tensorflow.keras.preprocessing import sequence as keras_seq
 # pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
-from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
+from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.models.trainable_model import KerasInputOutput
+from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
 
 class FasttextEmbeddingSequence(TextRepresentation):
@@ -42,7 +42,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
     """
 
     _keras_model: Optional[Model]
-    _fasttext: Optional[FastText]
+    _fasttext: FastText
     _tokenizer: Callable[[str], List[str]]
     _sequence_maxlen: int
     _min_freq_percentile: float
@@ -56,7 +56,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
     def __init__(
         self,
         tokenizer: Callable[[str], List[str]],
-        fasttext_src: Optional[Union[str, FastText]] = None,
+        fasttext_src: Union[str, FastText],
         sequence_maxlen: int = 20,
         min_freq_percentile: float = 5,
         max_vocabulary: Optional[int] = None,
@@ -66,8 +66,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
         :param tokenizer: a tokenizer function that transforms each string into a list of string tokens
                             the tokens transformed should match the keywords in the pretrained word embeddings
                             the function must support serialization through pickle
-        :param fasttext_src: optional path to fasttext facebook format .bit file or gensim FastText object.
-        if provided the common words from the corpus that are in the embedding will have this vectors assigned
+        :param fasttext_src: path to fasttext facebook format .bit file or gensim FastText object.
         :param min_freq_percentile: the minimum percentile of the frequency to consider a word part of the vocabulary
         :param max_vocabulary: optional maximum vocabulary size
         :param sequence_maxlen: The maximum allowed sequence length
@@ -79,7 +78,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
         else:
             self._fasttext = fasttext_src
 
-        self._tokenizer = tokenizer
+        self._tokenizer = tokenizer  # type: ignore[assignment]
         self._keras_model = None
         self._sequence_maxlen = int(sequence_maxlen)
         self._min_freq_percentile = min_freq_percentile
@@ -132,11 +131,9 @@ class FasttextEmbeddingSequence(TextRepresentation):
                 not self._max_vocabulary is None
                 and (1 - (self._min_freq_percentile / 100)) * len(frequencies) > self._max_vocabulary
             ):
-                frequencies = frequencies.most_common(self._max_vocabulary)
+                vocabulary = [k for k, _ in frequencies.most_common(self._max_vocabulary)]
             else:
-                frequencies = [(k, v) for k, v in frequencies.items() if v >= p_freq]
-
-            vocabulary = known_words = [k for k, _ in frequencies]
+                vocabulary = [k for k, v in frequencies.items() if v >= p_freq]
 
             np.random.seed(self._random_state)
             auxiliar_matrix = np.concatenate(
@@ -157,7 +154,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
 
             for i in range(len(vocabulary)):
                 emb_matrix[i + 2, :] = self._fasttext.wv[vocabulary[i]]
-                self._word_indexes[known_words[i]] = i + 2
+                self._word_indexes[vocabulary[i]] = i + 2
 
             inp = Input(shape=(self._sequence_maxlen,), dtype="int32")
 
@@ -179,10 +176,9 @@ class FasttextEmbeddingSequence(TextRepresentation):
 
             self._keras_model = Model(inputs=inp, outputs=embedding)
             self._built = True
-            self._fasttext = FastText(vector_size=self._fasttext.vector_size)
 
     @property
-    def outputs_shape(self) -> Union[List[ModelIOShape], ModelIOShape]:
+    def outputs_shape(self) -> ModelIOShape:
         """
         Returns the output shape of the model
 

@@ -20,9 +20,9 @@ from tensorflow.keras.preprocessing import sequence as keras_seq
 # pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
-from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
+from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.models.trainable_model import KerasInputOutput
+from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
 
 class TrainableWordEmbeddingSequence(TextRepresentation):
@@ -96,7 +96,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
                     f"does not match the target embedding dimension {self._embedding_dimension}."
                 )
 
-        self._tokenizer = tokenizer
+        self._tokenizer = tokenizer  # type: ignore[assignment]
         self._keras_model = None
         self._sequence_maxlen = int(sequence_maxlen)
         self._pretrained_trainable = pretrained_trainable
@@ -150,12 +150,12 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
                 not self._max_vocabulary is None
                 and (1 - (self._min_freq_percentile / 100)) * len(frequencies) > self._max_vocabulary
             ):
-                frequencies = frequencies.most_common(self._max_vocabulary)
+                vocabulary = [k for k, _ in frequencies.most_common(self._max_vocabulary)]
             else:
-                frequencies = [(k, v) for k, v in frequencies.items() if v >= p_freq]
+                vocabulary = [k for k, v in frequencies.items() if v >= p_freq]
 
-            known_words = [k for k, _ in frequencies if self._word2vec and k in self._word2vec.key_to_index.keys()]
-            new_words = [k for k, _ in frequencies if not self._word2vec or not k in self._word2vec.key_to_index.keys()]
+            known_words = [k for k in vocabulary if self._word2vec and k in self._word2vec.key_to_index.keys()]
+            new_words = [k for k in vocabulary if not self._word2vec or not k in self._word2vec.key_to_index.keys()]
             known_embeddings = np.zeros((len(known_words) + 1, self._embedding_dimension))
             np.random.seed(self._random_state)
             new_embeddings = np.concatenate(
@@ -201,7 +201,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             self._built = True
 
     @property
-    def outputs_shape(self) -> Union[List[ModelIOShape], ModelIOShape]:
+    def outputs_shape(self) -> ModelIOShape:
         """
         Returns the output shape of the model
 

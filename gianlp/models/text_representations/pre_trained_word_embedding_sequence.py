@@ -16,9 +16,9 @@ from tensorflow.keras.preprocessing import sequence as keras_seq
 # pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
-from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
+from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.models.trainable_model import KerasInputOutput
+from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
 
 class PreTrainedWordEmbeddingSequence(TextRepresentation):
@@ -56,7 +56,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
             self._word2vec = KeyedVectors.load_word2vec_format(word2vec_src)
         else:
             self._word2vec = word2vec_src
-        self._tokenizer = tokenizer
+        self._tokenizer = tokenizer  # type: ignore[assignment]
         self._keras_model = None
         self._sequence_maxlen = int(sequence_maxlen)
 
@@ -111,7 +111,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
             self._built = True
 
     @property
-    def outputs_shape(self) -> Union[List[ModelIOShape], ModelIOShape]:
+    def outputs_shape(self) -> ModelIOShape:
         """
         Returns the output shape of the model
 

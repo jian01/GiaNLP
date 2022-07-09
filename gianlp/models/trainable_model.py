@@ -3,7 +3,7 @@ Trainable model Interface
 """
 import types
 from abc import ABC
-from typing import Union, Generator, List, Tuple, Optional, Any, Callable
+from typing import Union, Generator, Tuple, Optional, Any, Callable, List, overload, cast
 
 import numpy as np
 import pandas as pd
@@ -20,28 +20,31 @@ from tqdm import tqdm
 # pylint: enable=no-name-in-module
 
 from gianlp.logging import warning
-from gianlp.models.base_model import BaseModel, KerasInputOutput, TextsInput
+from gianlp.models.base_model import BaseModel
+from gianlp.types import TextsInput, KerasInputOutput, YielderGenerator, ModelFitTuple, KerasModelFitTuple
 from gianlp.utils import Sequence
 
 
-class TrainSequenceWrapper(KerasSequence):
-    """
-    Keras sequence generator for training wrapping utils.Sequence
-    """
-
-    def __len__(self):
-        return len(self.sequence)
-
-    def __getitem__(self, index) -> Tuple[TextsInput, KerasInputOutput]:
-        x, y = self.sequence.__getitem__(index)
-        x = self.preprocessor(x)
-        return x, y
-
+class SequenceWrapper(KerasSequence):
     def __init__(self, sequence: Sequence, preprocessor: Callable[[TextsInput], KerasInputOutput]):
         self.sequence = sequence
         self.preprocessor = preprocessor
 
-    def __iter__(self) -> Generator[Tuple[TextsInput, KerasInputOutput], None, None]:
+    def __len__(self):
+        return len(self.sequence)
+
+
+class TrainSequenceWrapper(SequenceWrapper):
+    """
+    Keras sequence generator for training wrapping utils.Sequence
+    """
+
+    def __getitem__(self, index) -> ModelFitTuple:
+        x, y = self.sequence.__getitem__(index)
+        x = self.preprocessor(x)
+        return x, y
+
+    def __iter__(self) -> YielderGenerator[ModelFitTuple]:
         """
         # noqa: DAR202
 
@@ -58,7 +61,7 @@ class TrainSequenceWrapper(KerasSequence):
         self.sequence.on_epoch_end()
 
 
-class PredictSequenceWrapper(TrainSequenceWrapper):
+class PredictSequenceWrapper(SequenceWrapper):
     """
     Keras sequence generator for predicting wrapping utils.Sequence
     """
@@ -70,7 +73,7 @@ class PredictSequenceWrapper(TrainSequenceWrapper):
         x = self.preprocessor(x)
         return x
 
-    def __iter__(self) -> Generator[TextsInput, None, None]:
+    def __iter__(self) -> YielderGenerator[TextsInput]:
         """
         # noqa: DAR202
 
@@ -194,7 +197,7 @@ class TrainableModel(BaseModel, ABC):
         return len(text_input)
 
     @staticmethod
-    def __shuffle_fit_data(data: Tuple[TextsInput, KerasInputOutput]) -> Tuple[TextsInput, KerasInputOutput]:
+    def __shuffle_fit_data(data: ModelFitTuple) -> ModelFitTuple:
         """
         Shuffles the fit data
         :param data: fit data
@@ -209,15 +212,31 @@ class TrainableModel(BaseModel, ABC):
             y = y[perm]
         else:
             perm = np.random.permutation(len(x))
-            x = np.asarray(x)
-            x, y = x[perm].tolist(), y[perm]
+            x = np.asarray(x)[perm].tolist()
+            y = y[perm]
         return x, y
+
+    @overload
+    def _fit_generator(
+        self,
+        data: YielderGenerator[ModelFitTuple],
+        batch_size: int = 32,
+    ) -> YielderGenerator[ModelFitTuple]:
+        ...
+
+    @overload
+    def _fit_generator(
+        self,
+        data: ModelFitTuple,
+        batch_size: int = 32,
+    ) -> YielderGenerator[KerasModelFitTuple]:
+        ...
 
     def _fit_generator(
         self,
-        data: Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[TextsInput, KerasInputOutput]],
+        data: Union[YielderGenerator[ModelFitTuple], ModelFitTuple],
         batch_size: int = 32,
-    ) -> Generator[Tuple[KerasInputOutput, KerasInputOutput], None, None]:
+    ) -> YielderGenerator[KerasModelFitTuple]:
         """
         Internal generator for training
 
@@ -230,6 +249,7 @@ class TrainableModel(BaseModel, ABC):
                 batch_x, batch_y = next(data)
             else:
                 if not iter_range:
+                    data = cast(ModelFitTuple, data)
                     data = self.__shuffle_fit_data(data)
                     iter_range = iter(range(0, self.__texts_input_length(data[0]), batch_size))
                 try:
@@ -256,9 +276,7 @@ class TrainableModel(BaseModel, ABC):
 
     def _get_validation_generator(
         self,
-        validation_data: Optional[
-            Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[TextsInput, KerasInputOutput]]
-        ],
+        validation_data: Optional[Union[YielderGenerator[ModelFitTuple], ModelFitTuple]],
         batch_size,
         validation_steps,
     ):
@@ -271,18 +289,28 @@ class TrainableModel(BaseModel, ABC):
             validation_steps = self.__texts_input_length(validation_data[0]) // batch_size
         return valid_generator, validation_steps
 
+    @overload
+    def fit(self, x: YielderGenerator[ModelFitTuple] = ...) -> History:
+        ...
+
+    @overload
+    def fit(self, x: TextsInput = ...) -> History:
+        ...
+
+    @overload
+    def fit(self, x: Sequence = ...) -> History:
+        ...
+
     def fit(
         self,
-        x: Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], TextsInput, Sequence] = None,
+        x: Union[YielderGenerator[ModelFitTuple], TextsInput, Sequence] = None,
         y: Optional[np.array] = None,
         batch_size: int = 32,
         epochs: int = 1,
         verbose: Union[str, int] = "auto",
         callbacks: List[Callback] = None,
-        validation_split: Optional[float] = 0.0,
-        validation_data: Optional[
-            Union[Generator[Tuple[TextsInput, KerasInputOutput], None, None], Tuple[TextsInput, KerasInputOutput]]
-        ] = None,
+        validation_split: float = 0.0,
+        validation_data: Optional[Union[YielderGenerator[ModelFitTuple], ModelFitTuple]] = None,
         steps_per_epoch: Optional[int] = None,
         validation_steps: Optional[int] = None,
         max_queue_size: int = 10,
@@ -323,6 +351,8 @@ class TrainableModel(BaseModel, ABC):
         at successive epochs, as well as validation loss values and validation metrics values (if applicable).
         :raises ValueError: When trying to set multiprocessing but x is not a generator or Sequence
         """
+        train_generator: Union[TrainSequenceWrapper, YielderGenerator[KerasModelFitTuple]]
+
         np.random.seed(self._random_seed)
         if isinstance(x, Sequence):
             train_generator = TrainSequenceWrapper(x, self.preprocess_texts)
@@ -331,6 +361,7 @@ class TrainableModel(BaseModel, ABC):
                 enq.start(workers=workers, max_queue_size=max_queue_size)
                 train_generator = enq.get()
         elif isinstance(x, types.GeneratorType):
+            x = cast(Sequence, x)
             train_generator = self._fit_generator(x)
             if use_multiprocessing:
                 enq = GeneratorEnqueuer(train_generator, use_multiprocessing=True, random_seed=self._random_seed)
@@ -376,8 +407,8 @@ class TrainableModel(BaseModel, ABC):
         )
 
     def _predict_generator(
-        self, x: Union[Generator[TextsInput, None, None], TextsInput], inference_batch: int
-    ) -> Generator[KerasInputOutput, None, None]:
+        self, x: Union[YielderGenerator[TextsInput], TextsInput], inference_batch: int
+    ) -> YielderGenerator[KerasInputOutput]:
         """
         # noqa: DAR202
 
@@ -403,9 +434,9 @@ class TrainableModel(BaseModel, ABC):
                 if self.__texts_input_length(batch_x) < inference_batch:
                     sliced_extra = self.__slice_texts_input(x, 0, inference_batch - self.__texts_input_length(batch_x))
                     if isinstance(batch_x, dict):
-                        batch_x = {k: v + sliced_extra[k] for k, v in batch_x.items()}
+                        batch_x = {k: v + sliced_extra[k] for k, v in batch_x.items()}  # type: ignore[operator]
                     else:
-                        batch_x += sliced_extra
+                        batch_x += sliced_extra  # type: ignore[operator]
                 yield self.preprocess_texts(batch_x)
 
     @staticmethod
@@ -425,9 +456,19 @@ class TrainableModel(BaseModel, ABC):
             old_preds = np.concatenate([old_preds, new_preds])
         return old_preds
 
+    @overload
+    def predict(
+        self, x: Union[YielderGenerator[TextsInput], TextsInput], inference_batch: int = ...
+    ) -> KerasInputOutput:
+        ...
+
+    @overload
+    def predict(self, x: Sequence, inference_batch: int = ...) -> KerasInputOutput:
+        ...
+
     def predict(
         self,
-        x: Union[Generator[TextsInput, None, None], TextsInput, Sequence],
+        x: Union[YielderGenerator[TextsInput], TextsInput, Sequence],
         inference_batch: int = 256,
         steps: Optional[int] = None,
         max_queue_size: int = 10,
@@ -458,6 +499,8 @@ class TrainableModel(BaseModel, ABC):
         :return: the output of the keras model
         :raises ValueError: If a generator is given as x but no step amount is specified
         """
+        predict_generator: Union[PredictSequenceWrapper, YielderGenerator[KerasInputOutput]]
+
         preds = None
         if isinstance(x, Sequence):
             steps = len(x) if not steps else min(steps, len(x))
@@ -514,5 +557,4 @@ class TrainableModel(BaseModel, ABC):
             k.trainable = False
         for inp in self._iterate_model_inputs(self.inputs):
             if isinstance(inp, TrainableModel):
-                inp: TrainableModel
                 inp.freeze()

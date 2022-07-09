@@ -1,7 +1,7 @@
 """
 Text input interface
 """
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import List, Union
 
 from tensorflow import int32
@@ -24,6 +24,15 @@ class TextRepresentation(BaseModel, ABC):
         """
 
         return []
+
+    @property
+    @abstractmethod
+    def outputs_shape(self) -> ModelIOShape:
+        """
+        Returns the output shape of the model
+
+        :return: a list of shape tuple or shape tuple
+        """
 
     @property
     def inputs_shape(self) -> Union[List[ModelIOShape], ModelIOShape]:

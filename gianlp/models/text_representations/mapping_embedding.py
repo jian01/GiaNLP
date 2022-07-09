@@ -15,9 +15,9 @@ from tensorflow.keras.models import Model
 
 # pylint: enable=no-name-in-module
 
-from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
+from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.models.trainable_model import KerasInputOutput
+from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
 
 class MappingEmbedding(TextRepresentation):
@@ -94,7 +94,7 @@ class MappingEmbedding(TextRepresentation):
         return ModelIOShape((1,), int32)
 
     @property
-    def outputs_shape(self) -> Union[List[ModelIOShape], ModelIOShape]:
+    def outputs_shape(self) -> ModelIOShape:
         """
         Returns the output shape of the model
 

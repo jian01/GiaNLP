@@ -13,10 +13,9 @@ from tensorflow.keras.models import Model
 
 # pylint: enable=no-name-in-module
 
-from gianlp.models.base_model import BaseModel
-from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
+from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.models.trainable_model import KerasInputOutput
+from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
 
 class PerChunkSequencer(TextRepresentation):
@@ -43,7 +42,7 @@ class PerChunkSequencer(TextRepresentation):
         """
         super().__init__()
         self._keras_model = None
-        self._chunker = chunker
+        self._chunker = chunker  # type: ignore[assignment]
         self._sequencer = sequencer
         self._chunking_maxlen = int(chunking_maxlen)
 
@@ -89,7 +88,7 @@ class PerChunkSequencer(TextRepresentation):
         super().build(texts)
 
     @property
-    def outputs_shape(self) -> Union[List[ModelIOShape], ModelIOShape]:
+    def outputs_shape(self) -> ModelIOShape:
         """
         Returns the output shape of the model
 
@@ -119,7 +118,7 @@ class PerChunkSequencer(TextRepresentation):
         )
 
     @classmethod
-    def loads(cls, data: bytes) -> "PerChunkSequencer":
+    def loads(cls, data: bytes) -> "TextRepresentation":
         """
         Loads a model
 
@@ -127,7 +126,7 @@ class PerChunkSequencer(TextRepresentation):
         :return: a Serializable Model
         """
         model_bytes, sequencer_bytes, chunker, chunking_maxlen, _built = pickle.loads(data)
-        obj = cls(BaseModel.deserialize(sequencer_bytes), chunker, chunking_maxlen)
+        obj = cls(TextRepresentation.deserialize(sequencer_bytes), chunker, chunking_maxlen)  # type: ignore[arg-type]
         if model_bytes:
             obj._keras_model = cls.get_model_from_bytes(model_bytes)
             obj._built = _built

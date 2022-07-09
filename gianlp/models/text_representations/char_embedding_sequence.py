@@ -17,9 +17,9 @@ from tensorflow.keras.preprocessing import sequence as keras_seq
 # pylint: enable=no-name-in-module
 
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
-from gianlp.models.base_model import SimpleTypeTexts, ModelIOShape
+from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.models.trainable_model import KerasInputOutput
+from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
 
 class CharEmbeddingSequence(TextRepresentation):
@@ -136,7 +136,7 @@ class CharEmbeddingSequence(TextRepresentation):
             self._keras_model = Model(inputs=inp, outputs=embedding)
 
     @property
-    def outputs_shape(self) -> Union[List[ModelIOShape], ModelIOShape]:
+    def outputs_shape(self) -> ModelIOShape:
         """
         Returns the output shape of the model
 
