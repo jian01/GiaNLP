@@ -116,9 +116,9 @@ class TestMultiprocessing(unittest.TestCase):
         preds2 = model2.predict(["prueba 1", "prueba. prueba 2"])
         self.assertEqual(preds1.tolist(), preds2.tolist())
 
-    def test_multiprocessing_w_data_fails(self) -> None:
+    def test_multiprocessing_w_data_warning(self) -> None:
         """
-        Test multiprocessing with data fails
+        Test multiprocessing with data gives warning but works
         """
         set_seed(42)
 
@@ -155,17 +155,16 @@ class TestMultiprocessing(unittest.TestCase):
         texts, labels = texts[:-500], labels[:-500]
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
-        with self.assertRaises(ValueError):
-            model.fit(
-                texts,
-                labels,
-                epochs=6,
-                steps_per_epoch=len(texts) // 256,
-                validation_data=(val_texts, np.asarray(val_labels)),
-                max_queue_size=10,
-                workers=2,
-                use_multiprocessing=True,
-            )
+        model.fit(
+            texts,
+            np.asarray(labels),
+            epochs=1,
+            steps_per_epoch=len(texts) // 256,
+            validation_data=(val_texts, np.asarray(val_labels)),
+            max_queue_size=10,
+            workers=2,
+            use_multiprocessing=True,
+        )
 
     @staticmethod
     def starts_with_vocal_generator():

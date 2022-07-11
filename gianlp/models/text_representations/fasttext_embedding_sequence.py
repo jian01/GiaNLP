@@ -5,7 +5,7 @@ Module for pre-trained word embedding sequence input
 import pickle
 import random
 from collections import Counter
-from typing import List, Optional, Callable, Union, Dict, Tuple
+from typing import List, Optional, Callable, Union, Dict
 
 import numpy as np
 import tensorflow as tf

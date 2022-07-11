@@ -1,5 +1,5 @@
 """
-Keras wrapper tests
+Test complex model buildings
 """
 
 import unittest

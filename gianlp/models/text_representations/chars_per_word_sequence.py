@@ -9,9 +9,9 @@ from tensorflow.keras.models import Model
 
 # pylint: enable=no-name-in-module
 
-from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.models.text_representations.per_chunk_sequencer import PerChunkSequencer
 from gianlp.models.text_representations.char_embedding_sequence import CharEmbeddingSequence
+from gianlp.models.text_representations.per_chunk_sequencer import PerChunkSequencer
+from gianlp.models.text_representations.text_representation import TextRepresentation
 
 
 class CharPerWordEmbeddingSequence(TextRepresentation):

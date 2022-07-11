@@ -520,3 +520,34 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
 
         self.assertEqual(outputs1.tolist(), outputs2.tolist())
         self.assertNotEqual(outputs1.tolist(), outputs3.tolist())
+
+    def test_shapes_wout_pretrained(self) -> None:
+        """
+        Test shapes without pretrained embeddings
+        """
+        emb = TrainableWordEmbeddingSequence(split_tokenizer, 3, sequence_maxlen=4)
+        self.assertEqual(emb.inputs_shape.shape, (4,))
+        self.assertEqual(emb.outputs_shape.shape, (4, 3))
+
+    def test_zero_vectors_wout_pretrained(self) -> None:
+        """
+        Test zero vector assignment without pretrained embeddings
+        """
+        emb = TrainableWordEmbeddingSequence(split_tokenizer, 3, sequence_maxlen=4)
+        emb.build(
+            [
+                "hola como va",
+                "hola que te importa",
+                "no nada mas preguntaba",
+                "me volves a preguntar y te rompo la cara",
+                "no era mi intención de molestarte",
+                "no te quedes mirandome andate",
+            ]
+        )
+        preproc = emb.preprocess_texts(["coso"])
+        self.assertEqual(preproc[0][1:].tolist(), [0, 0, 0])
+        self.assertGreater(preproc[0][0], 0)
+        preproc_embs = emb(preproc)
+        self.assertEqual(preproc_embs[0][1].tolist(), [0] * 3)
+        self.assertEqual(preproc_embs[0][2].tolist(), [0] * 3)
+        self.assertEqual(preproc_embs[0][3].tolist(), [0] * 3)

@@ -23,7 +23,7 @@ class TextRepresentation(BaseModel, ABC):
         :return: a list or list of tuples containing BaseModel objects
         """
 
-        return []
+        return []  # type: ignore[return-value]
 
     @property
     @abstractmethod

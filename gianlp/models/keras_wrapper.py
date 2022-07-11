@@ -3,7 +3,7 @@ Module for Keras wrapper model
 """
 import pickle
 from queue import Queue
-from typing import List, Union, Optional, Iterator
+from typing import List, Union, Optional, Iterator, cast
 
 # pylint: disable=no-name-in-module
 from tensorflow import Tensor
@@ -53,8 +53,7 @@ class KerasWrapper(TrainableModel):
                     if model.has_multi_text_input():
                         raise ValueError("Some models in the input dict have multi-text input. This is not allowed.")
             return inputs
-        else:
-            return [inputs]
+        return [inputs]
 
     def __init__(self, inputs: Union[ModelInputs, BaseModel], wrapped_model: Model, **kwargs):
         """
@@ -233,15 +232,18 @@ class KerasWrapper(TrainableModel):
                         if isinstance(inp, TextRepresentation):
                             name_inputs.append(inp.serialize())
                         else:
-                            name_inputs += [ti.serialize() for ti in inp._find_text_inputs()]
+                            name_inputs += [
+                                ti.serialize() for ti in inp._find_text_inputs()  # type: ignore[union-attr]
+                            ]
                     inputs_bytes.append((name, name_inputs))
             else:
                 inputs_bytes = [(name, [inp.serialize() for inp in inps]) for name, inps in self.inputs]
         else:
+            model_inputs = cast(List[BaseModel], self.inputs)
             if self._keras_model:
                 inputs_bytes = [inp.serialize() for inp in self._find_text_inputs()]
             else:
-                inputs_bytes = [inp.serialize() for inp in self.inputs]
+                inputs_bytes = [inp.serialize() for inp in model_inputs]
         wrapped_model_bytes = self.get_bytes_from_model(self._wrapped_model)
         keras_model_bytes = None
         if self._keras_model:

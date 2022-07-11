@@ -5,7 +5,7 @@ Module for char embedding sequence input
 import pickle
 import random
 from collections import Counter
-from typing import Optional, Dict, Union, List
+from typing import Optional, Dict
 
 import numpy as np
 

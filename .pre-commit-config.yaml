@@ -9,7 +9,7 @@ repos:
         args:
           [
             "--rcfile=.pylintrc",
-            "--fail-under=8"
+            "--fail-under=9"
           ]
         exclude: docs/*
       - id: darglint
@@ -23,4 +23,4 @@ repos:
         entry: black --line-length 120
         language: system
         types: [python]
-        exclude: docs/*
+        files: (gianlp|tests)/*

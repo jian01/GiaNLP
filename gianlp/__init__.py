@@ -9,7 +9,7 @@ try:
 except ModuleNotFoundError:
     raise ModuleNotFoundError("tensorflow or tensorflow-gpu >=2.3.0 is needed")
 
-if not tf.__version__ >= "2.3.0":
+if tf.__version__ < "2.3.0":
     raise ModuleNotFoundError(f"tensorflow or tensorflow-gpu >=2.3.0 is needed. You have version {tf.__version__}.")
 
 if hasattr(tf, "get_logger"):

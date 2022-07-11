@@ -18,7 +18,6 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing import sequence as keras_seq
 
 # pylint: enable=no-name-in-module
-
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
 from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
@@ -166,6 +165,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             )
 
             for i in range(len(known_words)):
+                self._word2vec: KeyedVectors
                 known_embeddings[i + 1, :] = self._word2vec.vectors[self._word2vec.key_to_index[known_words[i]]]
                 self._word_indexes[known_words[i]] = i + 1
 

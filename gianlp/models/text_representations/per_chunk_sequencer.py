@@ -3,7 +3,7 @@ Module for char sequence per word input
 """
 
 import pickle
-from typing import List, Callable, Optional, Union
+from typing import List, Callable, Optional
 
 import numpy as np
 

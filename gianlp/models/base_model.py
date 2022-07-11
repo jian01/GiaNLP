@@ -21,15 +21,15 @@ from tensorflow.keras.layers import Concatenate, TimeDistributed
 from tensorflow.keras.layers import Layer
 from tensorflow.keras.models import Model, load_model, clone_model
 
+# pylint: enable=no-name-in-module
+
+
 from gianlp.logging import warning
 from gianlp.models._health_utils import get_dependencies_signature, warn_for_dependencies_signature
 from gianlp.models._report_utils import model_list_to_summary_string
 from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
-# pylint: enable=no-name-in-module
-
 MODEL_DATA_PATHNAME = "model_data"
-
 
 SimpleTypeModels = List["BaseModel"]
 MultiTypeModels = List[Tuple[str, List["BaseModel"]]]
@@ -82,7 +82,12 @@ class BaseModel(ABC):
         :return: True if the input of the model need multiple texts
         """
         input_models = self.inputs
-        return input_models and (isinstance(input_models[0], tuple) or input_models[0].has_multi_text_input())
+        if input_models:
+            if isinstance(input_models[0], tuple):
+                return True
+            first_model: "BaseModel" = input_models[0]
+            return first_model.has_multi_text_input()
+        return False
 
     @property
     @abstractmethod
@@ -195,16 +200,15 @@ class BaseModel(ABC):
         """
         if not model_inputs:
             return
-        else:
-            if isinstance(model_inputs[0], tuple):
-                model_inputs = cast(MultiTypeModels, model_inputs)
-                for t in model_inputs:
-                    for model in t[1]:
-                        yield model
-            else:
-                model_inputs = cast(SimpleTypeModels, model_inputs)
-                for model in model_inputs:
+        if isinstance(model_inputs[0], tuple):
+            model_inputs = cast(MultiTypeModels, model_inputs)
+            for t in model_inputs:
+                for model in t[1]:
                     yield model
+        else:
+            model_inputs = cast(SimpleTypeModels, model_inputs)
+            for model in model_inputs:
+                yield model
 
     def build(self, texts: SimpleTypeTexts) -> None:
         """
@@ -262,8 +266,7 @@ class BaseModel(ABC):
             for layer in inputs:
                 outputs.append(self._call_keras_layer(keras_model, layer))
             return Concatenate()(outputs)
-        else:
-            return self._call_keras_layer(keras_model, inputs)
+        return self._call_keras_layer(keras_model, inputs)
 
     @abstractmethod
     def dumps(self) -> bytes:
