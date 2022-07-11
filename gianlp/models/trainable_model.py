@@ -296,7 +296,7 @@ class TrainableModel(BaseModel, ABC):
     def fit(
         self,
         x: Union[YielderGenerator[ModelFitTuple], TextsInput, Sequence] = None,
-        y: Optional[np.array] = None,
+        y: Optional[np.ndarray] = None,
         batch_size: int = 32,
         epochs: int = 1,
         verbose: Union[str, int] = "auto",
@@ -351,12 +351,14 @@ class TrainableModel(BaseModel, ABC):
 
         if not validation_data is None:
             if not isinstance(validation_data, Sequence) and not isinstance(validation_data, types.GeneratorType):
+                validation_data = cast(ModelFitTuple, validation_data)
                 validation_data = TextsInputWrapper(validation_data[0]), validation_data[1]
             else:
                 validation_data = (validation_data, None)
 
         if not isinstance(x, Sequence) and not isinstance(x, types.GeneratorType):
             x = TextsInputWrapper(x)
+            y = cast(np.ndarray, y)
             if validation_split > 0 and validation_data is None:
                 valid_amount = int(round(validation_split * len(x)))
                 validation_data = (
@@ -520,6 +522,7 @@ class TrainableModel(BaseModel, ABC):
             if verbose == 1:
                 print(f"{i}/{steps} Batch predicted")
         if not isinstance(x, types.GeneratorType) and not isinstance(x, Sequence):
+            preds = cast(KerasInputOutput, preds)
             if isinstance(preds, list):
                 return [p[: len(x)] for p in preds]
             return preds[: len(x)]
