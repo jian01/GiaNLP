@@ -28,7 +28,6 @@ on:
         type: environment
         required: true
 
-
 jobs:
   build:
 

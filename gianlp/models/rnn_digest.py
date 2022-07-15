@@ -1,7 +1,7 @@
 """
 Module for RNN Digest model
 """
-from typing import Union
+from typing import Union, cast
 
 # pylint: disable=no-name-in-module,import-error
 from tensorflow.keras.layers import Input, GRU, LSTM, Masking, Bidirectional
@@ -10,7 +10,7 @@ from tensorflow.random import set_seed
 
 # pylint: enable=no-name-in-module,import-error
 
-from gianlp.models.base_model import BaseModel, ModelInputs
+from gianlp.models.base_model import BaseModel, ModelInputs, ModelIOShape
 from gianlp.models.keras_wrapper import KerasWrapper
 
 
@@ -49,15 +49,24 @@ class RNNDigest(KerasWrapper):
 
         if isinstance(inputs, list):
             iterator = cls._iterate_model_inputs(inputs)
-            initial_shape = next(iterator).outputs_shape.shape[-2:]
+            initial_shape = next(iterator).outputs_shape
+            if isinstance(initial_shape, list):
+                raise ValueError("Can't use RNNDigest with input models that have multiple outputs.")
+            initial_shape_tuple = initial_shape.shape[-2:]
             for inp in iterator:
-                if inp.outputs_shape.shape[-2] != initial_shape[0]:
+                actual_shape = inp.outputs_shape
+                if isinstance(actual_shape, list):
+                    raise ValueError("Can't use RNNDigest with input models that have multiple outputs.")
+                if actual_shape.shape[-2] != initial_shape_tuple[0]:
                     raise ValueError("Inputs have different sequence length")
-                initial_shape = (initial_shape[0], initial_shape[1] + inp.outputs_shape.shape[-1])
+                initial_shape_tuple = (initial_shape_tuple[0], initial_shape_tuple[1] + actual_shape.shape[-1])
         else:
-            initial_shape = inputs.outputs_shape.shape[-2:]
+            initial_shape = inputs.outputs_shape
+            if isinstance(initial_shape, list):
+                raise ValueError("Can't use RNNDigest with input models that have multiple outputs.")
+            initial_shape_tuple = initial_shape.shape[-2:]
 
-        model = Sequential([Input(initial_shape)])
+        model = Sequential([Input(initial_shape_tuple)])
         if masking:
             model.add(Masking(0.0))
         layer_to_use = LSTM

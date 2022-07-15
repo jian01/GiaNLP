@@ -1,13 +1,14 @@
 from typing import Union, List, Dict, Tuple, TypeVar, Generator, cast, overload
 
-from numpy import array, ndarray
+import numpy as np
+from numpy import ndarray
 from pandas import Series, DataFrame
 
 T = TypeVar("T")
 
 YielderGenerator = Generator[T, None, None]
 
-KerasInputOutput = Union[List[array], array]
+KerasInputOutput = Union[List[ndarray], ndarray]
 SimpleTypeTexts = Union[List[str], Series]
 MultiTypeTexts = Union[Dict[str, List[str]], DataFrame]
 TextsInput = Union[SimpleTypeTexts, MultiTypeTexts]
@@ -47,14 +48,16 @@ class TextsInputWrapper:
         return isinstance(self.texts, dict)
 
     @overload
-    def __getitem__(self, key: Union[slice, array, List[int]]) -> "TextsInputWrapper":
+    def __getitem__(self, key: Union[slice, ndarray, List[int]]) -> "TextsInputWrapper":
         ...
 
     @overload
     def __getitem__(self, key: Union[int, str]) -> Union[str, List[str]]:
         ...
 
-    def __getitem__(self, key: Union[int, str, slice, array, List[int]]) -> Union[str, List[str], "TextsInputWrapper"]:
+    def __getitem__(
+        self, key: Union[int, str, slice, ndarray, List[int]]
+    ) -> Union[str, List[str], "TextsInputWrapper"]:
         """
         Returns the result of indexing the texts.
         If the text is from multiple types, its indexed by string key and
@@ -92,9 +95,9 @@ class TextsInputWrapper:
             return self.texts[key]
         raise KeyError("The type of the key is not valid")
 
-    def __add__(self, other) -> "TextsInputWrapper":
+    def __add__(self, other: "TextsInputWrapper") -> "TextsInputWrapper":
         """
-        Adds two text input wrappers
+        Concatenates two text input wrappers
 
         :param other: the other text input wrapper
         :return: the result of adding texts of both inputs
@@ -104,12 +107,16 @@ class TextsInputWrapper:
         """
         if self.is_multi_text() ^ other.is_multi_text():
             raise ValueError("One of the text inputs is multiple and the other is not.")
+        other_text_inputs = other.to_texts_inputs()
         if self.is_multi_text():
             self.texts = cast(Dict[str, List[str]], self.texts)
-            if set(self.texts.keys()) != set(other.to_texts_inputs().keys()):
+            other_text_inputs = cast(Dict[str, List[str]], other_text_inputs)
+            if set(self.texts.keys()) != set(other_text_inputs.keys()):
                 raise ValueError("Key's for multi-text inputs do not match")
-            return TextsInputWrapper({k: v + other[k] for k, v in self.texts.items()})
-        return TextsInputWrapper(self.texts + other.to_texts_inputs())
+            return TextsInputWrapper({k: v + other_text_inputs[k] for k, v in self.texts.items()})
+        self.texts = cast(List[str], self.texts)
+        other_text_inputs = cast(List[str], other_text_inputs)
+        return TextsInputWrapper(self.texts + other_text_inputs)
 
     def __len__(self) -> int:
         """
@@ -127,3 +134,83 @@ class TextsInputWrapper:
         :return: a text input type object
         """
         return self.texts.copy()
+
+
+class ModelOutputsWrapper:
+    """
+    Wrapper for objects used as model outputs
+    """
+
+    keras_io: KerasInputOutput
+
+    def __init__(self, keras_io: KerasInputOutput):
+        """
+
+        :param keras_io: the keras outputs
+        :raises ValueError: if keras_io is a ModelOutputsWrapper object
+        """
+        if isinstance(keras_io, ModelOutputsWrapper):
+            raise ValueError("Can't wrap an already wrapped model output.")
+        self.keras_io = keras_io
+
+    def __getitem__(self, key: Union[slice, ndarray, List[int]]) -> Union[ndarray, "ModelOutputsWrapper"]:
+        """
+        Returns the result of indexing the outputs.
+        If the key is slice, array or list it retrieves those items for each of the outputs (multiple or not)
+
+        :param key: the key for indexing
+        :return: a ModelOutputsWrapper
+        :raises KeyError: if the type of key is not valid or unexistent
+        """
+        if isinstance(key, ndarray) or isinstance(key, list):
+            if isinstance(key, ndarray):
+                key = key.tolist()
+            if isinstance(self.keras_io, list):
+                self.keras_io = cast(List[ndarray], self.keras_io)
+                return ModelOutputsWrapper([np.asarray([out[i] for i in key]) for out in self.keras_io])
+            return ModelOutputsWrapper(np.asarray([self.keras_io[i] for i in key]))
+        if isinstance(key, slice):
+            if isinstance(self.keras_io, list):
+                self.keras_io = cast(List[ndarray], self.keras_io)
+                return ModelOutputsWrapper([out[key] for out in self.keras_io])
+            return ModelOutputsWrapper(self.keras_io[key])
+        raise KeyError("The type of the key is not valid")
+
+    def __add__(self, other: "ModelOutputsWrapper") -> "ModelOutputsWrapper":
+        """
+        Concatenates two model outputs
+
+        :param other: the other model output
+        :return: the result of adding both model outputs
+        :raises ValueError:
+            - if one output is multiple and the other is not
+            - if both are multiple outputs and amount of outputs don't match
+        """
+        other_model_outputs = other.to_model_outputs()
+        if isinstance(other_model_outputs, list) ^ isinstance(self.keras_io, list):
+            raise ValueError("Outputs types don't match")
+        if isinstance(self.keras_io, list):
+            if len(self.keras_io) != len(other_model_outputs):
+                raise ValueError("The lengths of the outputs do not match")
+            return ModelOutputsWrapper(
+                [np.asarray(y1.tolist() + y2.tolist()) for y1, y2 in zip(self.keras_io, other_model_outputs)]
+            )
+        other_model_outputs = cast(ndarray, other_model_outputs)
+        return ModelOutputsWrapper(np.asarray(self.keras_io.tolist() + other_model_outputs.tolist()))
+
+    def __len__(self) -> int:
+        """
+        Computes the length of text inputs
+        :return: the length
+        """
+        if isinstance(self.keras_io, list):
+            return len(self.keras_io[0])
+        return len(self.keras_io)
+
+    def to_model_outputs(self) -> KerasInputOutput:
+        """
+        Transform to text inputs type
+
+        :return: a text input type object
+        """
+        return self.keras_io.copy()

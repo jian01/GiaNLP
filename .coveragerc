@@ -9,3 +9,10 @@ omit =
 	docs/*
 	noxfile.py
 	setup.py
+[report]
+exclude_lines =
+	pragma: no cover
+    @abstractmethod
+    @abc.abstractmethod
+    raise NotImplementedError
+    \.\.\.

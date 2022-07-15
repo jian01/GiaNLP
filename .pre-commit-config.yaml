@@ -24,3 +24,10 @@ repos:
         language: system
         types: [python]
         files: (gianlp|tests)/*
+      - id: mypy
+        name: mypy
+        entry: mypy --show-error-codes gianlp/
+        language: system
+        types: [ python ]
+        pass_filenames: false
+        files: gianlp/*

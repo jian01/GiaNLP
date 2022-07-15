@@ -275,15 +275,23 @@ class TestMultiprocessing(unittest.TestCase):
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
         model.build(LOREM_IPSUM.split("\n"))
-        preds = model.predict(["A", "E", "I", "O", "U", "JS4DS", "S4DS", "4DS", "DS", "S"]).round(3)
-        preds2 = model.predict(
-            SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U"], ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]])
-        ).round(3)
-        preds3 = model.predict(
-            SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U"], ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]]),
-            use_multiprocessing=True,
-            workers=2,
-        ).round(3)
+        preds = model.predict(["A", "E", "I", "O", "U", "JS4DS", "S4DS", "4DS", "DS", "S"]).round(3).astype("float32")
+        preds2 = (
+            model.predict(
+                SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U"], ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]])
+            )
+            .round(3)
+            .astype("float32")
+        )
+        preds3 = (
+            model.predict(
+                SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U"], ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]]),
+                use_multiprocessing=True,
+                workers=2,
+            )
+            .round(3)
+            .astype("float32")
+        )
         self.assertEqual(preds.tolist(), preds2.tolist())
         self.assertEqual(preds.tolist(), preds3.tolist())
 
@@ -306,14 +314,20 @@ class TestMultiprocessing(unittest.TestCase):
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
         model.build(LOREM_IPSUM.split("\n"))
-        preds = model.predict(["A", "E", "I", "O", "U", "JS4DS", "S4DS", "4DS", "DS", "S"]).round(3)
-        preds2 = model.predict(
-            SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U", "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]])
-        ).round(3)
-        preds3 = model.predict(
-            SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U", "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]]),
-            use_multiprocessing=True,
-            workers=2,
-        ).round(3)
+        preds = model.predict(["A", "E", "I", "O", "U", "JS4DS", "S4DS", "4DS", "DS", "S"]).round(3).astype("float32")
+        preds2 = (
+            model.predict(SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U", "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]]))
+            .round(3)
+            .astype("float32")
+        )
+        preds3 = (
+            model.predict(
+                SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U", "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]]),
+                use_multiprocessing=True,
+                workers=2,
+            )
+            .round(3)
+            .astype("float32")
+        )
         self.assertEqual(preds.tolist(), preds2.tolist())
         self.assertEqual(preds.tolist(), preds3.tolist())

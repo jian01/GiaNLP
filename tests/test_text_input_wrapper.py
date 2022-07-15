@@ -66,3 +66,11 @@ class TestTextInputWrapper(unittest.TestCase):
         wrapper2 = TextsInputWrapper({"t1": [str(i) for i in range(10)], "t2": [str(i) for i in range(10, 20)]})
         with self.assertRaises(ValueError):
             wrapper1 + wrapper2
+
+    def test_invalid_key_type_indexing_error(self) -> None:
+        """
+        Tests indexing by a key of invalid type throws exception
+        """
+        wrapper = TextsInputWrapper([str(i) for i in range(10)])
+        with self.assertRaises(KeyError):
+            wrapper[0.45]
