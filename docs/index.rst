@@ -1,8 +1,3 @@
-.. GiaNLP documentation master file, created by
-   sphinx-quickstart on Thu Jul  7 13:59:52 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to GiaNLP's documentation!
 ==================================
 
