@@ -316,6 +316,7 @@ class TrainableModel(BaseModel, ABC):
         max_queue_size: int = 10,
         workers: int = 1,
         use_multiprocessing: bool = False,
+        **kwargs,
     ) -> History:
         """
         Fits the model
@@ -350,6 +351,7 @@ class TrainableModel(BaseModel, ABC):
         :param use_multiprocessing: If True, use process-based threading. If unspecified, use_multiprocessing will
         default to False. Note that because this implementation relies on multiprocessing, you should not pass
         non-picklable arguments to the generator as they can't be passed easily to children processes.
+        :param kwargs: extra arguments to give to keras.models.Model.fit
         :return: A History object. Its History.history attribute is a record of training loss values and metrics values
         at successive epochs, as well as validation loss values and validation metrics values (if applicable).
         """
@@ -396,6 +398,7 @@ class TrainableModel(BaseModel, ABC):
             max_queue_size=max_queue_size,
             workers=(1 if use_multiprocessing else workers),
             use_multiprocessing=False,
+            **kwargs,
         )
 
     def _predict_generator(
