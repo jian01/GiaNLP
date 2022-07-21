@@ -32,3 +32,6 @@ class Sequence:
         Method called at the end of every epoch.
         """
         return
+
+
+__all__ = ["Sequence"]

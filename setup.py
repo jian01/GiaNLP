@@ -17,7 +17,7 @@ setup(
     author="Gianmarco Cafferata",
     author_email="gcafferata@fi.uba.ar",
     url="git@github.com:jian01/GiaNLP.git",
-    packages=find_packages(),
+    packages=["gianlp"],
     python_requires=">=3.5",
     setup_requires=["wheel"],
     install_requires=INSTALL_REQUIRES,

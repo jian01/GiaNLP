@@ -76,11 +76,13 @@ class TextsInputWrapper:
         if isinstance(key, ndarray) or isinstance(key, list):
             if isinstance(key, ndarray):
                 key = key.tolist()
+            key = cast(List[int], key)
             if self.is_multi_text():
                 self.texts = cast(Dict[str, List[str]], self.texts)
                 return TextsInputWrapper({k: [v[i] for i in key] for k, v in self.texts.items()})
             return TextsInputWrapper([self[i] for i in key])
         if isinstance(key, slice):
+            key = cast(slice, key)
             if self.is_multi_text():
                 self.texts = cast(Dict[str, List[str]], self.texts)
                 return TextsInputWrapper({k: v[key] for k, v in self.texts.items()})
@@ -153,7 +155,7 @@ class ModelOutputsWrapper:
             raise ValueError("Can't wrap an already wrapped model output.")
         self.keras_io = keras_io
 
-    def __getitem__(self, key: Union[slice, ndarray, List[int]]) -> Union[ndarray, "ModelOutputsWrapper"]:
+    def __getitem__(self, key: Union[slice, ndarray, List[int]]) -> "ModelOutputsWrapper":
         """
         Returns the result of indexing the outputs.
         If the key is slice, array or list it retrieves those items for each of the outputs (multiple or not)
@@ -165,11 +167,13 @@ class ModelOutputsWrapper:
         if isinstance(key, ndarray) or isinstance(key, list):
             if isinstance(key, ndarray):
                 key = key.tolist()
+            key = cast(List[int], key)
             if isinstance(self.keras_io, list):
                 self.keras_io = cast(List[ndarray], self.keras_io)
                 return ModelOutputsWrapper([np.asarray([out[i] for i in key]) for out in self.keras_io])
             return ModelOutputsWrapper(np.asarray([self.keras_io[i] for i in key]))
         if isinstance(key, slice):
+            key = cast(slice, key)
             if isinstance(self.keras_io, list):
                 self.keras_io = cast(List[ndarray], self.keras_io)
                 return ModelOutputsWrapper([out[key] for out in self.keras_io])

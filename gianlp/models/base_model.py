@@ -57,8 +57,6 @@ class BaseModel(ABC):
 
     Guarantees serializing and deserializing from and to objects with the same behaviour.
     All base models contains at least one model from Keras.
-
-    :var _built: Indicates whether the model was built or not
     """
 
     _built: bool
@@ -245,7 +243,7 @@ class BaseModel(ABC):
                 keras_model = TimeDistributed(keras_model)
         return keras_model(inputs)
 
-    def __call__(self, inputs: Union[List[Layer], Layer, np.array]) -> Union[Tensor, KerasInputOutput]:
+    def __call__(self, inputs: Union[List[Layer], Layer, np.ndarray]) -> Union[Tensor, KerasInputOutput]:
         """
         Allows calling the internal Keras model supporting multiple formats
 
@@ -322,7 +320,7 @@ class BaseModel(ABC):
 
         :param model: the keras model
         :param copy: whether to copy the model before saving.
-        copying the model is needed for complex nested models because the keras save/load can fail
+            copying the model is needed for complex nested models because the keras save/load can fail
         :return: a byte array
         """
         model_path = TemporaryDirectory()

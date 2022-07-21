@@ -5,7 +5,7 @@ Module for char embedding sequence input
 import pickle
 import random
 from collections import Counter
-from typing import Optional, Dict
+from typing import Optional, Dict, cast
 
 import numpy as np
 
@@ -41,8 +41,8 @@ class CharEmbeddingSequence(TextRepresentation):
     _min_freq_percentile: int
     _random_state: int
 
-    MAX_SAMPLE_TO_FIT = 200000
-    CHAR_EMB_UNK_TOKEN = "UNK"
+    _MAX_SAMPLE_TO_FIT = 200000
+    _CHAR_EMB_UNK_TOKEN = "UNK"
 
     def __init__(
         self,
@@ -81,14 +81,14 @@ class CharEmbeddingSequence(TextRepresentation):
         tokenized = [list(text) for text in texts]
         tokenized = [
             [
-                self._char_indexes[c] if c in self._char_indexes else self._char_indexes[self.CHAR_EMB_UNK_TOKEN]
+                self._char_indexes[c] if c in self._char_indexes else self._char_indexes[self._CHAR_EMB_UNK_TOKEN]
                 # type: ignore
                 for c in char_list
             ]
             for char_list in tokenized
         ]
         tokenized = keras_seq.pad_sequences(tokenized, maxlen=self._sequence_maxlen, padding="post", truncating="post")
-        return tokenized
+        return cast(np.ndarray, tokenized)
 
     def _unitary_build(self, texts: SimpleTypeTexts) -> None:
         """
@@ -100,7 +100,7 @@ class CharEmbeddingSequence(TextRepresentation):
             text_sample = texts.copy()
             random.seed(self._random_state)
             random.shuffle(text_sample)
-            text_sample = text_sample[: min(len(text_sample), self.MAX_SAMPLE_TO_FIT)]
+            text_sample = text_sample[: min(len(text_sample), self._MAX_SAMPLE_TO_FIT)]
 
             char_ocurrences = [list(text) for text in text_sample]
             char_ocurrence_counter = Counter()  # type: ignore
@@ -112,7 +112,7 @@ class CharEmbeddingSequence(TextRepresentation):
                 count[0]: i + 1
                 for i, count in enumerate(Counter(char_ocurrence_dict).most_common(len(char_ocurrence_dict)))
             }
-            self._char_indexes[self.CHAR_EMB_UNK_TOKEN] = len(self._char_indexes) + 1
+            self._char_indexes[self._CHAR_EMB_UNK_TOKEN] = len(self._char_indexes) + 1
             self.__init_keras_model()
             self._built = True
 

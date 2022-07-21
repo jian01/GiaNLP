@@ -117,5 +117,5 @@ def test_sphinx_build(session):
     """Build docs with sphinx."""
     with tempfile.TemporaryDirectory() as tmpdirname:
         session.install(".")
-        session.install("sphinx")
-        session.run("sphinx-build", "-W", "-E", "-n", "-b", "html", "docs", tmpdirname)
+        session.install("-r", "./requirements.txt")
+        session.run("sphinx-build", "-E", "-n", "-b", "html", "docs", tmpdirname)

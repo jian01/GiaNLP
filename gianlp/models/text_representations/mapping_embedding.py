@@ -31,7 +31,7 @@ class MappingEmbedding(TextRepresentation):
     _keras_model: Optional[Model]
     _keyed_vectors: KeyedVectors
 
-    UNKNOWN_TOKEN = "<UNK>"
+    _UNKNOWN_TOKEN = "<UNK>"
 
     def __init__(self, word2vec_src: Union[str, KeyedVectors]):
         """

@@ -17,7 +17,7 @@ repos:
         entry: darglint -v 2 gianlp
         language: system
         types: [python]
-        exclude: (docs|tests)/*
+        files: gianlp/*
       - id: black
         name: black
         entry: black --line-length 120
@@ -30,4 +30,4 @@ repos:
         language: system
         types: [ python ]
         pass_filenames: false
-        files: gianlp/*
+        files: gianlp/*|.mypy.ini

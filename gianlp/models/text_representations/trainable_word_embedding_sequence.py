@@ -5,7 +5,7 @@ Module for pre-trained word embedding sequence input
 import pickle
 import random
 from collections import Counter
-from typing import List, Optional, Callable, Union, Dict
+from typing import List, Optional, Callable, Union, Dict, cast
 
 import numpy as np
 import tensorflow as tf
@@ -51,8 +51,8 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
     _word_indexes: Dict[str, int]
     _random_state: int
 
-    WORD_UNKNOWN_TOKEN = "<UNK>"
-    MAX_SAMPLE_TO_FIT = 5000000
+    _WORD_UNKNOWN_TOKEN = "<UNK>"
+    _MAX_SAMPLE_TO_FIT = 5000000
 
     def __init__(
         self,
@@ -66,11 +66,11 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
         random_state: int = 42,
     ):
         """
-        :param tokenizer: a tokenizer function that transforms each string into a list of string tokens
-                            the tokens transformed should match the keywords in the pretrained word embeddings
-                            the function must support serialization through pickle
+        :param tokenizer: A tokenizer function that transforms each string into a list of string tokens.
+            The tokens transformed should match the keywords in the pretrained word embeddings.
+            The function must support serialization through pickle
         :param word2vec_src: optional path to word2vec format .txt file or gensim KeyedVectors.
-        if provided the common words from the corpus that are in the embedding will have this vectors assigned
+            if provided the common words from the corpus that are in the embedding will have this vectors assigned
         :param min_freq_percentile: the minimum percentile of the frequency to consider a word part of the vocabulary
         :param max_vocabulary: optional maximum vocabulary size
         :param embedding_dimension: the dimension of the target embedding
@@ -78,7 +78,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
         :param pretrained_trainable: if the vectors pretrained will also be trained. ignored if word2vec_src is None
         :param random_state: the random seed used for random processes
         :raises ValueError: if a pretrained embeddings is fed and it's dimension does not match
-        the one in embedding_dimension
+            the one in embedding_dimension
         """
         super().__init__()
         if isinstance(word2vec_src, str):
@@ -118,7 +118,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
         words = keras_seq.pad_sequences(
             [
                 [
-                    self._word_indexes[w] if w in self._word_indexes else self._word_indexes[self.WORD_UNKNOWN_TOKEN]
+                    self._word_indexes[w] if w in self._word_indexes else self._word_indexes[self._WORD_UNKNOWN_TOKEN]
                     for w in words[: self._sequence_maxlen]
                 ]
                 for words in tokenized_texts
@@ -129,7 +129,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             truncating="post",
             value=0,
         )
-        return words
+        return cast(np.ndarray, words)
 
     def _unitary_build(self, texts: SimpleTypeTexts) -> None:
         """
@@ -141,7 +141,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             text_sample = texts.copy()
             random.seed(self._random_state)
             random.shuffle(text_sample)
-            text_sample = text_sample[: min(len(text_sample), self.MAX_SAMPLE_TO_FIT)]
+            text_sample = text_sample[: min(len(text_sample), self._MAX_SAMPLE_TO_FIT)]
             tokenized_texts = [token for text in text_sample for token in self._tokenizer(text)]
             frequencies = Counter(tokenized_texts)
             p_freq = np.percentile(list(frequencies.values()), self._min_freq_percentile)
@@ -169,7 +169,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
                 known_embeddings[i + 1, :] = self._word2vec.vectors[self._word2vec.key_to_index[known_words[i]]]
                 self._word_indexes[known_words[i]] = i + 1
 
-            self._word_indexes[self.WORD_UNKNOWN_TOKEN] = len(known_words) + 2
+            self._word_indexes[self._WORD_UNKNOWN_TOKEN] = len(known_words) + 2
 
             for i in range(len(new_words)):
                 self._word_indexes[new_words[i]] = len(known_words) + 3 + i

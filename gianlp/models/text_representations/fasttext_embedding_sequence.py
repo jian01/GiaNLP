@@ -5,7 +5,7 @@ Module for pre-trained word embedding sequence input
 import pickle
 import random
 from collections import Counter
-from typing import List, Optional, Callable, Union, Dict
+from typing import List, Optional, Callable, Union, Dict, cast
 
 import numpy as np
 import tensorflow as tf
@@ -50,8 +50,8 @@ class FasttextEmbeddingSequence(TextRepresentation):
     _word_indexes: Dict[str, int]
     _random_state: int
 
-    WORD_UNKNOWN_TOKEN = "<UNK>"
-    MAX_SAMPLE_TO_FIT = 5000000
+    _WORD_UNKNOWN_TOKEN = "<UNK>"
+    _MAX_SAMPLE_TO_FIT = 5000000
 
     def __init__(
         self,
@@ -100,7 +100,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
         words = keras_seq.pad_sequences(
             [
                 [
-                    self._word_indexes[w] if w in self._word_indexes else self._word_indexes[self.WORD_UNKNOWN_TOKEN]
+                    self._word_indexes[w] if w in self._word_indexes else self._word_indexes[self._WORD_UNKNOWN_TOKEN]
                     for w in words[: self._sequence_maxlen]
                 ]
                 for words in tokenized_texts
@@ -111,7 +111,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
             truncating="post",
             value=0,
         )
-        return words
+        return cast(np.ndarray, words)
 
     def _unitary_build(self, texts: SimpleTypeTexts) -> None:
         """
@@ -123,7 +123,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
             text_sample = texts.copy()
             random.seed(self._random_state)
             random.shuffle(text_sample)
-            text_sample = text_sample[: min(len(text_sample), self.MAX_SAMPLE_TO_FIT)]
+            text_sample = text_sample[: min(len(text_sample), self._MAX_SAMPLE_TO_FIT)]
             tokenized_texts = [token for text in text_sample for token in self._tokenizer(text)]
             frequencies = Counter(tokenized_texts)
             p_freq = np.percentile(list(frequencies.values()), self._min_freq_percentile)
@@ -150,7 +150,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
                 )
             )
 
-            self._word_indexes[self.WORD_UNKNOWN_TOKEN] = 1
+            self._word_indexes[self._WORD_UNKNOWN_TOKEN] = 1
 
             for i in range(len(vocabulary)):
                 emb_matrix[i + 2, :] = self._fasttext.wv[vocabulary[i]]

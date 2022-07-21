@@ -58,21 +58,21 @@ class KerasWrapper(TrainableModel):
     def __init__(self, inputs: Union[ModelInputs, BaseModel], wrapped_model: Model, **kwargs):
         """
         :param inputs: the models that are the input of this one. Either a list containing model inputs one by one or a
-        dict indicating which text name is assigned to which inputs.
-        If a list, all should have multi-text input or don't have it. If it's a dict all shouldn't have multi-text
-        input.
+            dict indicating which text name is assigned to which inputs.
+            If a list, all should have multi-text input or don't have it. If it's a dict all shouldn't have multi-text
+            input.
         :param wrapped_model: the keras model to wrap. if it has multiple inputs, inputs parameter
-        should have the same len
+            should have the same len
         :param **kwargs: extra parameters for TrainableModel init
         :raises ValueError:
-            - When the wrapped model is not a keras model
-            - When the keras model to wrap does not have a defined input shape
-            - When inputs is a list of models and some of the models in the input have multi-text input and others
+            * When the wrapped model is not a keras model
+            * When the keras model to wrap does not have a defined input shape
+            * When inputs is a list of models and some of the models in the input have multi-text input and others\
             don't.
-            - When inputs is a list of tuples and any of the models has multi-text input.
-            - When inputs is a list of tuples with length one
-            - When inputs is a list containing some tuples of (str, model) and some models
-            - When the wrapped model has multiple inputs and the inputs don't have the same length as the inputs in
+            * When inputs is a list of tuples and any of the models has multi-text input.
+            * When inputs is a list of tuples with length one
+            * When inputs is a list containing some tuples of (str, model) and some models
+            * When the wrapped model has multiple inputs and the inputs don't have the same length as the inputs in\
             wrapped model
         """
         if not isinstance(wrapped_model, Model):

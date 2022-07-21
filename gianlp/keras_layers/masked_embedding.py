@@ -15,14 +15,13 @@ from tensorflow.keras.layers import Embedding
 class MaskedEmbedding(Embedding):
     """
     Special class for a masked at 0 embedding.
-
     It guarantees that the index 0 always maps to a vector of zeros.
     """
 
     def __init__(self, input_dim, output_dim, **kwargs):
         """
-        :param input_dim:Size of the vocabulary,
-        i.e. maximum integer index + 1.
+        :param input_dim: Size of the vocabulary,
+            i.e. maximum integer index + 1.
         :param output_dim: Integer. Dimension of the dense embedding.
         :param **kwargs: extra arguments to pass to Embedding init
         """

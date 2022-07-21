@@ -132,19 +132,23 @@ class TrainableModel(BaseModel, ABC):
         else:
             if texts.is_multi_text():
                 raise ValueError("The model has input of only one type of text but multiple texts where feeded.")
-        texts_preprocessed = []
+        texts_preprocessed: List[np.ndarray] = []
         input_models = self.inputs
         if isinstance(input_models[0], tuple):
             for name, inps in input_models:
                 for inp in inps:
                     result = inp.preprocess_texts(texts[name])
-                    if result is not None:
+                    if isinstance(result, list):
+                        texts_preprocessed += result
+                    else:
                         texts_preprocessed.append(result)
         else:
             input_models = cast(SimpleTypeModels, input_models)
             for inp in input_models:
                 result = inp.preprocess_texts(texts.to_texts_inputs())
-                if result is not None:
+                if isinstance(result, list):
+                    texts_preprocessed += result
+                else:
                     texts_preprocessed.append(result)
         if len(texts_preprocessed) == 1:
             return texts_preprocessed[0]
@@ -163,7 +167,7 @@ class TrainableModel(BaseModel, ABC):
         :param optimizer: optimizer for training
         :param loss: loss for training
         :param metrics: metrics to use while training
-        :param kwargs: accepts any other parameters for use in Keras Model.compile API
+        :param **kwargs: accepts any other parameters for use in Keras Model.compile API
         :raises AssertionError:
                 - When the model is not built
         """
@@ -260,9 +264,9 @@ class TrainableModel(BaseModel, ABC):
         """
 
         :param data: tuple of (x,y), where:
-            - x could be a generator and y is None
-            - x could be a Sequence and y is None
-            - x could be text input and y an array
+            * x could be a generator and y is None
+            * x could be a Sequence and y is None
+            * x could be text input and y an array
         :param batch_size: batch size for feeding the training. Ignored if data is a generator.
         :param steps_per_epoch: the steps per epoch for the generator
         :param max_queue_size: Maximum size for the generator queue. If unspecified, max_queue_size will default to 10.
@@ -301,9 +305,17 @@ class TrainableModel(BaseModel, ABC):
         steps_per_epoch = len(x) // batch_size
         return generator, steps_per_epoch
 
+    @overload
+    def fit(self, x: TextsInput, y: KerasInputOutput = ...):
+        ...
+
+    @overload
+    def fit(self, x: Union[YielderGenerator[ModelFitTuple], Sequence], y: None = ...):
+        ...
+
     def fit(
         self,
-        x: Union[YielderGenerator[ModelFitTuple], TextsInput, Sequence] = None,
+        x: Union[YielderGenerator[ModelFitTuple], TextsInput, Sequence],
         y: Optional[KerasInputOutput] = None,
         batch_size: int = 32,
         epochs: int = 1,
@@ -322,38 +334,42 @@ class TrainableModel(BaseModel, ABC):
         Fits the model
 
         :param x: Input data. Could be:
-            1. A generator that yields (x, y) where x is any valid format for x and y is the target numpy array
-            2. A gianlp.utils.Sequence object that generates (x, y) where x is any valid format for x and y is the
-            target output
-            3. A list of texts
-            4. A pandas Series
-            5. A pandas Dataframe
-            6. A dict of lists containing texts
+
+            * A generator that yields (x, y) where x is any valid format for x and y is the target numpy array
+            * A :class:`gianlp.utils.Sequence` object that generates (x, y) where x is any valid format for x and y is\
+            the target output
+            * A list of texts
+            * A pandas Series
+            * A pandas Dataframe
+            * A dict of lists containing texts
+
         :param y: Target, ignored if x is a generator. Numpy array.
-        :param batch_size: Batch size for training, ignored if x is a generator or a gianlp.utils.Sequence
+        :param batch_size: Batch size for training, ignored if x is a generator or a :class:`gianlp.utils.Sequence`
         :param epochs: Amount of epochs to train
         :param verbose: verbose mode for Keras training
         :param callbacks: list of Callback objects for Keras model
         :param validation_split: the proportion of data to use for validation, ignored if x is a generator.
-            Takes the last elements of x and y. Ignored if x is a generator or a gianlp.utils.Sequence object
+            Takes the last elements of x and y. Ignored if x is a generator or a :class:`gianlp.utils.Sequence` object
         :param validation_data: Validation data. Could be:
-            1. A tuple containing (x, y) where x is a any valid format for x and y is the target numpy array
-            2. A generator that yields (x, y) where x is a any valid format for x and y is the target numpy array
-            3. A gianlp.utils.Sequence object that generates (x, y) where x is any valid format for x and y is the
-            target output
+
+            *. A tuple containing (x, y) where x is a any valid format for x and y is the target numpy array
+            *. A generator that yields (x, y) where x is a any valid format for x and y is the target numpy array
+            *. :class:`gianlp.utils.Sequence` object that generates (x, y) where x is any valid format for x and y is\
+            the target output
+
         :param steps_per_epoch: Amount of generator steps to consider an epoch as finished. Ignored if x is not a
-        generator
+            generator
         :param validation_steps: Amount of generator steps to consider to feed each validation evaluation.
-                                Ignored if validation_data is not a generator
+            Ignored if validation_data is not a generator
         :param max_queue_size: Maximum size for the generator queue. If unspecified, max_queue_size will default to 10.
         :param workers: Maximum number of processes to spin up when using process-based threading. If unspecified,
-        workers will default to 1.
+            workers will default to 1.
         :param use_multiprocessing: If True, use process-based threading. If unspecified, use_multiprocessing will
-        default to False. Note that because this implementation relies on multiprocessing, you should not pass
-        non-picklable arguments to the generator as they can't be passed easily to children processes.
-        :param kwargs: extra arguments to give to keras.models.Model.fit
+            default to False. Note that because this implementation relies on multiprocessing, you should not pass
+            non-picklable arguments to the generator as they can't be passed easily to children processes.
+        :param **kwargs: extra arguments to give to keras.models.Model.fit
         :return: A History object. Its History.history attribute is a record of training loss values and metrics values
-        at successive epochs, as well as validation loss values and validation metrics values (if applicable).
+            at successive epochs, as well as validation loss values and validation metrics values (if applicable).
         """
         train_generator: Union[TrainSequenceWrapper, YielderGenerator[KerasModelFitTuple]]
 
@@ -368,6 +384,7 @@ class TrainableModel(BaseModel, ABC):
 
         if not isinstance(x, Sequence) and not isinstance(x, types.GeneratorType):
             x = TextsInputWrapper(x)
+            y = cast(KerasInputOutput, y)
             y = ModelOutputsWrapper(y)
             if validation_split > 0 and validation_data is None:
                 valid_amount = int(round(validation_split * len(x)))
@@ -455,22 +472,24 @@ class TrainableModel(BaseModel, ABC):
         """
         Predicts using the model
 
-        :param x: could be:
-            1. A list of texts
-            2. A pandas Series
-            3. A pandas Dataframe
-            4. A dict of lists containing texts
-            5. A generator of any of the above formats
-            6. A gianlp.utils.Sequence object that generates batches of text
+        :param x: Could be:
+
+            * A list of texts
+            * A pandas Series
+            * A pandas Dataframe
+            * A dict of lists containing texts
+            * A generator of any of the above formats
+            * A :class:`gianlp.utils.Sequence` object that generates batches of text
+
         :param inference_batch: the prediction is made in batches for saving ram, this is the batch size used.
-        ignored if x is a generator or a gianlp.utils.Sequence
+            ignored if x is a generator or a :class:`gianlp.utils.Sequence`
         :param steps: steps for the generator, ignored if x is not a generator
         :param max_queue_size: Maximum size for the generator queue. If unspecified, max_queue_size will default to 10.
         :param workers: Maximum number of processes to spin up when using process-based threading. If unspecified,
-        workers will default to 1.
+            workers will default to 1.
         :param use_multiprocessing: If True, use process-based threading. If unspecified, use_multiprocessing will
-        default to False. Note that because this implementation relies on multiprocessing, you should not pass
-        non-picklable arguments to the generator as they can't be passed easily to children processes.
+            default to False. Note that because this implementation relies on multiprocessing, you should not pass
+            non-picklable arguments to the generator as they can't be passed easily to children processes.
         :param verbose: 0, 1, or 2. Verbosity mode. 0 = silent, 1 = progress bar, 2 = single line.
         :return: the output of the keras model
         :raises ValueError: If a generator is given as x but no step amount is specified
@@ -526,8 +545,8 @@ class TrainableModel(BaseModel, ABC):
     def freeze(self) -> None:
         """
         Freezes the model weights
-        :raises ValueError:
-            - When the model is not built
+
+        :raises ValueError: When the model is not built
         """
         if not self._built:
             raise ValueError("Can't freeze a model that has not been built")

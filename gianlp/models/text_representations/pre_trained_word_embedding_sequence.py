@@ -3,7 +3,7 @@ Module for pre-trained word embedding sequence input
 """
 
 import pickle
-from typing import List, Optional, Callable, Union
+from typing import List, Optional, Callable, Union, cast
 
 import numpy as np
 from gensim.models import KeyedVectors
@@ -36,7 +36,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
     _tokenizer: Callable[[str], List[str]]
     _sequence_maxlen: int
 
-    WORD_UNKNOWN_TOKEN = "<UNK>"
+    _WORD_UNKNOWN_TOKEN = "<UNK>"
 
     def __init__(
         self,
@@ -86,7 +86,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
             truncating="post",
             value=0,
         )
-        return words
+        return cast(np.ndarray, words)
 
     def _unitary_build(self, texts: SimpleTypeTexts) -> None:
         """

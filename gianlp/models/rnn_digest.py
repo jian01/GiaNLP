@@ -41,7 +41,7 @@ class RNNDigest(KerasWrapper):
         :param bidirectional: if it's bidirectional
         :param random_seed: the seed for random processes
         :param return_sequences: if True, the last RNN layer returns the sequence of states
-        :param kwargs: extra arguments for the rnn layers
+        :param **kwargs: extra arguments for the rnn layers
         :return: An RNN digester model inside a KerasWrapper
         :raises ValueError: When inputs have different sequence length
         """
