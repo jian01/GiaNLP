@@ -10,7 +10,7 @@ with open(readme_file) as f:
     readme = f.read()
 
 license_file = path.join(path.dirname(path.abspath(__file__)), "LICENSE")
-with open(readme_file) as f:
+with open(license_file) as f:
     license_content = f.read()
 
 # Library dependencies
@@ -23,8 +23,8 @@ setup(
     name="GiaNLP",
     version="0.0.1",
     description="Natural Language Processing for humans",
-    long_description=readme,
     long_description_content_type="text/markdown",
+    long_description=readme,
     license=license_content,
     author="Gianmarco Cafferata",
     author_email="gcafferata@fi.uba.ar",
