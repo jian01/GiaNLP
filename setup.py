@@ -16,7 +16,7 @@ setup(
     description="Natural Language Processing for humans",
     author="Gianmarco Cafferata",
     author_email="gcafferata@fi.uba.ar",
-    url="git@github.com:jian01/GiaNLP.git",
+    url="https://github.com/jian01/GiaNLP",
     packages=["gianlp"],
     python_requires=">=3.5",
     setup_requires=["wheel"],

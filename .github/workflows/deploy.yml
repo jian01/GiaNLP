@@ -40,6 +40,7 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/
         skip_existing: true
     - name: Update docs
       uses: ammaraskar/sphinx-action@master
