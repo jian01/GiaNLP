@@ -8,3 +8,4 @@ pre-commit==2.19.0
 pylint==2.14.4
 darglint==1.8.1
 m2r2
+tensorflow>=2.3.0
