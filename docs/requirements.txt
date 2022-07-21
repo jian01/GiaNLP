@@ -1,0 +1,4 @@
+m2r2
+tensorflow>=2.3.0
+sphinx-rtd-theme==1.0.0
+sphinx-markdown-builder==0.5.5

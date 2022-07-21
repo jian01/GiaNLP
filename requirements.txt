@@ -1,11 +1,7 @@
 pytest
 pytest-cov
 sphinx
-sphinx-rtd-theme==1.0.0
-sphinx-markdown-builder==0.5.5
 nox==2022.1.7
 pre-commit==2.19.0
 pylint==2.14.4
 darglint==1.8.1
-m2r2
-tensorflow>=2.3.0
