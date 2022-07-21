@@ -9,6 +9,10 @@ readme_file = path.join(path.dirname(path.abspath(__file__)), "README.md")
 with open(readme_file) as f:
     readme = f.read()
 
+license_file = path.join(path.dirname(path.abspath(__file__)), "LICENSE")
+with open(readme_file) as f:
+    license_content = f.read()
+
 # Library dependencies
 INSTALL_REQUIRES = ["gensim>=4.0.0", "pandas", "tqdm"]
 
@@ -21,6 +25,7 @@ setup(
     description="Natural Language Processing for humans",
     long_description=readme,
     long_description_content_type="text/markdown",
+    license=license_content,
     author="Gianmarco Cafferata",
     author_email="gcafferata@fi.uba.ar",
     url="https://jian01.github.io/GiaNLP/",
@@ -31,8 +36,11 @@ setup(
     tests_require=TEST_REQUIRES,
     test_suite="tests",
     classifiers=[
-        "Environment :: Web Environment",
+        "Development Status :: 1 - Planning",
+        "License :: OSI Approved :: Apache Software License v2.0",
         "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "Intended Audience :: Education",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
@@ -42,5 +50,9 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Topic :: Software Development",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Topic :: Scientific/Engineering :: Mathematics",
     ],
 )
