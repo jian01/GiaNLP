@@ -32,9 +32,11 @@ project = 'GiaNLP'
 copyright = '2022, Gianmarco Cafferata'
 author = 'Gianmarco Cafferata'
 
+from gianlp import __version__
+
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
-version = '0.0.1'
+release = __version__
+version = __version__
 
 
 # -- General configuration ---------------------------------------------------
