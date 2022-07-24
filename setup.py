@@ -4,6 +4,16 @@ Library setup
 import sys
 from os import path
 from setuptools import find_packages, setup  # type: ignore
+from pathlib import Path
+
+
+def get_version():
+    init_f = Path(__file__).parent / "gianlp" / "__init__.py"
+    with open(init_f) as f:
+        for line in f:
+            if "__version__" in line:
+                return line.split("=")[-1].strip().strip('"')
+
 
 license_file = path.join(path.dirname(path.abspath(__file__)), "LICENSE")
 with open(license_file, encoding='utf-8') as f:
@@ -17,7 +27,7 @@ TEST_REQUIRES = ["pytest", "pytest-cov", "tensorflow>=2.3.0"]
 
 setup(
     name="GiaNLP",
-    version="0.0.1",
+    version=get_version(),
     description="Natural Language Processing for humans",
     long_description_content_type="text/markdown",
     long_description="""
