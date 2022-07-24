@@ -301,7 +301,8 @@ class BaseModel(ABC):
         :return: a BaseModel object
         """
         serialized_items = pickle.loads(data)
-        if len(serialized_items) == 2:
+        # support for legacy serialized models
+        if len(serialized_items) == 2:  # pragma: no cover
             name, data = serialized_items
         else:
             name, versions, data = serialized_items

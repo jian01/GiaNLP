@@ -25,7 +25,7 @@ def warn_for_dependencies_signature(signature: Dict[str, str]) -> None:
     :param signature: a signature of dependencies versions
     """
     if signature["tensorflow"] != tf.__version__:
-        if signature["tensorflow"] < tf.__version__:
+        if signature["tensorflow"] > tf.__version__:
             warning(
                 f"The tensorflow version used for serialization "
                 f"is {signature['tensorflow']} and higher than your"
@@ -44,11 +44,11 @@ def warn_for_dependencies_signature(signature: Dict[str, str]) -> None:
         warning(
             f"Your h5py version ({h5py.__version__}) differs from "
             f"the version used for serialization ({signature['h5py']}). "
-            f"This may cause an issue."
+            f"This may cause issues."
         )
     if signature["numpy"] != np.version.version:
         warning(
             f"Your numpy version ({np.version.version}) differs from "
             f"the version used for serialization ({signature['numpy']}). "
-            f"This may cause an issue."
+            f"This may cause issues."
         )
