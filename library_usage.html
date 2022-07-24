@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library usage tutorial &mdash; GiaNLP 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quickstart: Binary Classifier Tutorial" href="1_quickstart.html" />
+    <link rel="prev" title="Welcome to GiaNLP’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> GiaNLP
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Library usage tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#model">Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#shared-methods-properties">Shared methods/properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#all-models-are-callable">All models are callable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#all-models-know-how-to-preprocess-text">All models know how to preprocess text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#all-models-are-printable">All models are printable</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#text-representation-models">Text representation models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#word-representations">Word representations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pre-trained-word-embedding">Pre trained word embedding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainable-word-embedding">Trainable word embedding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fasttext-embedding-sequence">Fasttext embedding sequence</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#char-representations">Char representations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#char-embedding-sequence">Char embedding sequence</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#other-representations">Other representations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chars-per-word-sequence">Chars per word sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#per-chunk-sequencer">Per chunk sequencer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mapping-embedding">Mapping embedding</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#trainable-models">Trainable models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-methods">Common methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compile">compile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fit">fit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#predict">predict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#freeze">freeze</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#keras-wrapper">Keras Wrapper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#more-examples">More examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#rnndigest">RNNDigest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="1_quickstart.html">Quickstart: Binary Classifier Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_drug_rating_regressor.html">Example: Drug rating regressor tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_siamese_semantic_similarity.html">Example: Siamese semantic similarity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_ner_tagger.html">Advanced example: Ner Tagger via BiLSTM-CRF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GiaNLP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Library usage tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/jian01/GiaNLP/blob/main/docs/library_usage.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="library-usage-tutorial">
+<h1>Library usage tutorial<a class="headerlink" href="#library-usage-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<p>The library allows using text as an input to a Keras model in an easy way. All the building blocks are considered models, although not all models are the same kind the share some similarities.</p>
+<p>All the models are in the package <code class="xref py py-mod docutils literal notranslate"><span class="pre">gianlp.models</span></code>.</p>
+<div class="section" id="shared-methods-properties">
+<h3>Shared methods/properties<a class="headerlink" href="#shared-methods-properties" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">serialize()</span></code>:
+This method can be called on any model and will return a byte array that contains all the information needed for loading it again.</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">BaseModel.deserialize(data:</span> <span class="pre">bytes)</span></code>:
+The <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code> class has a method that given any byte array that was the result of a serialize call rebuilds the original object serialized.</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code>:
+All models have to be built calling this method explicitly with a corpus for the models to learn about the language. The behaviour of this will vary depending on the texts representations used.</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">weights_amount()</span></code>:
+All models from the library when built contain a keras model inside, this method computes how many weights the model has.</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">trainable_weights_amount()</span></code>:
+This is the amount of weights that are trainable</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">inputs_shape()</span></code>:
+This retrieves the inputs shapes of the model. If there’s only one input it will return a <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code> object, if there are multiple inputs it will return a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code> objects.
+A <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code> is similar to the <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.TensorShape</span></code> object, contains two properties:</p>
+<ul>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code> a tuple of ints indicating the shape</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code> the type of the input (for example <code class="xref py py-obj docutils literal notranslate"><span class="pre">tf.int32</span></code>)</p></li>
+</ul>
+</li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">outputs_shape</span></code>: The same as the inputs shape but for the model outputs.</p></li>
+</ul>
+</div>
+<div class="section" id="all-models-are-callable">
+<h3>All models are callable<a class="headerlink" href="#all-models-are-callable" title="Permalink to this headline">¶</a></h3>
+<p>Let’s assume you have <strong>any</strong> model instantiated and built:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">#model instantiation</span>
+<span class="n">model</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now the model has some input and output shapes. Let’s assume the input shapes are two int arrays of shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> and <code class="docutils literal notranslate"><span class="pre">(2,2)</span></code>. We can call our model with two kinds of objects, keras layers and numpy arrays.</p>
+<p>With keras layers we can do something like this as we would do with any <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.keras.models.Model</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Input</span>
+
+<span class="n">input1</span> <span class="o">=</span> <span class="n">Input</span><span class="p">((</span><span class="mi">3</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+<span class="n">input2</span> <span class="o">=</span> <span class="n">Input</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+
+<span class="n">model_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">([</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>And then we may use the model output (with shape as specified in <code class="xref py py-meth docutils literal notranslate"><span class="pre">model.outputs_shape</span></code>) in any keras model we like.</p>
+<p>The other way of calling the model is with numpy arrays, this will forward the numpy array through the model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">input1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">input2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">model_output</span> <span class="o">=</span> <span class="n">model</span><span class="p">([</span><span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Here model output would be a numpy array or list of numpy arrays (again, as specified in <code class="xref py py-meth docutils literal notranslate"><span class="pre">model.outputs_shape</span></code>).</p>
+</div>
+<div class="section" id="all-models-know-how-to-preprocess-text">
+<h3>All models know how to preprocess text<a class="headerlink" href="#all-models-know-how-to-preprocess-text" title="Permalink to this headline">¶</a></h3>
+<p>Any model from out library knows how to compute text into numbers that are interpretable for the inputs. With input shapes <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> and <code class="docutils literal notranslate"><span class="pre">(2,2)</span></code> an example would be:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessed</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">preprocess_texts</span><span class="p">([</span><span class="s2">&quot;hi this is an example&quot;</span><span class="p">,</span>
+                                       <span class="s2">&quot;still an example&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This will return a list with of arrays of shape <code class="docutils literal notranslate"><span class="pre">(2,3)</span></code> and <code class="docutils literal notranslate"><span class="pre">(2,2,2)</span></code> where the first dimension is the amount of texts. This can be used for calling the model and evaluate the model although for <em>trainable models</em> we will have a <code class="docutils literal notranslate"><span class="pre">.predict</span></code> method much more recommended.</p>
+</div>
+<div class="section" id="all-models-are-printable">
+<h3>All models are printable<a class="headerlink" href="#all-models-are-printable" title="Permalink to this headline">¶</a></h3>
+<p>Finally, any model can be printed or converted to string returning a summary similar to keras <code class="xref py py-meth docutils literal notranslate"><span class="pre">summary()</span></code> method.</p>
+</div>
+</div>
+<div class="section" id="text-representation-models">
+<h2>Text representation models<a class="headerlink" href="#text-representation-models" title="Permalink to this headline">¶</a></h2>
+<p>The models are going to be built using <em>text representation</em> models as input to <em>trainable models</em>, this is the first kind of building blocks we want to learn.</p>
+<p>A text representation is a way to transform a text into numbers for the neural network to use.</p>
+<div class="section" id="word-representations">
+<h3>Word representations<a class="headerlink" href="#word-representations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="pre-trained-word-embedding">
+<h4>Pre trained word embedding<a class="headerlink" href="#pre-trained-word-embedding" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Trainable weights</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input shape</p></td>
+<td><p>(# sequence maxlen,)</p></td>
+</tr>
+<tr class="row-even"><td><p>Output shape</p></td>
+<td><p>(# sequence maxlen, #embedding dimensions)</p></td>
+</tr>
+</tbody>
+</table>
+<p>This is one of the simplest and most famous text representations. It basically chunks each text in words or tokens and then uses a vector as the representation of each word. Similar words are closer together in cosine distance.</p>
+<p>If we have a pretrained embedding we can use the class <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code> as a text input. The parameters for instantiating it are:</p>
+<ul class="simple">
+<li><p>word2vec_src: this can be either a path to a txt file in word2vec format or a gensim KeyedVectors object.</p></li>
+<li><p>tokenizer: this is a function used for tokenizing the texts, knows how to transform a string into a list of tokens. Must be possible to serialize it with pickle.</p></li>
+<li><p>sequence_maxlen: the maximum length in words for the generated word sequences</p></li>
+</ul>
+<p>So, let’s assume you have a word embedding of 150 dimensions for each word with a max length of 20. The model will internally chunk each text in words and transform them to it’s corresponding embeddings.</p>
+<ul class="simple">
+<li><p>If the model does not know the word a special embedding for unknown words will be assigned. The resulting output shape would be (20,150) for each text.</p></li>
+<li><p>If the text has less than 20 words the remaining embedding will be filled with a 0s vector of 150 dimension. This is referred as a <em>mask</em>, but beware, the mask is only the 0 vectors, the output has no keras masking (in the meaning of using <code class="docutils literal notranslate"><span class="pre">mask=True</span></code> in the embedding layer or using a <code class="docutils literal notranslate"><span class="pre">Masking</span></code> layer). This is not a bug, it’s a feature, keras masking don’t behave friendly with convolutions so <strong>no text representation implements keras masking</strong>, just vectors of zeros at the end. If you want an RNN to stop forwarding when the text finished you will have to add an explicit <code class="docutils literal notranslate"><span class="pre">Masking(0.0)</span></code> layer in front of it, or use our <code class="xref py py-class docutils literal notranslate"><span class="pre">RNNDigest</span></code> <em>trainable model</em>, but we’ll be covering that later.</p></li>
+</ul>
+<p>No embedding in this layer is trainable since this are pretrained, for trainable word embedding or transfer learning word embeddings we have another object.</p>
+</div>
+<div class="section" id="trainable-word-embedding">
+<h4>Trainable word embedding<a class="headerlink" href="#trainable-word-embedding" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Trainable weights</p></td>
+<td><p>0 to (#vocabulary + 1) x #embedding dimensions</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input shape</p></td>
+<td><p>(# sequence maxlen,)</p></td>
+</tr>
+<tr class="row-even"><td><p>Output shape</p></td>
+<td><p>(# sequence maxlen, #embedding dimensions)</p></td>
+</tr>
+</tbody>
+</table>
+<p>The class of this one is <code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableWordEmbeddingSequence</span></code>. It’s another word embedding allowing trainablity, before explaining it parameters I will explain it’s behaviour. This object, as in the <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code>, can receive a pre trained embedding but it’s optional.
+The behaviour of this embedding is the following:</p>
+<ol class="arabic simple">
+<li><p>It learns the vocabulary by learning the most common words in build time.</p></li>
+<li><p>For each word in the vocabulary:</p>
+<ul class="simple">
+<li><p>If a pretrained word embedding is provided and the word is there the vector for that word is taken from the pretrained embeddings.</p></li>
+<li><p>If no pretrained embedding is provided or the word is not known in the pretrained embedding a random vector is assigned for that word.</p></li>
+</ul>
+</li>
+</ol>
+<p>The result is an embedding matrix with two groups, the previously known embeddings and the new word embeddings with the following properties:</p>
+<ul class="simple">
+<li><p>The new word embeddings are ALWAYS trainable.</p></li>
+<li><p>The previously known embeddings can or cannot be trainable by user choice.</p></li>
+<li><p>The embedding assigned to unknown words that may appear in training or inference time is ALWAYS trainable.</p></li>
+</ul>
+<p>Summarizing all this we have three modes for using this object:</p>
+<ul class="simple">
+<li><p>Transfer learning: with pretrained embeddings</p>
+<ul>
+<li><p>Pretrained embeddings frozen</p></li>
+<li><p>Pretrained embeddings trainable</p></li>
+</ul>
+</li>
+<li><p>All vectors trainable</p></li>
+</ul>
+<p>We do NOT recommend using this object without pretrained embeddings, this will result in a lot of trainable weights and a very probable overfitting. Also this vectors will contain the information regarding the task trained but will not be real embeddings by definition.</p>
+<p>Knowing the behaviour, the parameters for initializing the object are:</p>
+<ul class="simple">
+<li><p>tokenizer: this is a function used for tokenizing the texts, knows how to transform a string into a list of tokens. Must be possible to serialize it with pickle.</p></li>
+<li><p>word2vec_src: optional path to word2vec format .txt file or gensim KeyedVectors.</p></li>
+<li><p>min_freq_percentile: a common practice when building word embeddings is fixing a vocabulary size, but, how will you know which number to use? Our library uses a minimum percentile for this, any word that has a frequency of less than this percentile will not be in the vocabulary (i.e. if min_freq_percentile is 5 the 95% most frequent words will be kept)</p></li>
+<li><p>max_vocabulary: this is an optional int for the maximum size of the vocabulary. Can be mixed with the limit imposed by min_freq_percentile. If min_freq_percentile is 0 this will be the only limit (i.e. the vocabulary will be the <code class="docutils literal notranslate"><span class="pre">max_vocabulary</span></code> most common words).</p></li>
+<li><p>embedding_dimension: the dimension of the target embedding</p></li>
+<li><p>sequence_maxlen: the maximum allowed sequence length</p></li>
+<li><p>pretrained_trainable: if the vectors pretrained will also be trained. ignored if word2vec_src is None</p></li>
+<li><p>random_state: the random seed used for random processes</p></li>
+</ul>
+<p>The behaviour for 0 padding, masking and unknown words is the same as in the <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code> class.</p>
+</div>
+<div class="section" id="fasttext-embedding-sequence">
+<h4>Fasttext embedding sequence<a class="headerlink" href="#fasttext-embedding-sequence" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Trainable weights</p></td>
+<td><p>#embedding dimensions</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input shape</p></td>
+<td><p>(# sequence maxlen,)</p></td>
+</tr>
+<tr class="row-even"><td><p>Output shape</p></td>
+<td><p>(# sequence maxlen, #embedding dimensions)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Fasttext is a way of building word embeddings using ngrams. For example let’s assume you have the word <code class="docutils literal notranslate"><span class="pre">automagical</span></code>, we can split it in <code class="docutils literal notranslate"><span class="pre">au</span></code>-<code class="docutils literal notranslate"><span class="pre">to</span></code>-<code class="docutils literal notranslate"><span class="pre">ma</span></code>-<code class="docutils literal notranslate"><span class="pre">gi</span></code>-<code class="docutils literal notranslate"><span class="pre">cal</span></code>, then learn representations for each ngram such as when every ngram vector get’s summed up the vector for <code class="docutils literal notranslate"><span class="pre">automagical</span></code> makes sense.</p>
+<p>If we train this with a big corpus then we have a good embedding generator for words that may not have appeared in the training set, because we can always split a word in it’s ngrams and then sum them.</p>
+<p>Sadly there’s no performant way to compute new vectors for each word, unknown or not, using keras. We need to have a discrete and defined vocabulary, so, given a pretrained fasttext our object does the following:</p>
+<ol class="arabic simple">
+<li><p>In build time creates the vocabulary using the most common words with the same parameters as <code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableWordEmbeddingSequence</span></code>.</p></li>
+<li><p>Computes the word embedding for each word of the vocabulary.</p></li>
+<li><p>Creates a random vector to initialize the embedding for future unknown words.</p></li>
+</ol>
+<p>The resulting embedding matrix will be padded at 0, all vectors generated from fasttext will be fixed. The unknown word vector is <strong>always</strong> trainable.</p>
+<p>The initialization parameters of <code class="xref py py-class docutils literal notranslate"><span class="pre">FasttextEmbeddingSequence</span></code> are:</p>
+<ul class="simple">
+<li><p>tokenizer: this is a function used for tokenizing the texts, knows how to transform a string into a list of tokens. Must be possible to serialize it with pickle.</p></li>
+<li><p>fasttext_src: path to <strong>.bin</strong> facebook format fasttext or gensim FastText object.</p></li>
+<li><p>sequence_maxlen: the maximum allowed sequence length</p></li>
+<li><p>min_freq_percentile: minimum percentile for vocabulary building, any word that has a frequency of less than this percentile will not be in the vopcabulary (i.e. if min_freq_percentile is 0.05 the 95% most frequent words will be kept)</p></li>
+<li><p>max_vocabulary: optional, maximum vocabulary size</p></li>
+<li><p>random_state: the random seed used for random processes</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="char-representations">
+<h3>Char representations<a class="headerlink" href="#char-representations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="char-embedding-sequence">
+<h4>Char embedding sequence<a class="headerlink" href="#char-embedding-sequence" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Trainable weights</p></td>
+<td><p>(#char vocabulary + 1) x #embedding dimensions</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input shape</p></td>
+<td><p>(# sequence maxlen,)</p></td>
+</tr>
+<tr class="row-even"><td><p>Output shape</p></td>
+<td><p>(# sequence maxlen, #embedding dimensions)</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">CharEmbeddingSequence</span></code> object chunks each text into chars and transform each char to a vector. In build time learns the most common chars. All vectors are trainable.</p>
+<p>The initialization parameters are:</p>
+<ul class="simple">
+<li><p>embedding_dimension: the target char embedding dimension</p></li>
+<li><p>sequence_maxlen: the maximum allowed sequence length</p></li>
+<li><p>min_freq_percentile: minimum percentile of the frequency for keeping a char when building the vocabulary</p></li>
+<li><p>random_state: random seed for embedding initialization</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="other-representations">
+<h3>Other representations<a class="headerlink" href="#other-representations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="chars-per-word-sequence">
+<h4>Chars per word sequence<a class="headerlink" href="#chars-per-word-sequence" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Trainable weights</p></td>
+<td><p>#char vocabulary x #embedding dimensions</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input shape</p></td>
+<td><p>(# words maxlen, #chars maxlen)</p></td>
+</tr>
+<tr class="row-even"><td><p>Output shape</p></td>
+<td><p>(# words maxlen, #chars maxlen, #embedding dimensions)</p></td>
+</tr>
+</tbody>
+</table>
+<p>One very common way of using char embeddings is learning representations for OOV (out of vocabulary) words. To do this we can consider each word a sequence of char embeddings and the transform that sequence into one vector for each word. <code class="docutils literal notranslate"><span class="pre">CharPerWordEmbeddingSequence</span></code> gives us that first chars-per-word representation so we can transform it to word vector the way we want.</p>
+<p>The initialization parameters are:</p>
+<ul class="simple">
+<li><p>tokenizer: the word tokenizer needed for spliting the text into words before spliting each word in chars</p></li>
+<li><p>embedding_dimension: the target char embedding dimension</p></li>
+<li><p>word_maxlen: the maximum length of word sequence</p></li>
+<li><p>char_maxlen: the maximum length in chars for each word</p></li>
+<li><p>min_freq_percentile: minimum percentile of the frequency for keeping a char when building the vocabulary</p></li>
+<li><p>random_state: random seed for initialization</p></li>
+</ul>
+<p>In all our objects masking are vectors of zeros, if you need keras masking you can use the keras <code class="docutils literal notranslate"><span class="pre">Masking</span></code> layer before feeding your layers. Beware, if you compute the final vector for each word be sure that the resulting word vector is all zeros if all the sequence char vectors were 0, we want to keep the mapping of a word that didn’t exist as a zero vector so we can use masking over the word sequence too. How can i make sure of this? Use CNNs and RNNs with NO biases, you actually don’t really need biases, since the vectors are trainable.</p>
+</div>
+<div class="section" id="per-chunk-sequencer">
+<h4>Per chunk sequencer<a class="headerlink" href="#per-chunk-sequencer" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Trainable weights</p></td>
+<td><p>the same as the text representation used</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input shape</p></td>
+<td><p>(# chunk maxlen, ) + text representation input shape</p></td>
+</tr>
+<tr class="row-even"><td><p>Output shape</p></td>
+<td><p>(# chunk maxlen, ) + text representation output shape</p></td>
+</tr>
+</tbody>
+</table>
+<p>Let’s imagine you want to split a text into paragraphs, then sentences, then words, then chars per word. Our library supports the full extent of your schizophrenic wishes, that’s why we have a <code class="xref py py-class docutils literal notranslate"><span class="pre">PerChunkSequencer</span></code>.</p>
+<p>The per chunk sequencer accept’s any other text representation and a chunker and applies the text representation along the chunks of the text. The parameters for initializing it are:</p>
+<ul class="simple">
+<li><p>sequencer: the text representation model to use</p></li>
+<li><p>chunker: the picklelizable function that chunks a text into a list of texts</p></li>
+<li><p>chunking_maxlen: the maximum length in amount of chunks allowed</p></li>
+</ul>
+<p>For easier understanding here is an example. The hero’s journey or monomyth is a template followed by a lot of stories for the progression of a hero. It was and is widely used in some of the most influential fictions of the western culture, like “Shrek” the movie.
+Along different stories some steps of the monomyth are present and other aren’t and some heroes may go back a couple of steps sometimes.</p>
+<a class="reference external image-reference" href="_static/hero_journey.png"><img alt="Hero Journey" src="_images/hero_journey.png" /></a>
+<p>We have teamed up with a literature expert and we classified paragraphs of multiple fictions. We want to classify new fictional pieces to find all this steps.</p>
+<p>We could work this as a word sequence, but that won’t work as good as with paragraphs because that’s the minimal unit we want to classify. We are trying to detect higher level sequences, it is too much to ask for a model to learn the transition between steps as a transition of words. Treating this as a word sequence problem would be like making a topic classifier by classifying the words individually.</p>
+<p>We are going to build a structured classifier, where the sequences would be for each paragraph, for each sentence, for each word two representations: a fasttext and a char per word one. Then we could use a BiLSTM-CRF to detect the label of each paragraph and capture the transition probability between steps. Let’s work with the text representations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">my_utils</span> <span class="kn">import</span> <span class="n">paragraph_chunker</span><span class="p">,</span> <span class="n">sentence_chunker</span><span class="p">,</span> <span class="n">word_tokenizer</span>
+</pre></div>
+</div>
+<p>We have somewhere a paragraph chunker (a function that splits text by paragraphs), a sentence chunker (we could use the one in nltk) and a word tokenizer. We said we were going to use chars per word and fasttext word embedding, let’s first build the char per word representation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">char_per_word_repr</span> <span class="o">=</span> <span class="n">CharPerWordEmbeddingSequence</span><span class="p">(</span><span class="n">word_tokenizer</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">word_maxlen</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">char_maxlen</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">charword_per_sentence</span> <span class="o">=</span> <span class="n">PerChunkSequencer</span><span class="p">(</span><span class="n">char_per_word_repr</span><span class="p">,</span> <span class="n">sentence_chunker</span><span class="p">,</span> <span class="n">chunking_maxlen</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">charword_per_paragraph</span> <span class="o">=</span> <span class="n">PerChunkSequencer</span><span class="p">(</span><span class="n">charword_per_sentence</span><span class="p">,</span> <span class="n">paragraph_chunker</span><span class="p">,</span> <span class="n">chunking_maxlen</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To understand a little bit more:</p>
+<ul class="simple">
+<li><p>char_per_word_repr has output shape of <code class="docutils literal notranslate"><span class="pre">(40,12,32)</span></code></p></li>
+<li><p>charword_per_sentence has output shape of <code class="docutils literal notranslate"><span class="pre">(50,40,12,32)</span></code></p></li>
+<li><p>charword_per_paragraph has output shape of <code class="docutils literal notranslate"><span class="pre">(1000,50,40,12,32)</span></code></p></li>
+</ul>
+<p>Now we can learn with convolutions a representation for each word given the char sequence, using the <em>trainable models</em> this will be easy and we will se examples of this.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chars_word_digest</span> <span class="o">=</span> <span class="n">CNN</span><span class="p">(</span><span class="n">charword_per_paragraph</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With this pseudocode we have digested the last two dimensions of <code class="docutils literal notranslate"><span class="pre">(12,32)</span></code> in a vector of dimension 50. The resulting dimension of <code class="docutils literal notranslate"><span class="pre">chars_word_digest</span></code> is <code class="docutils literal notranslate"><span class="pre">(1000,50,40,50)</span></code>.
+Doing something similar for the fasttext sequence we can obtain a sequence of let’s say <code class="docutils literal notranslate"><span class="pre">(1000,50,40,100)</span></code>
+Now we can concatenate the two and obtain a vector of 150 dimensions per word <code class="docutils literal notranslate"><span class="pre">(1000,50,40,150)</span></code>.</p>
+<p>After that we may obtain with a RNN a vector per sentence of 300 dimensions resulting in a shape of <code class="docutils literal notranslate"><span class="pre">(1000,50,300)</span></code>.</p>
+<p>Finally with another RNN we obtain a vector of 500 dimensions per paragraph <code class="docutils literal notranslate"><span class="pre">(1000,500)</span></code>. Now we just need a BiLSTM-CRF at the end.</p>
+<p>And there it is, the architecture for a hero’s journey structured classifier. This kind of classifier for high level structures are not common in the industry but are not impossible to find either. The key for this cases is how easy we built up the high level structure without having to think about preprocessing (i dare you to write this text preprocessor without bugs at the first try, i can’t, specially considering the stories need to be fed the neural network using a generator for ram issues).
+Digesting those shapes with high <em>ndims</em> will be equally easier when we reach the <em>trainable models</em> section of the tutorial.</p>
+</div>
+<div class="section" id="mapping-embedding">
+<h4>Mapping embedding<a class="headerlink" href="#mapping-embedding" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Trainable weights</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input shape</p></td>
+<td><p>(1,)</p></td>
+</tr>
+<tr class="row-even"><td><p>Output shape</p></td>
+<td><p>(#embedding dimensions,)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Sometimes we may have a single embedding for each unique item, for categories, items, ids, users, whatever. With the <code class="xref py py-class docutils literal notranslate"><span class="pre">MappingEmbedding</span></code> we can treat the text as a key to a single vector (not a sequence).</p>
+<p>The parameter for initializing it is just:</p>
+<ul class="simple">
+<li><p>word2vec_src: a word2vec format .txt file indicating which text has which embedding or a KeyedVectors gensim object</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="trainable-models">
+<h2>Trainable models<a class="headerlink" href="#trainable-models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="common-methods">
+<h3>Common methods<a class="headerlink" href="#common-methods" title="Permalink to this headline">¶</a></h3>
+<p>The common methods in all trainable models are:</p>
+<div class="section" id="compile">
+<h4>compile<a class="headerlink" href="#compile" title="Permalink to this headline">¶</a></h4>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">compile()</span></code> is a method for compiling the model following the same parameters as keras models. Previous building is required.</p>
+</div>
+<div class="section" id="fit">
+<h4>fit<a class="headerlink" href="#fit" title="Permalink to this headline">¶</a></h4>
+<p>For training the model, building and compiling is required.</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> is the method for training the model, very similar to keras.</p>
+<p>No matter which format is used for x or validation data, the model is always internally trained with a generator so if batch size elements can fit in ram when preprocessed you will have no ram issues.
+Multi-text models only accept dicts and dataframes in x and simple-text models only series or lists.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableModel</span></code> supports the use of multiprocessing along with generators or inheriting our own <code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code>.</p>
+</div>
+<div class="section" id="predict">
+<h4>predict<a class="headerlink" href="#predict" title="Permalink to this headline">¶</a></h4>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code> supports the same formats as <code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> along with multiprocessing too!</p>
+<p>If the data is in the form of plain texts, an inference batch must be set.</p>
+</div>
+<div class="section" id="freeze">
+<h4>freeze<a class="headerlink" href="#freeze" title="Permalink to this headline">¶</a></h4>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">freeze()</span></code> is inplace, freezes the model’s weights (can’t be undone).</p>
+</div>
+</div>
+<div class="section" id="keras-wrapper">
+<h3>Keras Wrapper<a class="headerlink" href="#keras-wrapper" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">KerasWrapper</span></code> as the name says is a wrapper for any keras model.</p>
+<p>This wrapper can accept inputs in multiple ways.</p>
+<p>The initialization parameters are:</p>
+<ul class="simple">
+<li><p>inputs: the models that are the input of this one. Either a list containing model inputs one by one or a dict indicating which text name is assigned to which inputs. If a list, all should have multi-text input or don’t have it. If it’s a dict all shouldn’t have multi-text input.</p></li>
+<li><p>wrapped_model: the keras model to wrap. if it has multiple inputs, inputs parameter should have the same len</p></li>
+</ul>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Given the following text representations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
+
+<span class="n">char_emb</span> <span class="o">=</span> <span class="n">CharEmbeddingSequence</span><span class="p">(</span><span class="n">embedding_dimension</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">sequence_maxlen</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">min_freq_percentile</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">char_emb_per_word</span> <span class="o">=</span> <span class="n">CharPerWordEmbeddingSequence</span><span class="p">(</span><span class="n">word_tokenize</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">word_maxlen</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">char_maxlen</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">min_freq_percentile</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We know that <code class="docutils literal notranslate"><span class="pre">char_emb</span></code> has an output shape of <code class="docutils literal notranslate"><span class="pre">(20,32)</span></code> and <code class="docutils literal notranslate"><span class="pre">char_emb_per_word</span></code> of <code class="docutils literal notranslate"><span class="pre">(10,8,32)</span></code>.</p>
+<p>Let’s see a few examples:</p>
+<div class="section" id="example-1-one-input">
+<h5>Example 1: one input<a class="headerlink" href="#example-1-one-input" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span><span class="p">,</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">Conv1D</span><span class="p">,</span> <span class="n">GlobalMaxPooling1D</span><span class="p">,</span> <span class="n">Concatenate</span>
+<span class="kn">from</span> <span class="nn">gianlp.models</span> <span class="kn">import</span> <span class="n">KerasWrapper</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span><span class="mi">32</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">(</span><span class="n">char_emb</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output shape would be <code class="docutils literal notranslate"><span class="pre">(1,)</span></code> and the input shape <code class="docutils literal notranslate"><span class="pre">(20,)</span></code> (same as <code class="docutils literal notranslate"><span class="pre">char_emb</span></code> input shape).</p>
+<p>After that if we want to train this model we need to build it, which will build always all the graph, including all models chained. We then compile it and use the fit method.</p>
+</div>
+<div class="section" id="example-2-classifier-per-word">
+<h5>Example 2: classifier per word<a class="headerlink" href="#example-2-classifier-per-word" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span><span class="mi">32</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">(</span><span class="n">char_emb_per_word</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output shape would be <code class="docutils literal notranslate"><span class="pre">(10,1)</span></code> and the input shape <code class="docutils literal notranslate"><span class="pre">(10,8)</span></code>. Here we can see that the wrapper knows how to automatically adapt the input of the model as time distributed over the representation output without telling it explicitly.</p>
+<p>KerasWrapper will assume that any extra ndim (when possible and shapes compatible) needs a time distribution over each extra dimension.</p>
+</div>
+<div class="section" id="example-3-multiple-inputs-chaining-and-automatic-concatenation">
+<h5>Example 3: Multiple inputs, chaining and automatic concatenation<a class="headerlink" href="#example-3-multiple-inputs-chaining-and-automatic-concatenation" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder1</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">encoder1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span><span class="mi">32</span><span class="p">)))</span>
+<span class="n">encoder1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
+<span class="n">encoder1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">encoder1</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">(</span><span class="n">char_emb</span><span class="p">,</span> <span class="n">encoder1</span><span class="p">)</span>
+
+<span class="n">encoder2</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">encoder2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">32</span><span class="p">)))</span>
+<span class="n">encoder2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">encoder2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
+<span class="n">encoder2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">encoder2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
+<span class="n">encoder2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">encoder2</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">(</span><span class="n">char_emb_per_word</span><span class="p">,</span> <span class="n">encoder2</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">encoder1</span></code> has input shape <code class="docutils literal notranslate"><span class="pre">(20,)</span></code> and output shape <code class="docutils literal notranslate"><span class="pre">(20,)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">encoder2</span></code> has input shape <code class="docutils literal notranslate"><span class="pre">(10,8)</span></code> and output shape <code class="docutils literal notranslate"><span class="pre">(20,)</span></code>.</p></li>
+</ul>
+<p>We want to build a classifier using this two encoding of the texts.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">40</span><span class="p">,)))</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">([</span><span class="n">encoder1</span><span class="p">,</span> <span class="n">encoder2</span><span class="p">],</span> <span class="n">classifier</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">classifier</span></code> has two inputs, since the keras model input has dimension (40,) the wrapper realizes it needs to concatenate the outputs of both encoder. We can also build the keras model this way with the same result:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inp1</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="mi">20</span><span class="p">,)</span>
+<span class="n">inp2</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="mi">20</span><span class="p">,)</span>
+<span class="n">concat</span> <span class="o">=</span> <span class="n">Concatenate</span><span class="p">()([</span><span class="n">inp1</span><span class="p">,</span> <span class="n">inp2</span><span class="p">])</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">)(</span><span class="n">concat</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inp1</span><span class="p">,</span> <span class="n">inp2</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">([</span><span class="n">encoder1</span><span class="p">,</span> <span class="n">encoder2</span><span class="p">],</span> <span class="n">classifier</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Either way the result is the same. <code class="docutils literal notranslate"><span class="pre">classifier</span></code> will have inputs shapes <code class="docutils literal notranslate"><span class="pre">[(20,),</span> <span class="pre">(10,8)]</span></code> and output shape <code class="docutils literal notranslate"><span class="pre">(1,)</span></code>.</p>
+<p>We can always chain as many models as we want.</p>
+</div>
+<div class="section" id="example-4-multi-text-input">
+<h5>Example 4: Multi-text input<a class="headerlink" href="#example-4-multi-text-input" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span><span class="mi">32</span><span class="p">)))</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">(</span><span class="n">char_emb</span><span class="p">,</span> <span class="n">encoder</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">encoder</span></code> has input shape <code class="docutils literal notranslate"><span class="pre">(20,)</span></code> and outputs shape <code class="docutils literal notranslate"><span class="pre">(20,)</span></code>.</p>
+<p>We want to train a siamese network but using two different texts.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">40</span><span class="p">,)))</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">([(</span><span class="s1">&#39;text1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">encoder</span><span class="p">]),</span> <span class="p">(</span><span class="s1">&#39;text2&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">encoder</span><span class="p">])],</span> <span class="n">classifier</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">classifier</span></code> has inputs shapes <code class="docutils literal notranslate"><span class="pre">[(20,),</span> <span class="pre">(20,)]</span></code>.
+Since this classifier is multi-text it need to be fed to the two different texts, so <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> no longer accept lists or pandas Series, it needs dict of lists or Dataframes.</p>
+</div>
+</div>
+<div class="section" id="more-examples">
+<h4>More examples<a class="headerlink" href="#more-examples" title="Permalink to this headline">¶</a></h4>
+<p>Real examples involving fiting and predicting are in next pages of this tutorial.</p>
+</div>
+</div>
+<div class="section" id="rnndigest">
+<h3>RNNDigest<a class="headerlink" href="#rnndigest" title="Permalink to this headline">¶</a></h3>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">RNNDigest</span></code> is an easier way of digesting sequences in deep-RNNs but in reality is another implementation of <code class="xref py py-class docutils literal notranslate"><span class="pre">KerasWrapper</span></code>.</p>
+<p>Its initialization parameters are:</p>
+<ul class="simple">
+<li><p>inputs: the inputs of the model</p></li>
+<li><p>units_per_layer: the amount of units per layer</p></li>
+<li><p>rnn_type: the type of rnn, could be “gru” or “lstm”</p></li>
+<li><p>stacked_layers: the amount of layers to stack, 1 by default</p></li>
+<li><p>masking: if apply masking with 0 to the sequence</p></li>
+<li><p>bidirectional: if it’s bidirectional</p></li>
+<li><p>random_seed: the seed for random processes</p></li>
+<li><p>return_sequences: if True, the last RNN layer returns the sequence of states</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to GiaNLP’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="1_quickstart.html" class="btn btn-neutral float-right" title="Quickstart: Binary Classifier Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gianmarco Cafferata.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

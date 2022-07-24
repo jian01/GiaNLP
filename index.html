@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to GiaNLP’s documentation! &mdash; GiaNLP 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Library usage tutorial" href="library_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> GiaNLP
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_usage.html">Library usage tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_quickstart.html">Quickstart: Binary Classifier Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_drug_rating_regressor.html">Example: Drug rating regressor tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_siamese_semantic_similarity.html">Example: Siamese semantic similarity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_ner_tagger.html">Advanced example: Ner Tagger via BiLSTM-CRF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">GiaNLP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to GiaNLP’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/jian01/GiaNLP/blob/main/docs/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="welcome-to-gianlp-s-documentation">
+<h1>Welcome to GiaNLP’s documentation!<a class="headerlink" href="#welcome-to-gianlp-s-documentation" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://github.com/jian01/GiaNLP/actions/workflows/tests.yml/badge.svg?branch=main"><img alt="Tests on latest tensorflow version" src="https://github.com/jian01/GiaNLP/actions/workflows/tests.yml/badge.svg?branch=main" /></a>
+<a class="reference external image-reference" href="https://codecov.io/gh/jian01/GiaNLP"><img alt="codecov" src="https://codecov.io/gh/jian01/GiaNLP/branch/main/graph/badge.svg" /></a>
+</div>
+<div class="section" id="gianlp">
+<h1>GiaNLP<a class="headerlink" href="#gianlp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-this">
+<h2>What is this?<a class="headerlink" href="#what-is-this" title="Permalink to this headline">¶</a></h2>
+<p>Gianlp is library created for the fraud team at Mercadolibre for building, training and deploying NLP models fast.</p>
+<p>It’s main features are:</p>
+<ul class="simple">
+<li><p>Easy text representation integration: The goal of the library is to plug in costless text representations to a vanilla keras model.</p></li>
+<li><p>Easy serialization and deserialization of models: it is easy to transform a complex model to a byte array and then load it for inference or continue the training.</p></li>
+<li><p>Train and inference with text: It is not needed to know how to preprocess the texts or in which order, the model encapsulates all.</p></li>
+<li><p>Keras-like API and support for Keras interaction via the functional API: All models can receive a keras layer and get it’s output like Keras would.</p></li>
+<li><p>Arbitrary graph chaining for model architectures: This models can be chained in any way keras models/layers could be chained.</p></li>
+<li><p>Possibility of stop using the library at any point of the model: You can use the library in any parts of the graph you want and then chain it to a classic keras model, using the library just for the parts that are built with it.</p></li>
+<li><p>Default usage of generators for training and prediction: All texts are fed to the model using generators so preprocessed texts always fit in ram and you don’t have to worry about programming your generator.</p></li>
+<li><p>Sklearn-like experience (hopefully): Although we are far from that the goal of the library is to have an sklearn-like experience. We wan’t to handle multiple object types in the way needed for the things to work.</p></li>
+</ul>
+</div>
+<div class="section" id="good-use-cases-for-this-library">
+<h2>Good use cases for this library<a class="headerlink" href="#good-use-cases-for-this-library" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>I need to build and deploy an NLP model fast: Following some of the examples should be easy to build simple classifiers, regressors, encoders, siamese architectures, etc.</p></li>
+<li><p>I want to test an hypothesis/architecture/representation: For example, let’s assume that you have a classifier built with word embeddings and an RNN, you think that there are a lot of misspelled words so you want a digest of char embeddings for each word to learn unknown words. You can easily build this with the library without concerns about preprocessing. Testing word embeddings vs word embeddings + char embeddings you can test your hypothesis fast inside the library and if it is true modify your vanilla keras model the way you like.</p></li>
+<li><p>I want a lightweight model: Many transfer learning applications of NLP are huge models and slow on inference time. Our text representations allow building simple architectures with lightweight models with similar costs to a transfer learning application.</p></li>
+<li><p>I want a complex architecture: It may be confusing to build a siamese neural network with 3 text representations in each encoder. Coding the generator for those texts is hard and bug-prone, with the library you will only have to chain a few objects.</p></li>
+</ul>
+</div>
+<div class="section" id="not-so-good-use-cases">
+<h2>Not so good use cases<a class="headerlink" href="#not-so-good-use-cases" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>I want to make a state of the art model: We don’t have state of the art text representations yet.</p></li>
+<li><p>I want to interact with the keras model: If you need to interact with the keras model (for example for debugging or interpretability) any part of the model encapsulated by the library will make that task very hard, since we need to prepare the code to stack arbitrary architectures the internal keras model we build has a much more confusing graph that the one you would build using just keras.</p></li>
+<li><p>I want to handle multiple outputs and losses (for example for adversarial training): you may struggle connecting models with multiple outputs (more than one output tensor per model) with our library since it’s not fully tested/implemented.</p></li>
+<li><p>I prefer pytorch</p></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install gianlp
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_usage.html">Library usage tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="library_usage.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_usage.html#text-representation-models">Text representation models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library_usage.html#trainable-models">Trainable models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="1_quickstart.html">Quickstart: Binary Classifier Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_quickstart.html#char-embedding-sequence-classifier">Char embedding sequence classifier</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2_drug_rating_regressor.html">Example: Drug rating regressor tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_drug_rating_regressor.html#multi-text-model-building">Multi-text model building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_drug_rating_regressor.html#evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_drug_rating_regressor.html#serialization-and-deserialization">Serialization and deserialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_siamese_semantic_similarity.html">Example: Siamese semantic similarity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_siamese_semantic_similarity.html#model-architecture">Model architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_siamese_semantic_similarity.html#train-test-split-model-build">Train-test split &amp; Model build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_siamese_semantic_similarity.html#model-train">Model train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_siamese_semantic_similarity.html#text-embedding">Text embedding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_siamese_semantic_similarity.html#random-encoder-neighbors">Random encoder neighbors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="4_ner_tagger.html">Advanced example: Ner Tagger via BiLSTM-CRF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ner_tagger.html#model-architecture">Model architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ner_tagger.html#model-building">Model Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ner_tagger.html#training">Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ner_tagger.html#evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ner_tagger.html#serialization">Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full API Reference</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="library_usage.html" class="btn btn-neutral float-right" title="Library usage tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gianmarco Cafferata.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

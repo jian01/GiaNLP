@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickstart: Binary Classifier Tutorial &mdash; GiaNLP 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Example: Drug rating regressor tutorial" href="2_drug_rating_regressor.html" />
+    <link rel="prev" title="Library usage tutorial" href="library_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> GiaNLP
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="library_usage.html">Library usage tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart: Binary Classifier Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#char-embedding-sequence-classifier">Char embedding sequence classifier</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#text-representations">Text representations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sequence-digest">Sequence digest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binary-classifier">Binary classifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#train-test-split">Train-test split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#serialization">Serialization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2_drug_rating_regressor.html">Example: Drug rating regressor tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_siamese_semantic_similarity.html">Example: Siamese semantic similarity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_ner_tagger.html">Advanced example: Ner Tagger via BiLSTM-CRF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GiaNLP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Quickstart: Binary Classifier Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/jian01/GiaNLP/blob/main/docs/1_quickstart.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="quickstart-binary-classifier-tutorial">
+<h1>Quickstart: Binary Classifier Tutorial<a class="headerlink" href="#quickstart-binary-classifier-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>We are going to build a binary classifier for the <a class="reference external" href="https://www.dt.fee.unicamp.br/~tiago/smsspamcollection/">SMS Spam collection</a>. We start by downloading it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!curl -O https://raw.githubusercontent.com/justmarkham/DAT5/master/data/SMSSpamCollection.txt
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="o">%</span> <span class="n">Total</span>    <span class="o">%</span> <span class="n">Received</span> <span class="o">%</span> <span class="n">Xferd</span>  <span class="n">Average</span> <span class="n">Speed</span>   <span class="n">Time</span>    <span class="n">Time</span>     <span class="n">Time</span>  <span class="n">Current</span>
+                                 <span class="n">Dload</span>  <span class="n">Upload</span>   <span class="n">Total</span>   <span class="n">Spent</span>    <span class="n">Left</span>  <span class="n">Speed</span>
+<span class="mi">100</span>  <span class="mi">466</span><span class="n">k</span>  <span class="mi">100</span>  <span class="mi">466</span><span class="n">k</span>    <span class="mi">0</span>     <span class="mi">0</span>   <span class="mi">944</span><span class="n">k</span>      <span class="mi">0</span> <span class="o">--</span><span class="p">:</span><span class="o">--</span><span class="p">:</span><span class="o">--</span> <span class="o">--</span><span class="p">:</span><span class="o">--</span><span class="p">:</span><span class="o">--</span> <span class="o">--</span><span class="p">:</span><span class="o">--</span><span class="p">:</span><span class="o">--</span>  <span class="mi">946</span><span class="n">k</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;SMSSpamCollection.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     label                                               text
+4898   ham  I cant pick the phone right now. Pls send a me...
+3023   ham                        How dare you change my ring
+333   spam  Call Germany for only 1 pence per minute! Call...
+3934   ham                             Playin space poker, u?
+12    spam  URGENT! You have won a 1 week FREE membership ...
+</pre></div>
+</div>
+<p>Across tutorials we are going to build different classifier architectures, we will start with the simpler one: char embedding sequence</p>
+<div class="section" id="char-embedding-sequence-classifier">
+<h2>Char embedding sequence classifier<a class="headerlink" href="#char-embedding-sequence-classifier" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gianlp.models</span> <span class="kn">import</span> <span class="n">CharEmbeddingSequence</span><span class="p">,</span> <span class="n">RNNDigest</span><span class="p">,</span> <span class="n">KerasWrapper</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WARNING</span><span class="p">:</span><span class="n">nlp_builder</span><span class="p">:</span><span class="n">The</span> <span class="n">NLP</span> <span class="n">builder</span> <span class="n">disables</span> <span class="nb">all</span> <span class="n">tensorflow</span><span class="o">-</span><span class="n">related</span> <span class="n">logging</span>
+</pre></div>
+</div>
+<p>We create a char embedding sequences for the texts, with a dimension for each char embedding of 32 and a sequence maxlen that matches percentile 80 of texts lengths</p>
+<div class="section" id="text-representations">
+<h3>Text representations<a class="headerlink" href="#text-representations" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">CharEmbeddingSequence</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Help</span> <span class="n">on</span> <span class="n">function</span> <span class="fm">__init__</span> <span class="ow">in</span> <span class="n">module</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">text_representations</span><span class="o">.</span><span class="n">char_embedding_sequence</span><span class="p">:</span>
+
+<span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">sequence_maxlen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="n">min_freq_percentile</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">embedding_dimension</span><span class="p">:</span> <span class="n">The</span> <span class="n">char</span> <span class="n">embedding</span> <span class="n">dimension</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">sequence_maxlen</span><span class="p">:</span> <span class="n">The</span> <span class="n">maximum</span> <span class="n">allowed</span> <span class="n">sequence</span> <span class="n">length</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">min_freq_percentile</span><span class="p">:</span> <span class="n">minimum</span> <span class="n">percentile</span> <span class="n">of</span> <span class="n">the</span> <span class="n">frequency</span> <span class="k">for</span> <span class="n">keeping</span> <span class="n">a</span> <span class="n">char</span><span class="o">.</span>
+                                <span class="n">If</span> <span class="n">a</span> <span class="n">char</span> <span class="n">has</span> <span class="n">a</span> <span class="n">frequency</span> <span class="n">lower</span> <span class="n">than</span> <span class="n">this</span> <span class="n">percentile</span> <span class="n">it</span>
+                                <span class="n">would</span> <span class="n">be</span> <span class="n">treated</span> <span class="k">as</span> <span class="n">unknown</span><span class="o">.</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">random_state</span><span class="p">:</span> <span class="n">random</span> <span class="n">seed</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">char_emb</span> <span class="o">=</span> <span class="n">CharEmbeddingSequence</span><span class="p">(</span><span class="n">embedding_dimension</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">sequence_maxlen</span><span class="o">=</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.8</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We can see that the output shape of the char embedding is a sequence of at most 137 chars with 32 dimensions each</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">char_emb</span><span class="o">.</span><span class="n">outputs_shape</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">137</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">float32</span>
+</pre></div>
+</div>
+<p>We also have an input shape for interacting with keras models</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">char_emb</span><span class="o">.</span><span class="n">inputs_shape</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">137</span><span class="p">,),</span> <span class="n">int32</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sequence-digest">
+<h3>Sequence digest<a class="headerlink" href="#sequence-digest" title="Permalink to this headline">¶</a></h3>
+<p>The output sequence will be colapsed in a single state using RNNs</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">RNNDigest</span><span class="o">.</span><span class="fm">__new__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Help</span> <span class="n">on</span> <span class="n">function</span> <span class="fm">__new__</span> <span class="ow">in</span> <span class="n">module</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">rnn_digest</span><span class="p">:</span>
+
+<span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">ForwardRef</span><span class="p">(</span><span class="s1">&#39;BaseModel&#39;</span><span class="p">)],</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">ForwardRef</span><span class="p">(</span><span class="s1">&#39;BaseModel&#39;</span><span class="p">)]]],</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">base_model</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">],</span> <span class="n">units_per_layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">rnn_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stacked_layers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">masking</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">bidirectional</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">the</span> <span class="n">inputs</span> <span class="n">of</span> <span class="n">the</span> <span class="n">model</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">units_per_layer</span><span class="p">:</span> <span class="n">the</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">units</span> <span class="n">per</span> <span class="n">layer</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">rnn_type</span><span class="p">:</span> <span class="n">the</span> <span class="nb">type</span> <span class="n">of</span> <span class="n">rnn</span><span class="p">,</span> <span class="n">could</span> <span class="n">be</span> <span class="s2">&quot;rnn&quot;</span><span class="p">,</span> <span class="s2">&quot;gru&quot;</span> <span class="ow">or</span> <span class="s2">&quot;lstm&quot;</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">stacked_layers</span><span class="p">:</span> <span class="n">the</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">layers</span> <span class="n">to</span> <span class="n">stack</span><span class="p">,</span> <span class="mi">1</span> <span class="n">by</span> <span class="n">default</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">masking</span><span class="p">:</span> <span class="k">if</span> <span class="n">apply</span> <span class="n">masking</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">to</span> <span class="n">the</span> <span class="n">sequence</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">bidirectional</span><span class="p">:</span> <span class="k">if</span> <span class="n">it</span><span class="s1">&#39;s bidirectional</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">random_seed</span><span class="p">:</span> <span class="n">the</span> <span class="n">seed</span> <span class="k">for</span> <span class="n">random</span> <span class="n">processes</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">extra</span> <span class="n">arguments</span> <span class="k">for</span> <span class="n">the</span> <span class="n">rnn</span> <span class="n">layers</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rnn_digest</span> <span class="o">=</span> <span class="n">RNNDigest</span><span class="p">(</span><span class="n">char_emb</span><span class="p">,</span> <span class="n">units_per_layer</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">rnn_type</span><span class="o">=</span><span class="s1">&#39;gru&#39;</span><span class="p">,</span> <span class="n">stacked_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output shape is now a single vector</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rnn_digest</span><span class="o">.</span><span class="n">outputs_shape</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WARNING</span><span class="p">:</span><span class="n">nlp_builder</span><span class="p">:</span><span class="n">If</span> <span class="n">the</span> <span class="n">model</span> <span class="ow">and</span> <span class="n">wrapper</span> <span class="n">inputs</span> <span class="n">mismatch</span> <span class="n">it</span> <span class="n">will</span> <span class="n">only</span> <span class="n">be</span> <span class="n">noticed</span> <span class="n">when</span> <span class="n">building</span><span class="p">,</span> <span class="n">before</span> <span class="n">that</span> <span class="n">output</span> <span class="n">shape</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">estimate</span> <span class="ow">and</span> <span class="n">does</span> <span class="ow">not</span> <span class="k">assert</span> <span class="n">inputs</span><span class="o">.</span>
+<span class="p">(</span><span class="mi">40</span><span class="p">,),</span> <span class="n">float32</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="binary-classifier">
+<h3>Binary classifier<a class="headerlink" href="#binary-classifier" title="Permalink to this headline">¶</a></h3>
+<p>Now we just simply build a binary classifier with an input of 40 floats and compile the keras model as always</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">KerasWrapper</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Help</span> <span class="n">on</span> <span class="n">function</span> <span class="fm">__init__</span> <span class="ow">in</span> <span class="n">module</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">keras_wrapper</span><span class="p">:</span>
+
+<span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">ForwardRef</span><span class="p">(</span><span class="s1">&#39;BaseModel&#39;</span><span class="p">)],</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">ForwardRef</span><span class="p">(</span><span class="s1">&#39;BaseModel&#39;</span><span class="p">)]]],</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">base_model</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">],</span> <span class="n">wrapped_model</span><span class="p">:</span> <span class="n">keras</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">Model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">the</span> <span class="n">models</span> <span class="n">that</span> <span class="n">are</span> <span class="n">the</span> <span class="nb">input</span> <span class="n">of</span> <span class="n">this</span> <span class="n">one</span><span class="o">.</span> <span class="n">Either</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">containing</span> <span class="n">model</span> <span class="n">inputs</span> <span class="n">one</span> <span class="n">by</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">a</span>
+    <span class="nb">dict</span> <span class="n">indicating</span> <span class="n">which</span> <span class="n">text</span> <span class="n">name</span> <span class="ow">is</span> <span class="n">assigned</span> <span class="n">to</span> <span class="n">which</span> <span class="n">inputs</span><span class="o">.</span>
+    <span class="n">If</span> <span class="n">a</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">all</span> <span class="n">should</span> <span class="n">have</span> <span class="n">multi</span><span class="o">-</span><span class="n">text</span> <span class="nb">input</span> <span class="ow">or</span> <span class="n">don</span><span class="s1">&#39;t have it. If it&#39;</span><span class="n">s</span> <span class="n">a</span> <span class="nb">dict</span> <span class="nb">all</span> <span class="n">shouldn</span><span class="s1">&#39;t have multi-text</span>
+    <span class="nb">input</span><span class="o">.</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">wrapped_model</span><span class="p">:</span> <span class="n">the</span> <span class="n">keras</span> <span class="n">model</span> <span class="n">to</span> <span class="n">wrap</span><span class="o">.</span>
+                            <span class="k">if</span> <span class="n">it</span> <span class="n">has</span> <span class="n">multiple</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">inputs</span> <span class="n">should</span> <span class="n">be</span> <span class="n">a</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">have</span> <span class="n">the</span> <span class="n">same</span> <span class="nb">len</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">random_seed</span><span class="p">:</span> <span class="n">random</span> <span class="n">seed</span> <span class="n">used</span> <span class="ow">in</span> <span class="n">training</span>
+    <span class="p">:</span><span class="n">raises</span><span class="p">:</span>
+        <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">When</span> <span class="n">the</span> <span class="n">wrapped</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">a</span> <span class="n">keras</span> <span class="n">model</span>
+        <span class="o">-</span> <span class="n">When</span> <span class="n">the</span> <span class="n">keras</span> <span class="n">model</span> <span class="n">to</span> <span class="n">wrap</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">have</span> <span class="n">a</span> <span class="n">defined</span> <span class="nb">input</span> <span class="n">shape</span>
+        <span class="o">-</span> <span class="n">When</span> <span class="n">inputs</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">models</span> <span class="ow">and</span> <span class="n">some</span> <span class="n">of</span> <span class="n">the</span> <span class="n">models</span> <span class="ow">in</span> <span class="n">the</span> <span class="nb">input</span> <span class="n">have</span> <span class="n">multi</span><span class="o">-</span><span class="n">text</span> <span class="nb">input</span> <span class="ow">and</span> <span class="n">others</span>
+        <span class="n">don</span><span class="s1">&#39;t.</span>
+        <span class="o">-</span> <span class="n">When</span> <span class="n">inputs</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">tuples</span> <span class="ow">and</span> <span class="nb">any</span> <span class="n">of</span> <span class="n">the</span> <span class="n">models</span> <span class="n">has</span> <span class="n">multi</span><span class="o">-</span><span class="n">text</span> <span class="nb">input</span><span class="o">.</span>
+        <span class="o">-</span> <span class="n">When</span> <span class="n">inputs</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">tuples</span> <span class="k">with</span> <span class="n">length</span> <span class="n">one</span>
+        <span class="o">-</span> <span class="n">When</span> <span class="n">inputs</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">containing</span> <span class="n">some</span> <span class="n">tuples</span> <span class="n">of</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="ow">and</span> <span class="n">some</span> <span class="n">models</span>
+        <span class="o">-</span> <span class="n">When</span> <span class="n">the</span> <span class="n">wrapped</span> <span class="n">model</span> <span class="n">has</span> <span class="n">multiple</span> <span class="n">inputs</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">inputs</span> <span class="n">don</span><span class="s1">&#39;t have the same length as the inputs in</span>
+        <span class="n">wrapped</span> <span class="n">model</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">KerasWrapper</span><span class="p">(</span><span class="n">rnn_digest</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">outputs_shape</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WARNING</span><span class="p">:</span><span class="n">nlp_builder</span><span class="p">:</span><span class="n">If</span> <span class="n">the</span> <span class="n">model</span> <span class="ow">and</span> <span class="n">wrapper</span> <span class="n">inputs</span> <span class="n">mismatch</span> <span class="n">it</span> <span class="n">will</span> <span class="n">only</span> <span class="n">be</span> <span class="n">noticed</span> <span class="n">when</span> <span class="n">building</span><span class="p">,</span> <span class="n">before</span> <span class="n">that</span> <span class="n">output</span> <span class="n">shape</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">estimate</span> <span class="ow">and</span> <span class="n">does</span> <span class="ow">not</span> <span class="k">assert</span> <span class="n">inputs</span><span class="o">.</span>
+<span class="n">WARNING</span><span class="p">:</span><span class="n">nlp_builder</span><span class="p">:</span><span class="n">If</span> <span class="n">the</span> <span class="n">model</span> <span class="ow">and</span> <span class="n">wrapper</span> <span class="n">inputs</span> <span class="n">mismatch</span> <span class="n">it</span> <span class="n">will</span> <span class="n">only</span> <span class="n">be</span> <span class="n">noticed</span> <span class="n">when</span> <span class="n">building</span><span class="p">,</span> <span class="n">before</span> <span class="n">that</span> <span class="n">output</span> <span class="n">shape</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">estimate</span> <span class="ow">and</span> <span class="n">does</span> <span class="ow">not</span> <span class="k">assert</span> <span class="n">inputs</span><span class="o">.</span>
+
+<span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">float32</span>
+</pre></div>
+</div>
+<p>We can see a model summary</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>WARNING:nlp_builder:If the model and wrapper inputs mismatch it will only be noticed when building, before that output shape is an estimate and does not assert inputs.
+WARNING:nlp_builder:If the model and wrapper inputs mismatch it will only be noticed when building, before that output shape is an estimate and does not assert inputs.
+WARNING:nlp_builder:If the model and wrapper inputs mismatch it will only be noticed when building, before that output shape is an estimate and does not assert inputs.
+WARNING:nlp_builder:If the model and wrapper inputs mismatch it will only be noticed when building, before that output shape is an estimate and does not assert inputs.
+        Model        |      Inputs shape     |      Output shape     |Trainable|  Total  |    Connected to
+                     |                       |                       | weights | weights |
+==============================================================================================================
+7fd2a8539c70 CharEmbe|     (137,), int32     |   (137, 32), float32  |    ?    |    ?    |
+7fd2300e7520 KerasWra|   (137, 32), float32  |     (40,), float32    |    ?    |    ?    |7fd2a8539c70 CharEmb
+7fd1e0413520 KerasWra|     (40,), float32    |     (1,), float32     |    ?    |    ?    |7fd2300e7520 KerasWr
+==============================================================================================================
+                     |                       |                       |    ?    |    ?    |
+</pre></div>
+</div>
+<p>Note all the warnings and the <code class="docutils literal notranslate"><span class="pre">?</span></code> symbols at the weights. This is because the model has not yet been built, the numbers shown will only work if the models are connected properly and the weights are impossible to know if the representations are not built.</p>
+</div>
+<div class="section" id="train-test-split">
+<h3>Train-test split<a class="headerlink" href="#train-test-split" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">*</span><span class="mf">0.8</span><span class="p">)]</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">*</span><span class="mf">0.8</span><span class="p">):]</span>
+</pre></div>
+</div>
+<p>Our models need to be built always with a corpus of texts for the text representations to learn how to preprocess. In the case of the char embedding it needs to learn the most common chars to know how many vector will train.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>We can see the complete summary now</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">Model</span>        <span class="o">|</span>      <span class="n">Inputs</span> <span class="n">shape</span>     <span class="o">|</span>      <span class="n">Output</span> <span class="n">shape</span>     <span class="o">|</span><span class="n">Trainable</span><span class="o">|</span>  <span class="n">Total</span>  <span class="o">|</span>    <span class="n">Connected</span> <span class="n">to</span>
+                     <span class="o">|</span>                       <span class="o">|</span>                       <span class="o">|</span> <span class="n">weights</span> <span class="o">|</span> <span class="n">weights</span> <span class="o">|</span>
+<span class="o">==============================================================================================================</span>
+<span class="mi">7</span><span class="n">fd2a8539c70</span> <span class="n">CharEmbe</span><span class="o">|</span>     <span class="p">(</span><span class="mi">137</span><span class="p">,),</span> <span class="n">int32</span>     <span class="o">|</span>   <span class="p">(</span><span class="mi">137</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">float32</span>  <span class="o">|</span>   <span class="mi">3392</span>  <span class="o">|</span>   <span class="mi">3392</span>  <span class="o">|</span>
+<span class="mi">7</span><span class="n">fd2300e7520</span> <span class="n">KerasWra</span><span class="o">|</span>   <span class="p">(</span><span class="mi">137</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">float32</span>  <span class="o">|</span>     <span class="p">(</span><span class="mi">40</span><span class="p">,),</span> <span class="n">float32</span>    <span class="o">|</span>  <span class="mi">22112</span>  <span class="o">|</span>  <span class="mi">22112</span>  <span class="o">|</span><span class="mi">7</span><span class="n">fd2a8539c70</span> <span class="n">CharEmb</span>
+<span class="mi">7</span><span class="n">fd1e0413520</span> <span class="n">KerasWra</span><span class="o">|</span>     <span class="p">(</span><span class="mi">40</span><span class="p">,),</span> <span class="n">float32</span>    <span class="o">|</span>     <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">float32</span>     <span class="o">|</span>  <span class="mi">23793</span>  <span class="o">|</span>  <span class="mi">23793</span>  <span class="o">|</span><span class="mi">7</span><span class="n">fd2300e7520</span> <span class="n">KerasWr</span>
+<span class="o">==============================================================================================================</span>
+                     <span class="o">|</span>                       <span class="o">|</span>                       <span class="o">|</span>  <span class="mi">23793</span>  <span class="o">|</span>  <span class="mi">23793</span>  <span class="o">|</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="training">
+<h3>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">keras_wrapper</span><span class="o">.</span><span class="n">KerasWrapper</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
+<span class="n">early_stopping</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span><span class="n">patience</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">,</span> <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Help</span> <span class="n">on</span> <span class="n">method</span> <span class="n">fit</span> <span class="ow">in</span> <span class="n">module</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">trainable_model</span><span class="p">:</span>
+
+<span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Generator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">]],</span> <span class="n">NoneType</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">callbacks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">Callback</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">validation_split</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">validation_data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Generator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">]],</span> <span class="n">NoneType</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">]],</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">steps_per_epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">validation_steps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">History</span> <span class="n">method</span> <span class="n">of</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">keras_wrapper</span><span class="o">.</span><span class="n">KerasWrapper</span> <span class="n">instance</span>
+    <span class="n">Fits</span> <span class="n">the</span> <span class="n">model</span>
+
+    <span class="p">:</span><span class="n">param</span> <span class="n">x</span><span class="p">:</span> <span class="n">Input</span> <span class="n">data</span><span class="o">.</span> <span class="n">Could</span> <span class="n">be</span><span class="p">:</span>
+        <span class="mf">1.</span> <span class="n">A</span> <span class="n">generator</span> <span class="n">that</span> <span class="n">yields</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="n">where</span> <span class="n">x</span> <span class="ow">is</span> <span class="nb">any</span> <span class="n">valid</span> <span class="nb">format</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">y</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">target</span> <span class="n">numpy</span> <span class="n">array</span>
+        <span class="mf">2.</span> <span class="n">A</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">texts</span>
+        <span class="mf">3.</span> <span class="n">A</span> <span class="n">pandas</span> <span class="n">Series</span>
+        <span class="mf">4.</span> <span class="n">A</span> <span class="n">pandas</span> <span class="n">Dataframe</span>
+        <span class="mf">5.</span> <span class="n">A</span> <span class="nb">dict</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">containing</span> <span class="n">texts</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">y</span><span class="p">:</span> <span class="n">Target</span><span class="p">,</span> <span class="n">ignored</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">generator</span><span class="o">.</span> <span class="n">Numpy</span> <span class="n">array</span><span class="o">.</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">batch_size</span><span class="p">:</span> <span class="n">Batch</span> <span class="n">size</span> <span class="k">for</span> <span class="n">training</span><span class="p">,</span> <span class="n">ignored</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">generator</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">epochs</span><span class="p">:</span> <span class="n">Amount</span> <span class="n">of</span> <span class="n">epochs</span> <span class="n">to</span> <span class="n">train</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">verbose</span><span class="p">:</span> <span class="n">verbose</span> <span class="n">mode</span> <span class="k">for</span> <span class="n">Keras</span> <span class="n">training</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">Callback</span> <span class="n">objects</span> <span class="k">for</span> <span class="n">Keras</span> <span class="n">model</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">validation_split</span><span class="p">:</span> <span class="n">the</span> <span class="n">proportion</span> <span class="n">of</span> <span class="n">data</span> <span class="n">to</span> <span class="n">use</span> <span class="k">for</span> <span class="n">validation</span><span class="p">,</span> <span class="n">ignored</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">generator</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">validation_data</span><span class="p">:</span> <span class="n">Validation</span> <span class="n">data</span><span class="o">.</span> <span class="n">Could</span> <span class="n">be</span><span class="p">:</span>
+        <span class="mf">1.</span> <span class="n">A</span> <span class="nb">tuple</span> <span class="n">containing</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="n">where</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">text</span> <span class="ow">and</span> <span class="n">y</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">target</span> <span class="n">numpy</span> <span class="n">array</span>
+        <span class="mf">2.</span> <span class="n">A</span> <span class="n">generator</span> <span class="n">that</span> <span class="n">yields</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="n">where</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">texts</span> <span class="ow">and</span> <span class="n">y</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">target</span> <span class="n">numpy</span> <span class="n">array</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">steps_per_epoch</span><span class="p">:</span> <span class="n">Amount</span> <span class="n">of</span> <span class="n">generator</span> <span class="n">steps</span> <span class="n">to</span> <span class="n">consider</span> <span class="n">an</span> <span class="n">epoch</span> <span class="k">as</span> <span class="n">finished</span><span class="o">.</span> <span class="n">Ignored</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">a</span>
+    <span class="n">generator</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">validation_steps</span><span class="p">:</span> <span class="n">Amount</span> <span class="n">of</span> <span class="n">generator</span> <span class="n">steps</span> <span class="n">to</span> <span class="n">consider</span> <span class="n">to</span> <span class="n">feed</span> <span class="n">each</span> <span class="n">validation</span> <span class="n">evaluation</span><span class="o">.</span>
+                            <span class="n">Ignored</span> <span class="k">if</span> <span class="n">validation_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">a</span> <span class="n">generator</span>
+    <span class="p">:</span><span class="k">return</span><span class="p">:</span> <span class="n">A</span> <span class="n">History</span> <span class="nb">object</span><span class="o">.</span> <span class="n">Its</span> <span class="n">History</span><span class="o">.</span><span class="n">history</span> <span class="n">attribute</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">record</span> <span class="n">of</span> <span class="n">training</span> <span class="n">loss</span> <span class="n">values</span> <span class="ow">and</span> <span class="n">metrics</span> <span class="n">values</span>
+    <span class="n">at</span> <span class="n">successive</span> <span class="n">epochs</span><span class="p">,</span> <span class="k">as</span> <span class="n">well</span> <span class="k">as</span> <span class="n">validation</span> <span class="n">loss</span> <span class="n">values</span> <span class="ow">and</span> <span class="n">validation</span> <span class="n">metrics</span> <span class="n">values</span> <span class="p">(</span><span class="k">if</span> <span class="n">applicable</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hst</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">train</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="s1">&#39;spam&#39;</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stopping</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Epoch</span> <span class="mi">1</span><span class="o">/</span><span class="mi">30</span>
+<span class="mi">15</span><span class="o">/</span><span class="mi">15</span> <span class="p">[</span><span class="o">==============================</span><span class="p">]</span> <span class="o">-</span> <span class="mi">10</span><span class="n">s</span> <span class="mi">162</span><span class="n">ms</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">loss</span><span class="p">:</span> <span class="mf">0.4862</span> <span class="o">-</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.8016</span> <span class="o">-</span> <span class="n">val_loss</span><span class="p">:</span> <span class="mf">0.3075</span> <span class="o">-</span> <span class="n">val_accuracy</span><span class="p">:</span> <span class="mf">0.8828</span>
+<span class="n">Epoch</span> <span class="mi">2</span><span class="o">/</span><span class="mi">30</span>
+<span class="mi">15</span><span class="o">/</span><span class="mi">15</span> <span class="p">[</span><span class="o">==============================</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="n">s</span> <span class="mi">35</span><span class="n">ms</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">loss</span><span class="p">:</span> <span class="mf">0.3187</span> <span class="o">-</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.8805</span> <span class="o">-</span> <span class="n">val_loss</span><span class="p">:</span> <span class="mf">0.2899</span> <span class="o">-</span> <span class="n">val_accuracy</span><span class="p">:</span> <span class="mf">0.8906</span>
+<span class="n">Epoch</span> <span class="mi">3</span><span class="o">/</span><span class="mi">30</span>
+<span class="mi">15</span><span class="o">/</span><span class="mi">15</span> <span class="p">[</span><span class="o">==============================</span><span class="p">]</span> <span class="o">-</span> <span class="mi">0</span><span class="n">s</span> <span class="mi">32</span><span class="n">ms</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">loss</span><span class="p">:</span> <span class="mf">0.2495</span> <span class="o">-</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9112</span> <span class="o">-</span> <span class="n">val_loss</span><span class="p">:</span> <span class="mf">0.2561</span> <span class="o">-</span> <span class="n">val_accuracy</span><span class="p">:</span> <span class="mf">0.9102</span>
+<span class="n">Epoch</span> <span class="mi">4</span><span class="o">/</span><span class="mi">30</span>
+<span class="mi">15</span><span class="o">/</span><span class="mi">15</span> <span class="p">[</span><span class="o">==============================</span><span class="p">]</span> <span class="o">-</span> <span class="mi">0</span><span class="n">s</span> <span class="mi">32</span><span class="n">ms</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">loss</span><span class="p">:</span> <span class="mf">0.2233</span> <span class="o">-</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9245</span> <span class="o">-</span> <span class="n">val_loss</span><span class="p">:</span> <span class="mf">0.1870</span> <span class="o">-</span> <span class="n">val_accuracy</span><span class="p">:</span> <span class="mf">0.9336</span>
+<span class="n">Epoch</span> <span class="mi">5</span><span class="o">/</span><span class="mi">30</span>
+<span class="mi">15</span><span class="o">/</span><span class="mi">15</span> <span class="p">[</span><span class="o">==============================</span><span class="p">]</span> <span class="o">-</span> <span class="mi">0</span><span class="n">s</span> <span class="mi">31</span><span class="n">ms</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">loss</span><span class="p">:</span> <span class="mf">0.1731</span> <span class="o">-</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9430</span> <span class="o">-</span> <span class="n">val_loss</span><span class="p">:</span> <span class="mf">0.1805</span> <span class="o">-</span> <span class="n">val_accuracy</span><span class="p">:</span> <span class="mf">0.9414</span>
+<span class="n">Epoch</span> <span class="mi">6</span><span class="o">/</span><span class="mi">30</span>
+<span class="mi">15</span><span class="o">/</span><span class="mi">15</span> <span class="p">[</span><span class="o">==============================</span><span class="p">]</span> <span class="o">-</span> <span class="mi">0</span><span class="n">s</span> <span class="mi">32</span><span class="n">ms</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">loss</span><span class="p">:</span> <span class="mf">0.1335</span> <span class="o">-</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9589</span> <span class="o">-</span> <span class="n">val_loss</span><span class="p">:</span> <span class="mf">0.1678</span> <span class="o">-</span> <span class="n">val_accuracy</span><span class="p">:</span> <span class="mf">0.9609</span>
+<span class="n">Epoch</span> <span class="mi">7</span><span class="o">/</span><span class="mi">30</span>
+<span class="mi">15</span><span class="o">/</span><span class="mi">15</span> <span class="p">[</span><span class="o">==============================</span><span class="p">]</span> <span class="o">-</span> <span class="mi">0</span><span class="n">s</span> <span class="mi">31</span><span class="n">ms</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">loss</span><span class="p">:</span> <span class="mf">0.1227</span> <span class="o">-</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9651</span> <span class="o">-</span> <span class="n">val_loss</span><span class="p">:</span> <span class="mf">0.1681</span> <span class="o">-</span> <span class="n">val_accuracy</span><span class="p">:</span> <span class="mf">0.9453</span>
+<span class="n">Epoch</span> <span class="mi">8</span><span class="o">/</span><span class="mi">30</span>
+<span class="mi">15</span><span class="o">/</span><span class="mi">15</span> <span class="p">[</span><span class="o">==============================</span><span class="p">]</span> <span class="o">-</span> <span class="mi">0</span><span class="n">s</span> <span class="mi">33</span><span class="n">ms</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">loss</span><span class="p">:</span> <span class="mf">0.0929</span> <span class="o">-</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9750</span> <span class="o">-</span> <span class="n">val_loss</span><span class="p">:</span> <span class="mf">0.1784</span> <span class="o">-</span> <span class="n">val_accuracy</span><span class="p">:</span> <span class="mf">0.9531</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Help</span> <span class="n">on</span> <span class="n">method</span> <span class="n">predict</span> <span class="ow">in</span> <span class="n">module</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">trainable_model</span><span class="p">:</span>
+
+<span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Generator</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">steps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">],</span> <span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">array</span><span class="o">&gt;</span><span class="p">]</span> <span class="n">method</span> <span class="n">of</span> <span class="n">gianlp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">keras_wrapper</span><span class="o">.</span><span class="n">KerasWrapper</span> <span class="n">instance</span>
+    <span class="n">Predicts</span> <span class="n">using</span> <span class="n">the</span> <span class="n">model</span>
+
+    <span class="p">:</span><span class="n">param</span> <span class="n">x</span><span class="p">:</span> <span class="n">could</span> <span class="n">be</span><span class="p">:</span>
+        <span class="mf">1.</span> <span class="n">A</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">texts</span>
+        <span class="mf">2.</span> <span class="n">A</span> <span class="n">pandas</span> <span class="n">Series</span>
+        <span class="mf">3.</span> <span class="n">A</span> <span class="n">pandas</span> <span class="n">Dataframe</span>
+        <span class="mf">4.</span> <span class="n">A</span> <span class="nb">dict</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">containing</span> <span class="n">texts</span>
+        <span class="mf">5.</span> <span class="n">A</span> <span class="n">generator</span> <span class="n">of</span> <span class="nb">any</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">formats</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">steps</span><span class="p">:</span> <span class="n">steps</span> <span class="k">for</span> <span class="n">the</span> <span class="n">generator</span><span class="p">,</span> <span class="n">ignored</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span>
+    <span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">arguments</span> <span class="k">for</span> <span class="n">keras</span> <span class="n">predict</span> <span class="n">method</span>
+    <span class="p">:</span><span class="k">return</span><span class="p">:</span> <span class="n">the</span> <span class="n">output</span> <span class="n">of</span> <span class="n">the</span> <span class="n">keras</span> <span class="n">model</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">test_preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">test_preds</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="mf">0.01580496</span><span class="p">],</span>
+       <span class="p">[</span><span class="mf">0.01534021</span><span class="p">],</span>
+       <span class="p">[</span><span class="mf">0.9671472</span> <span class="p">],</span>
+       <span class="o">...</span><span class="p">,</span>
+       <span class="p">[</span><span class="mf">0.01837054</span><span class="p">],</span>
+       <span class="p">[</span><span class="mf">0.01742908</span><span class="p">],</span>
+       <span class="p">[</span><span class="mf">0.01805047</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy: &quot;</span><span class="p">,</span>
+      <span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">((</span><span class="n">test</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="s1">&#39;spam&#39;</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span> <span class="n">test_preds</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">&gt;</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Accuracy</span><span class="p">:</span>  <span class="mf">0.9614090195198564</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="serialization">
+<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline">¶</a></h3>
+<p>The model is serialized as bytes for loading later</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="mi">661113</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gianlp.models</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="n">model2</span> <span class="o">=</span> <span class="n">BaseModel</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When serialized the model lost some of our own library layers, this is optional and is meant to simplify the graph and make the deserialization faster.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">Model</span>        <span class="o">|</span>      <span class="n">Inputs</span> <span class="n">shape</span>     <span class="o">|</span>      <span class="n">Output</span> <span class="n">shape</span>     <span class="o">|</span><span class="n">Trainable</span><span class="o">|</span>  <span class="n">Total</span>  <span class="o">|</span>    <span class="n">Connected</span> <span class="n">to</span>
+                     <span class="o">|</span>                       <span class="o">|</span>                       <span class="o">|</span> <span class="n">weights</span> <span class="o">|</span> <span class="n">weights</span> <span class="o">|</span>
+<span class="o">==============================================================================================================</span>
+<span class="mi">7</span><span class="n">fd180ab8b20</span> <span class="n">CharEmbe</span><span class="o">|</span>     <span class="p">(</span><span class="mi">137</span><span class="p">,),</span> <span class="n">int32</span>     <span class="o">|</span>   <span class="p">(</span><span class="mi">137</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">float32</span>  <span class="o">|</span>   <span class="mi">3392</span>  <span class="o">|</span>   <span class="mi">3392</span>  <span class="o">|</span>
+<span class="mi">7</span><span class="n">fd15bd90190</span> <span class="n">KerasWra</span><span class="o">|</span>   <span class="p">(</span><span class="mi">137</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">float32</span>  <span class="o">|</span>     <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">float32</span>     <span class="o">|</span>  <span class="mi">23793</span>  <span class="o">|</span>  <span class="mi">23793</span>  <span class="o">|</span><span class="mi">7</span><span class="n">fd180ab8b20</span> <span class="n">CharEmb</span>
+<span class="o">==============================================================================================================</span>
+                     <span class="o">|</span>                       <span class="o">|</span>                       <span class="o">|</span>  <span class="mi">23793</span>  <span class="o">|</span>  <span class="mi">23793</span>  <span class="o">|</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">test_preds2</span> <span class="o">=</span> <span class="n">model2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">test_preds</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">==</span> <span class="n">test_preds2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="library_usage.html" class="btn btn-neutral float-left" title="Library usage tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="2_drug_rating_regressor.html" class="btn btn-neutral float-right" title="Example: Drug rating regressor tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gianmarco Cafferata.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
