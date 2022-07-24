@@ -1,0 +1,44 @@
+gianlp.models.trainable\_model.TrainableModel
+=============================================
+
+.. currentmodule:: gianlp.models.trainable_model
+
+.. autoclass:: TrainableModel
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TrainableModel.build
+      ~TrainableModel.compile
+      ~TrainableModel.deserialize
+      ~TrainableModel.fit
+      ~TrainableModel.freeze
+      ~TrainableModel.has_multi_text_input
+      ~TrainableModel.predict
+      ~TrainableModel.preprocess_texts
+      ~TrainableModel.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TrainableModel.inputs
+      ~TrainableModel.inputs_shape
+      ~TrainableModel.outputs_shape
+      ~TrainableModel.trainable_weights_amount
+      ~TrainableModel.weights_amount
+   
+   

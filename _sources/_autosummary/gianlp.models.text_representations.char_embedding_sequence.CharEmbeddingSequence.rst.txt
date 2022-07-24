@@ -1,0 +1,40 @@
+gianlp.models.text\_representations.char\_embedding\_sequence.CharEmbeddingSequence
+===================================================================================
+
+.. currentmodule:: gianlp.models.text_representations.char_embedding_sequence
+
+.. autoclass:: CharEmbeddingSequence
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~CharEmbeddingSequence.build
+      ~CharEmbeddingSequence.deserialize
+      ~CharEmbeddingSequence.has_multi_text_input
+      ~CharEmbeddingSequence.preprocess_texts
+      ~CharEmbeddingSequence.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CharEmbeddingSequence.inputs
+      ~CharEmbeddingSequence.inputs_shape
+      ~CharEmbeddingSequence.outputs_shape
+      ~CharEmbeddingSequence.trainable_weights_amount
+      ~CharEmbeddingSequence.weights_amount
+   
+   

@@ -1,0 +1,44 @@
+gianlp.models.keras\_wrapper.KerasWrapper
+=========================================
+
+.. currentmodule:: gianlp.models.keras_wrapper
+
+.. autoclass:: KerasWrapper
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~KerasWrapper.build
+      ~KerasWrapper.compile
+      ~KerasWrapper.deserialize
+      ~KerasWrapper.fit
+      ~KerasWrapper.freeze
+      ~KerasWrapper.has_multi_text_input
+      ~KerasWrapper.predict
+      ~KerasWrapper.preprocess_texts
+      ~KerasWrapper.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~KerasWrapper.inputs
+      ~KerasWrapper.inputs_shape
+      ~KerasWrapper.outputs_shape
+      ~KerasWrapper.trainable_weights_amount
+      ~KerasWrapper.weights_amount
+   
+   

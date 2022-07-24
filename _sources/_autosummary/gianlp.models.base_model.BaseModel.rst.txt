@@ -1,0 +1,40 @@
+gianlp.models.base\_model.BaseModel
+===================================
+
+.. currentmodule:: gianlp.models.base_model
+
+.. autoclass:: BaseModel
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BaseModel.build
+      ~BaseModel.deserialize
+      ~BaseModel.has_multi_text_input
+      ~BaseModel.preprocess_texts
+      ~BaseModel.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BaseModel.inputs
+      ~BaseModel.inputs_shape
+      ~BaseModel.outputs_shape
+      ~BaseModel.trainable_weights_amount
+      ~BaseModel.weights_amount
+   
+   

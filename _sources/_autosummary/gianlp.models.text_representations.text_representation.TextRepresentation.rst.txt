@@ -1,0 +1,40 @@
+gianlp.models.text\_representations.text\_representation.TextRepresentation
+===========================================================================
+
+.. currentmodule:: gianlp.models.text_representations.text_representation
+
+.. autoclass:: TextRepresentation
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TextRepresentation.build
+      ~TextRepresentation.deserialize
+      ~TextRepresentation.has_multi_text_input
+      ~TextRepresentation.preprocess_texts
+      ~TextRepresentation.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TextRepresentation.inputs
+      ~TextRepresentation.inputs_shape
+      ~TextRepresentation.outputs_shape
+      ~TextRepresentation.trainable_weights_amount
+      ~TextRepresentation.weights_amount
+   
+   

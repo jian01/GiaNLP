@@ -1,0 +1,26 @@
+gianlp.utils.Sequence
+=====================
+
+.. currentmodule:: gianlp.utils
+
+.. autoclass:: Sequence
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Sequence.on_epoch_end
+   
+   
+
+   
+   
+   

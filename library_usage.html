@@ -124,29 +124,29 @@
 <div class="section" id="model">
 <h2>Model<a class="headerlink" href="#model" title="Permalink to this heading"></a></h2>
 <p>The library allows using text as an input to a Keras model in an easy way. All the building blocks are considered models, although not all models are the same kind the share some similarities.</p>
-<p>All the models are in the package <code class="xref py py-mod docutils literal notranslate"><span class="pre">gianlp.models</span></code>.</p>
+<p>All the models are in the package <a class="reference internal" href="_autosummary/gianlp.models.html#module-gianlp.models" title="gianlp.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gianlp.models</span></code></a>.</p>
 <div class="section" id="shared-methods-properties">
 <h3>Shared methods/properties<a class="headerlink" href="#shared-methods-properties" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">serialize()</span></code>:
+<li><p><a class="reference internal" href="_autosummary/gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel.serialize" title="gianlp.models.base_model.BaseModel.serialize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">serialize()</span></code></a>:
 This method can be called on any model and will return a byte array that contains all the information needed for loading it again.</p></li>
 <li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">BaseModel.deserialize(data:</span> <span class="pre">bytes)</span></code>:
-The <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code> class has a method that given any byte array that was the result of a serialize call rebuilds the original object serialized.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code>:
+The <a class="reference internal" href="_autosummary/gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel" title="gianlp.models.base_model.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></a> class has a method that given any byte array that was the result of a serialize call rebuilds the original object serialized.</p></li>
+<li><p><a class="reference internal" href="_autosummary/gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel.build" title="gianlp.models.base_model.BaseModel.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>:
 All models have to be built calling this method explicitly with a corpus for the models to learn about the language. The behaviour of this will vary depending on the texts representations used.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">weights_amount()</span></code>:
+<li><p><a class="reference internal" href="_autosummary/gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel.weights_amount" title="gianlp.models.base_model.BaseModel.weights_amount"><code class="xref py py-meth docutils literal notranslate"><span class="pre">weights_amount()</span></code></a>:
 All models from the library when built contain a keras model inside, this method computes how many weights the model has.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">trainable_weights_amount()</span></code>:
+<li><p><a class="reference internal" href="_autosummary/gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel.trainable_weights_amount" title="gianlp.models.base_model.BaseModel.trainable_weights_amount"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trainable_weights_amount()</span></code></a>:
 This is the amount of weights that are trainable</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">inputs_shape()</span></code>:
-This retrieves the inputs shapes of the model. If there’s only one input it will return a <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code> object, if there are multiple inputs it will return a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code> objects.
-A <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code> is similar to the <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.TensorShape</span></code> object, contains two properties:</p>
+<li><p><a class="reference internal" href="_autosummary/gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel.inputs_shape" title="gianlp.models.base_model.BaseModel.inputs_shape"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inputs_shape()</span></code></a>:
+This retrieves the inputs shapes of the model. If there’s only one input it will return a <a class="reference internal" href="_autosummary/gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code></a> object, if there are multiple inputs it will return a list of <a class="reference internal" href="_autosummary/gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code></a> objects.
+A <a class="reference internal" href="_autosummary/gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelIOShape</span></code></a> is similar to the <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.TensorShape</span></code> object, contains two properties:</p>
 <ul>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code> a tuple of ints indicating the shape</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code> the type of the input (for example <code class="xref py py-obj docutils literal notranslate"><span class="pre">tf.int32</span></code>)</p></li>
+<li><p><a class="reference internal" href="_autosummary/gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape.shape" title="gianlp.models.base_model.ModelIOShape.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a> a tuple of ints indicating the shape</p></li>
+<li><p><a class="reference internal" href="_autosummary/gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape.dtype" title="gianlp.models.base_model.ModelIOShape.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a> the type of the input (for example <code class="xref py py-obj docutils literal notranslate"><span class="pre">tf.int32</span></code>)</p></li>
 </ul>
 </li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">outputs_shape</span></code>: The same as the inputs shape but for the model outputs.</p></li>
+<li><p><a class="reference internal" href="_autosummary/gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel.outputs_shape" title="gianlp.models.base_model.BaseModel.outputs_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outputs_shape</span></code></a>: The same as the inputs shape but for the model outputs.</p></li>
 </ul>
 </div>
 <div class="section" id="all-models-are-callable">
@@ -223,7 +223,7 @@ A <code class="xref py py-class docutils literal notranslate"><span class="pre">
 </tbody>
 </table>
 <p>This is one of the simplest and most famous text representations. It basically chunks each text in words or tokens and then uses a vector as the representation of each word. Similar words are closer together in cosine distance.</p>
-<p>If we have a pretrained embedding we can use the class <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code> as a text input. The parameters for instantiating it are:</p>
+<p>If we have a pretrained embedding we can use the class <a class="reference internal" href="_autosummary/gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence.html#gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence" title="gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code></a> as a text input. The parameters for instantiating it are:</p>
 <ul class="simple">
 <li><p>word2vec_src: this can be either a path to a txt file in word2vec format or a gensim KeyedVectors object.</p></li>
 <li><p>tokenizer: this is a function used for tokenizing the texts, knows how to transform a string into a list of tokens. Must be possible to serialize it with pickle.</p></li>
@@ -232,7 +232,7 @@ A <code class="xref py py-class docutils literal notranslate"><span class="pre">
 <p>So, let’s assume you have a word embedding of 150 dimensions for each word with a max length of 20. The model will internally chunk each text in words and transform them to it’s corresponding embeddings.</p>
 <ul class="simple">
 <li><p>If the model does not know the word a special embedding for unknown words will be assigned. The resulting output shape would be (20,150) for each text.</p></li>
-<li><p>If the text has less than 20 words the remaining embedding will be filled with a 0s vector of 150 dimension. This is referred as a <em>mask</em>, but beware, the mask is only the 0 vectors, the output has no keras masking (in the meaning of using <code class="docutils literal notranslate"><span class="pre">mask=True</span></code> in the embedding layer or using a <code class="docutils literal notranslate"><span class="pre">Masking</span></code> layer). This is not a bug, it’s a feature, keras masking don’t behave friendly with convolutions so <strong>no text representation implements keras masking</strong>, just vectors of zeros at the end. If you want an RNN to stop forwarding when the text finished you will have to add an explicit <code class="docutils literal notranslate"><span class="pre">Masking(0.0)</span></code> layer in front of it, or use our <code class="xref py py-class docutils literal notranslate"><span class="pre">RNNDigest</span></code> <em>trainable model</em>, but we’ll be covering that later.</p></li>
+<li><p>If the text has less than 20 words the remaining embedding will be filled with a 0s vector of 150 dimension. This is referred as a <em>mask</em>, but beware, the mask is only the 0 vectors, the output has no keras masking (in the meaning of using <code class="docutils literal notranslate"><span class="pre">mask=True</span></code> in the embedding layer or using a <code class="docutils literal notranslate"><span class="pre">Masking</span></code> layer). This is not a bug, it’s a feature, keras masking don’t behave friendly with convolutions so <strong>no text representation implements keras masking</strong>, just vectors of zeros at the end. If you want an RNN to stop forwarding when the text finished you will have to add an explicit <code class="docutils literal notranslate"><span class="pre">Masking(0.0)</span></code> layer in front of it, or use our <a class="reference internal" href="_autosummary/gianlp.models.rnn_digest.RNNDigest.html#gianlp.models.rnn_digest.RNNDigest" title="gianlp.models.rnn_digest.RNNDigest"><code class="xref py py-class docutils literal notranslate"><span class="pre">RNNDigest</span></code></a> <em>trainable model</em>, but we’ll be covering that later.</p></li>
 </ul>
 <p>No embedding in this layer is trainable since this are pretrained, for trainable word embedding or transfer learning word embeddings we have another object.</p>
 </div>
@@ -260,7 +260,7 @@ A <code class="xref py py-class docutils literal notranslate"><span class="pre">
 </tr>
 </tbody>
 </table>
-<p>The class of this one is <code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableWordEmbeddingSequence</span></code>. It’s another word embedding allowing trainablity, before explaining it parameters I will explain it’s behaviour. This object, as in the <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code>, can receive a pre trained embedding but it’s optional.
+<p>The class of this one is <a class="reference internal" href="_autosummary/gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.html#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableWordEmbeddingSequence</span></code></a>. It’s another word embedding allowing trainablity, before explaining it parameters I will explain it’s behaviour. This object, as in the <a class="reference internal" href="_autosummary/gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence.html#gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence" title="gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code></a>, can receive a pre trained embedding but it’s optional.
 The behaviour of this embedding is the following:</p>
 <ol class="arabic simple">
 <li><p>It learns the vocabulary by learning the most common words in build time.</p></li>
@@ -299,7 +299,7 @@ The behaviour of this embedding is the following:</p>
 <li><p>pretrained_trainable: if the vectors pretrained will also be trained. ignored if word2vec_src is None</p></li>
 <li><p>random_state: the random seed used for random processes</p></li>
 </ul>
-<p>The behaviour for 0 padding, masking and unknown words is the same as in the <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code> class.</p>
+<p>The behaviour for 0 padding, masking and unknown words is the same as in the <a class="reference internal" href="_autosummary/gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence.html#gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence" title="gianlp.models.text_representations.pre_trained_word_embedding_sequence.PreTrainedWordEmbeddingSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code></a> class.</p>
 </div>
 <div class="section" id="fasttext-embedding-sequence">
 <h4>Fasttext embedding sequence<a class="headerlink" href="#fasttext-embedding-sequence" title="Permalink to this heading"></a></h4>
@@ -329,12 +329,12 @@ The behaviour of this embedding is the following:</p>
 <p>If we train this with a big corpus then we have a good embedding generator for words that may not have appeared in the training set, because we can always split a word in it’s ngrams and then sum them.</p>
 <p>Sadly there’s no performant way to compute new vectors for each word, unknown or not, using keras. We need to have a discrete and defined vocabulary, so, given a pretrained fasttext our object does the following:</p>
 <ol class="arabic simple">
-<li><p>In build time creates the vocabulary using the most common words with the same parameters as <code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableWordEmbeddingSequence</span></code>.</p></li>
+<li><p>In build time creates the vocabulary using the most common words with the same parameters as <a class="reference internal" href="_autosummary/gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.html#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableWordEmbeddingSequence</span></code></a>.</p></li>
 <li><p>Computes the word embedding for each word of the vocabulary.</p></li>
 <li><p>Creates a random vector to initialize the embedding for future unknown words.</p></li>
 </ol>
 <p>The resulting embedding matrix will be padded at 0, all vectors generated from fasttext will be fixed. The unknown word vector is <strong>always</strong> trainable.</p>
-<p>The initialization parameters of <code class="xref py py-class docutils literal notranslate"><span class="pre">FasttextEmbeddingSequence</span></code> are:</p>
+<p>The initialization parameters of <a class="reference internal" href="_autosummary/gianlp.models.text_representations.fasttext_embedding_sequence.FasttextEmbeddingSequence.html#gianlp.models.text_representations.fasttext_embedding_sequence.FasttextEmbeddingSequence" title="gianlp.models.text_representations.fasttext_embedding_sequence.FasttextEmbeddingSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">FasttextEmbeddingSequence</span></code></a> are:</p>
 <ul class="simple">
 <li><p>tokenizer: this is a function used for tokenizing the texts, knows how to transform a string into a list of tokens. Must be possible to serialize it with pickle.</p></li>
 <li><p>fasttext_src: path to <strong>.bin</strong> facebook format fasttext or gensim FastText object.</p></li>
@@ -371,7 +371,7 @@ The behaviour of this embedding is the following:</p>
 </tr>
 </tbody>
 </table>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">CharEmbeddingSequence</span></code> object chunks each text into chars and transform each char to a vector. In build time learns the most common chars. All vectors are trainable.</p>
+<p>The <a class="reference internal" href="_autosummary/gianlp.models.text_representations.char_embedding_sequence.CharEmbeddingSequence.html#gianlp.models.text_representations.char_embedding_sequence.CharEmbeddingSequence" title="gianlp.models.text_representations.char_embedding_sequence.CharEmbeddingSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharEmbeddingSequence</span></code></a> object chunks each text into chars and transform each char to a vector. In build time learns the most common chars. All vectors are trainable.</p>
 <p>The initialization parameters are:</p>
 <ul class="simple">
 <li><p>embedding_dimension: the target char embedding dimension</p></li>
@@ -443,7 +443,7 @@ The behaviour of this embedding is the following:</p>
 </tr>
 </tbody>
 </table>
-<p>Let’s imagine you want to split a text into paragraphs, then sentences, then words, then chars per word. Our library supports the full extent of your schizophrenic wishes, that’s why we have a <code class="xref py py-class docutils literal notranslate"><span class="pre">PerChunkSequencer</span></code>.</p>
+<p>Let’s imagine you want to split a text into paragraphs, then sentences, then words, then chars per word. Our library supports the full extent of your schizophrenic wishes, that’s why we have a <a class="reference internal" href="_autosummary/gianlp.models.text_representations.per_chunk_sequencer.PerChunkSequencer.html#gianlp.models.text_representations.per_chunk_sequencer.PerChunkSequencer" title="gianlp.models.text_representations.per_chunk_sequencer.PerChunkSequencer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerChunkSequencer</span></code></a>.</p>
 <p>The per chunk sequencer accept’s any other text representation and a chunker and applies the text representation along the chunks of the text. The parameters for initializing it are:</p>
 <ul class="simple">
 <li><p>sequencer: the text representation model to use</p></li>
@@ -507,7 +507,7 @@ Digesting those shapes with high <em>ndims</em> will be equally easier when we r
 </tr>
 </tbody>
 </table>
-<p>Sometimes we may have a single embedding for each unique item, for categories, items, ids, users, whatever. With the <code class="xref py py-class docutils literal notranslate"><span class="pre">MappingEmbedding</span></code> we can treat the text as a key to a single vector (not a sequence).</p>
+<p>Sometimes we may have a single embedding for each unique item, for categories, items, ids, users, whatever. With the <a class="reference internal" href="_autosummary/gianlp.models.text_representations.mapping_embedding.MappingEmbedding.html#gianlp.models.text_representations.mapping_embedding.MappingEmbedding" title="gianlp.models.text_representations.mapping_embedding.MappingEmbedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">MappingEmbedding</span></code></a> we can treat the text as a key to a single vector (not a sequence).</p>
 <p>The parameter for initializing it is just:</p>
 <ul class="simple">
 <li><p>word2vec_src: a word2vec format .txt file indicating which text has which embedding or a KeyedVectors gensim object</p></li>
@@ -522,29 +522,29 @@ Digesting those shapes with high <em>ndims</em> will be equally easier when we r
 <p>The common methods in all trainable models are:</p>
 <div class="section" id="compile">
 <h4>compile<a class="headerlink" href="#compile" title="Permalink to this heading"></a></h4>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">compile()</span></code> is a method for compiling the model following the same parameters as keras models. Previous building is required.</p>
+<p><a class="reference internal" href="_autosummary/gianlp.models.trainable_model.TrainableModel.html#gianlp.models.trainable_model.TrainableModel.compile" title="gianlp.models.trainable_model.TrainableModel.compile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compile()</span></code></a> is a method for compiling the model following the same parameters as keras models. Previous building is required.</p>
 </div>
 <div class="section" id="fit">
 <h4>fit<a class="headerlink" href="#fit" title="Permalink to this heading"></a></h4>
 <p>For training the model, building and compiling is required.</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> is the method for training the model, very similar to keras.</p>
+<p><a class="reference internal" href="_autosummary/gianlp.models.trainable_model.TrainableModel.html#gianlp.models.trainable_model.TrainableModel.fit" title="gianlp.models.trainable_model.TrainableModel.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> is the method for training the model, very similar to keras.</p>
 <p>No matter which format is used for x or validation data, the model is always internally trained with a generator so if batch size elements can fit in ram when preprocessed you will have no ram issues.
 Multi-text models only accept dicts and dataframes in x and simple-text models only series or lists.</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableModel</span></code> supports the use of multiprocessing along with generators or inheriting our own <code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code>.</p>
+<p><a class="reference internal" href="_autosummary/gianlp.models.trainable_model.TrainableModel.html#gianlp.models.trainable_model.TrainableModel" title="gianlp.models.trainable_model.TrainableModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableModel</span></code></a> supports the use of multiprocessing along with generators or inheriting our own <a class="reference internal" href="_autosummary/gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code></a>.</p>
 </div>
 <div class="section" id="predict">
 <h4>predict<a class="headerlink" href="#predict" title="Permalink to this heading"></a></h4>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code> supports the same formats as <code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> along with multiprocessing too!</p>
+<p><a class="reference internal" href="_autosummary/gianlp.models.trainable_model.TrainableModel.html#gianlp.models.trainable_model.TrainableModel.predict" title="gianlp.models.trainable_model.TrainableModel.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a> supports the same formats as <a class="reference internal" href="_autosummary/gianlp.models.trainable_model.TrainableModel.html#gianlp.models.trainable_model.TrainableModel.fit" title="gianlp.models.trainable_model.TrainableModel.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> along with multiprocessing too!</p>
 <p>If the data is in the form of plain texts, an inference batch must be set.</p>
 </div>
 <div class="section" id="freeze">
 <h4>freeze<a class="headerlink" href="#freeze" title="Permalink to this heading"></a></h4>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">freeze()</span></code> is inplace, freezes the model’s weights (can’t be undone).</p>
+<p><a class="reference internal" href="_autosummary/gianlp.models.trainable_model.TrainableModel.html#gianlp.models.trainable_model.TrainableModel.freeze" title="gianlp.models.trainable_model.TrainableModel.freeze"><code class="xref py py-meth docutils literal notranslate"><span class="pre">freeze()</span></code></a> is inplace, freezes the model’s weights (can’t be undone).</p>
 </div>
 </div>
 <div class="section" id="keras-wrapper">
 <h3>Keras Wrapper<a class="headerlink" href="#keras-wrapper" title="Permalink to this heading"></a></h3>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">KerasWrapper</span></code> as the name says is a wrapper for any keras model.</p>
+<p>The <a class="reference internal" href="_autosummary/gianlp.models.keras_wrapper.KerasWrapper.html#gianlp.models.keras_wrapper.KerasWrapper" title="gianlp.models.keras_wrapper.KerasWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">KerasWrapper</span></code></a> as the name says is a wrapper for any keras model.</p>
 <p>This wrapper can accept inputs in multiple ways.</p>
 <p>The initialization parameters are:</p>
 <ul class="simple">
@@ -661,7 +661,7 @@ Since this classifier is multi-text it need to be fed to the two different texts
 </div>
 <div class="section" id="rnndigest">
 <h3>RNNDigest<a class="headerlink" href="#rnndigest" title="Permalink to this heading"></a></h3>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">RNNDigest</span></code> is an easier way of digesting sequences in deep-RNNs but in reality is another implementation of <code class="xref py py-class docutils literal notranslate"><span class="pre">KerasWrapper</span></code>.</p>
+<p><a class="reference internal" href="_autosummary/gianlp.models.rnn_digest.RNNDigest.html#gianlp.models.rnn_digest.RNNDigest" title="gianlp.models.rnn_digest.RNNDigest"><code class="xref py py-class docutils literal notranslate"><span class="pre">RNNDigest</span></code></a> is an easier way of digesting sequences in deep-RNNs but in reality is another implementation of <a class="reference internal" href="_autosummary/gianlp.models.keras_wrapper.KerasWrapper.html#gianlp.models.keras_wrapper.KerasWrapper" title="gianlp.models.keras_wrapper.KerasWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">KerasWrapper</span></code></a>.</p>
 <p>Its initialization parameters are:</p>
 <ul class="simple">
 <li><p>inputs: the inputs of the model</p></li>

@@ -1,0 +1,40 @@
+gianlp.models.text\_representations.fasttext\_embedding\_sequence.FasttextEmbeddingSequence
+===========================================================================================
+
+.. currentmodule:: gianlp.models.text_representations.fasttext_embedding_sequence
+
+.. autoclass:: FasttextEmbeddingSequence
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FasttextEmbeddingSequence.build
+      ~FasttextEmbeddingSequence.deserialize
+      ~FasttextEmbeddingSequence.has_multi_text_input
+      ~FasttextEmbeddingSequence.preprocess_texts
+      ~FasttextEmbeddingSequence.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FasttextEmbeddingSequence.inputs
+      ~FasttextEmbeddingSequence.inputs_shape
+      ~FasttextEmbeddingSequence.outputs_shape
+      ~FasttextEmbeddingSequence.trainable_weights_amount
+      ~FasttextEmbeddingSequence.weights_amount
+   
+   

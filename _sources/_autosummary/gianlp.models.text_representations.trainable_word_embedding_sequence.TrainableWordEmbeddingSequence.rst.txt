@@ -1,0 +1,40 @@
+gianlp.models.text\_representations.trainable\_word\_embedding\_sequence.TrainableWordEmbeddingSequence
+=======================================================================================================
+
+.. currentmodule:: gianlp.models.text_representations.trainable_word_embedding_sequence
+
+.. autoclass:: TrainableWordEmbeddingSequence
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TrainableWordEmbeddingSequence.build
+      ~TrainableWordEmbeddingSequence.deserialize
+      ~TrainableWordEmbeddingSequence.has_multi_text_input
+      ~TrainableWordEmbeddingSequence.preprocess_texts
+      ~TrainableWordEmbeddingSequence.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TrainableWordEmbeddingSequence.inputs
+      ~TrainableWordEmbeddingSequence.inputs_shape
+      ~TrainableWordEmbeddingSequence.outputs_shape
+      ~TrainableWordEmbeddingSequence.trainable_weights_amount
+      ~TrainableWordEmbeddingSequence.weights_amount
+   
+   

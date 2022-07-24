@@ -1,0 +1,34 @@
+gianlp.models
+=============
+
+.. automodule:: gianlp.models
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: _autosummary/modules.rst
+   :recursive:
+
+      gianlp.models.base_model
+      gianlp.models.keras_wrapper
+      gianlp.models.rnn_digest
+      gianlp.models.text_representations
+      gianlp.models.trainable_model
+

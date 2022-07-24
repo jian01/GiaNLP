@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gianlp &mdash; GiaNLP 0.0.1 documentation</title>
+  <title>gianlp.models.keras_wrapper &mdash; GiaNLP 0.0.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="gianlp.keras_layers" href="gianlp.keras_layers.html" />
-    <link rel="prev" title="Full API Reference" href="../modules.html" /> 
+    <link rel="next" title="gianlp.models.keras_wrapper.KerasWrapper" href="gianlp.models.keras_wrapper.KerasWrapper.html" />
+    <link rel="prev" title="gianlp.models.base_model.ModelIOShape" href="gianlp.models.base_model.ModelIOShape.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,9 +49,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../3_siamese_semantic_similarity.html">Example: Siamese semantic similarity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../4_ner_tagger.html">Advanced example: Ner Tagger via BiLSTM-CRF</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Full API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">gianlp</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="gianlp.html">gianlp</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="gianlp.keras_layers.html">gianlp.keras_layers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gianlp.models.html">gianlp.models</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="gianlp.models.html">gianlp.models</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.base_model.html">gianlp.models.base_model</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">gianlp.models.keras_wrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.rnn_digest.html">gianlp.models.rnn_digest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.text_representations.html">gianlp.models.text_representations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.trainable_model.html">gianlp.models.trainable_model</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="gianlp.utils.html">gianlp.utils</a></li>
 </ul>
 </li>
@@ -74,9 +81,11 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../modules.html">Full API Reference</a> &raquo;</li>
-      <li>gianlp</li>
+          <li><a href="gianlp.html">gianlp</a> &raquo;</li>
+          <li><a href="gianlp.models.html">gianlp.models</a> &raquo;</li>
+      <li>gianlp.models.keras_wrapper</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/jian01/GiaNLP/blob/main/docs/_autosummary/gianlp.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/jian01/GiaNLP/blob/main/docs/_autosummary/gianlp.models.keras_wrapper.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -84,23 +93,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="module-gianlp">
-<span id="gianlp"></span><h1>gianlp<a class="headerlink" href="#module-gianlp" title="Permalink to this heading"></a></h1>
-<p>GiaNLP module</p>
+  <div class="section" id="module-gianlp.models.keras_wrapper">
+<span id="gianlp-models-keras-wrapper"></span><h1>gianlp.models.keras_wrapper<a class="headerlink" href="#module-gianlp.models.keras_wrapper" title="Permalink to this heading"></a></h1>
+<p>Module for Keras wrapper model</p>
+<p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="gianlp.keras_layers.html#module-gianlp.keras_layers" title="gianlp.keras_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gianlp.keras_layers</span></code></a></p></td>
-<td><p>Keras auxiliary layers module</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="gianlp.models.html#module-gianlp.models" title="gianlp.models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gianlp.models</span></code></a></p></td>
-<td><p>Module for models</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="gianlp.utils.html#module-gianlp.utils" title="gianlp.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gianlp.utils</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="gianlp.models.keras_wrapper.KerasWrapper.html#gianlp.models.keras_wrapper.KerasWrapper" title="gianlp.models.keras_wrapper.KerasWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KerasWrapper</span></code></a>(inputs, wrapped_model, **kwargs)</p></td>
+<td><p>Keras Model wrapper class.</p></td>
 </tr>
 </tbody>
 </table>
@@ -110,8 +114,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../modules.html" class="btn btn-neutral float-left" title="Full API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="gianlp.keras_layers.html" class="btn btn-neutral float-right" title="gianlp.keras_layers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gianlp.models.base_model.ModelIOShape.html" class="btn btn-neutral float-left" title="gianlp.models.base_model.ModelIOShape" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gianlp.models.keras_wrapper.KerasWrapper.html" class="btn btn-neutral float-right" title="gianlp.models.keras_wrapper.KerasWrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

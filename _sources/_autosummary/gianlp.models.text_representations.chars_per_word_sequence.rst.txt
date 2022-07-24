@@ -1,0 +1,32 @@
+gianlp.models.text\_representations.chars\_per\_word\_sequence
+==============================================================
+
+.. automodule:: gianlp.models.text_representations.chars_per_word_sequence
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: _autosummary/classes.rst
+   
+         CharPerWordEmbeddingSequence
+      
+   
+   
+
+   
+   
+   
+
+
+

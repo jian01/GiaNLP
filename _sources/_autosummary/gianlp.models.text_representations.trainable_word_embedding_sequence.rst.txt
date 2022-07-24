@@ -1,0 +1,32 @@
+gianlp.models.text\_representations.trainable\_word\_embedding\_sequence
+========================================================================
+
+.. automodule:: gianlp.models.text_representations.trainable_word_embedding_sequence
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: _autosummary/classes.rst
+   
+         TrainableWordEmbeddingSequence
+      
+   
+   
+
+   
+   
+   
+
+
+

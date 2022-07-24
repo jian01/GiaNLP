@@ -1,0 +1,37 @@
+gianlp.models.text\_representations
+===================================
+
+.. automodule:: gianlp.models.text_representations
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: _autosummary/modules.rst
+   :recursive:
+
+      gianlp.models.text_representations.char_embedding_sequence
+      gianlp.models.text_representations.chars_per_word_sequence
+      gianlp.models.text_representations.fasttext_embedding_sequence
+      gianlp.models.text_representations.mapping_embedding
+      gianlp.models.text_representations.per_chunk_sequencer
+      gianlp.models.text_representations.pre_trained_word_embedding_sequence
+      gianlp.models.text_representations.text_representation
+      gianlp.models.text_representations.trainable_word_embedding_sequence
+

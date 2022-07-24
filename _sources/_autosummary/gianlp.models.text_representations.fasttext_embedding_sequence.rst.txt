@@ -1,0 +1,32 @@
+gianlp.models.text\_representations.fasttext\_embedding\_sequence
+=================================================================
+
+.. automodule:: gianlp.models.text_representations.fasttext_embedding_sequence
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: _autosummary/classes.rst
+   
+         FasttextEmbeddingSequence
+      
+   
+   
+
+   
+   
+   
+
+
+

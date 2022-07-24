@@ -1,0 +1,34 @@
+gianlp.models.base\_model
+=========================
+
+.. automodule:: gianlp.models.base_model
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: _autosummary/classes.rst
+   
+         BaseModel
+      
+         ModelIOShape
+      
+   
+   
+
+   
+   
+   
+
+
+

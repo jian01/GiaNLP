@@ -1,0 +1,34 @@
+gianlp.models.base\_model.ModelIOShape
+======================================
+
+.. currentmodule:: gianlp.models.base_model
+
+.. autoclass:: ModelIOShape
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ModelIOShape.count
+      ~ModelIOShape.index
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ModelIOShape.dtype
+      ~ModelIOShape.shape
+   
+   

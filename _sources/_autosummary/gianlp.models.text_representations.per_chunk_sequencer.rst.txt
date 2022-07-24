@@ -1,0 +1,32 @@
+gianlp.models.text\_representations.per\_chunk\_sequencer
+=========================================================
+
+.. automodule:: gianlp.models.text_representations.per_chunk_sequencer
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: _autosummary/classes.rst
+   
+         PerChunkSequencer
+      
+   
+   
+
+   
+   
+   
+
+
+

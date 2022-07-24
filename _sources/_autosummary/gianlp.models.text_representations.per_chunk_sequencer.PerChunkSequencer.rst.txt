@@ -1,0 +1,40 @@
+gianlp.models.text\_representations.per\_chunk\_sequencer.PerChunkSequencer
+===========================================================================
+
+.. currentmodule:: gianlp.models.text_representations.per_chunk_sequencer
+
+.. autoclass:: PerChunkSequencer
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PerChunkSequencer.build
+      ~PerChunkSequencer.deserialize
+      ~PerChunkSequencer.has_multi_text_input
+      ~PerChunkSequencer.preprocess_texts
+      ~PerChunkSequencer.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PerChunkSequencer.inputs
+      ~PerChunkSequencer.inputs_shape
+      ~PerChunkSequencer.outputs_shape
+      ~PerChunkSequencer.trainable_weights_amount
+      ~PerChunkSequencer.weights_amount
+   
+   

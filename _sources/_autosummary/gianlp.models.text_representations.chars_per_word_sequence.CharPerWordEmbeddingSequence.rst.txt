@@ -1,0 +1,40 @@
+gianlp.models.text\_representations.chars\_per\_word\_sequence.CharPerWordEmbeddingSequence
+===========================================================================================
+
+.. currentmodule:: gianlp.models.text_representations.chars_per_word_sequence
+
+.. autoclass:: CharPerWordEmbeddingSequence
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~CharPerWordEmbeddingSequence.build
+      ~CharPerWordEmbeddingSequence.deserialize
+      ~CharPerWordEmbeddingSequence.has_multi_text_input
+      ~CharPerWordEmbeddingSequence.preprocess_texts
+      ~CharPerWordEmbeddingSequence.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CharPerWordEmbeddingSequence.inputs
+      ~CharPerWordEmbeddingSequence.inputs_shape
+      ~CharPerWordEmbeddingSequence.outputs_shape
+      ~CharPerWordEmbeddingSequence.trainable_weights_amount
+      ~CharPerWordEmbeddingSequence.weights_amount
+   
+   

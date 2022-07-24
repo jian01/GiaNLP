@@ -1,0 +1,40 @@
+gianlp.models.text\_representations.mapping\_embedding.MappingEmbedding
+=======================================================================
+
+.. currentmodule:: gianlp.models.text_representations.mapping_embedding
+
+.. autoclass:: MappingEmbedding
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MappingEmbedding.build
+      ~MappingEmbedding.deserialize
+      ~MappingEmbedding.has_multi_text_input
+      ~MappingEmbedding.preprocess_texts
+      ~MappingEmbedding.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MappingEmbedding.inputs
+      ~MappingEmbedding.inputs_shape
+      ~MappingEmbedding.outputs_shape
+      ~MappingEmbedding.trainable_weights_amount
+      ~MappingEmbedding.weights_amount
+   
+   

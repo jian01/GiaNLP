@@ -1,0 +1,32 @@
+gianlp.models.text\_representations.text\_representation
+========================================================
+
+.. automodule:: gianlp.models.text_representations.text_representation
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: _autosummary/classes.rst
+   
+         TextRepresentation
+      
+   
+   
+
+   
+   
+   
+
+
+

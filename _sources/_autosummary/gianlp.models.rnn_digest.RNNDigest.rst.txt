@@ -1,0 +1,44 @@
+gianlp.models.rnn\_digest.RNNDigest
+===================================
+
+.. currentmodule:: gianlp.models.rnn_digest
+
+.. autoclass:: RNNDigest
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RNNDigest.build
+      ~RNNDigest.compile
+      ~RNNDigest.deserialize
+      ~RNNDigest.fit
+      ~RNNDigest.freeze
+      ~RNNDigest.has_multi_text_input
+      ~RNNDigest.predict
+      ~RNNDigest.preprocess_texts
+      ~RNNDigest.serialize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RNNDigest.inputs
+      ~RNNDigest.inputs_shape
+      ~RNNDigest.outputs_shape
+      ~RNNDigest.trainable_weights_amount
+      ~RNNDigest.weights_amount
+   
+   

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gianlp.models.trainable_model.TrainableModel &mdash; GiaNLP 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gianlp.utils" href="gianlp.utils.html" />
+    <link rel="prev" title="gianlp.models.trainable_model" href="gianlp.models.trainable_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> GiaNLP
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage &amp; tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../library_usage.html">Library usage tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_quickstart.html">Quickstart: Binary Classifier Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_drug_rating_regressor.html">Example: Drug rating regressor tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_siamese_semantic_similarity.html">Example: Siamese semantic similarity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ner_tagger.html">Advanced example: Ner Tagger via BiLSTM-CRF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Full API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="gianlp.html">gianlp</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gianlp.keras_layers.html">gianlp.keras_layers</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="gianlp.models.html">gianlp.models</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.base_model.html">gianlp.models.base_model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.keras_wrapper.html">gianlp.models.keras_wrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.rnn_digest.html">gianlp.models.rnn_digest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.text_representations.html">gianlp.models.text_representations</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="gianlp.models.trainable_model.html">gianlp.models.trainable_model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gianlp.utils.html">gianlp.utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GiaNLP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">Full API Reference</a> &raquo;</li>
+          <li><a href="gianlp.html">gianlp</a> &raquo;</li>
+          <li><a href="gianlp.models.html">gianlp.models</a> &raquo;</li>
+          <li><a href="gianlp.models.trainable_model.html">gianlp.models.trainable_model</a> &raquo;</li>
+      <li>gianlp.models.trainable_model.TrainableModel</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/jian01/GiaNLP/blob/main/docs/_autosummary/gianlp.models.trainable_model.TrainableModel.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="gianlp-models-trainable-model-trainablemodel">
+<h1>gianlp.models.trainable_model.TrainableModel<a class="headerlink" href="#gianlp-models-trainable-model-trainablemodel" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gianlp.models.trainable_model.</span></span><span class="sig-name descname"><span class="pre">TrainableModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel" title="gianlp.models.base_model.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Class for models that are trainable.</p>
+<p>It mimics Keras API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>_random_seed</strong> – random_seed used in training and can be used for any random process of subclasses</p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.build" title="gianlp.models.trainable_model.TrainableModel.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p>Builds the whole chain of models in a recursive manner using the functional API.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.compile" title="gianlp.models.trainable_model.TrainableModel.compile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compile</span></code></a></p></td>
+<td><p>Compiles the Keras model and prepares the text inputs to be used</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.deserialize" title="gianlp.models.trainable_model.TrainableModel.deserialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deserialize</span></code></a></p></td>
+<td><p>Deserializes a model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.fit" title="gianlp.models.trainable_model.TrainableModel.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a></p></td>
+<td><p>Fits the model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.freeze" title="gianlp.models.trainable_model.TrainableModel.freeze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freeze</span></code></a></p></td>
+<td><p>Freezes the model weights</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.has_multi_text_input" title="gianlp.models.trainable_model.TrainableModel.has_multi_text_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_multi_text_input</span></code></a></p></td>
+<td><p>Method for knowing if the model has multi input</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.predict" title="gianlp.models.trainable_model.TrainableModel.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a></p></td>
+<td><p>Predicts using the model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.preprocess_texts" title="gianlp.models.trainable_model.TrainableModel.preprocess_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess_texts</span></code></a></p></td>
+<td><p>Given texts returns the array representation needed for forwarding the keras model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.serialize" title="gianlp.models.trainable_model.TrainableModel.serialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serialize</span></code></a></p></td>
+<td><p>Serializes the model to be deserialized with the deserialize method</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.inputs" title="gianlp.models.trainable_model.TrainableModel.inputs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inputs</span></code></a></p></td>
+<td><p>Method for getting all models that serve as input</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.inputs_shape" title="gianlp.models.trainable_model.TrainableModel.inputs_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inputs_shape</span></code></a></p></td>
+<td><p>Returns the shapes of the inputs of the model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.outputs_shape" title="gianlp.models.trainable_model.TrainableModel.outputs_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outputs_shape</span></code></a></p></td>
+<td><p>Returns the output shape of the model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.trainable_weights_amount" title="gianlp.models.trainable_model.TrainableModel.trainable_weights_amount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trainable_weights_amount</span></code></a></p></td>
+<td><p>Computes the total amount of trainable weights</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.trainable_model.TrainableModel.weights_amount" title="gianlp.models.trainable_model.TrainableModel.weights_amount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weights_amount</span></code></a></p></td>
+<td><p>Computes the total amount of weights</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.preprocess_texts">
+<span class="sig-name descname"><span class="pre">preprocess_texts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Series</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.preprocess_texts" title="Permalink to this definition"></a></dt>
+<dd><p>Given texts returns the array representation needed for forwarding the
+keras model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>texts</strong> – the texts to preprocess</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a numpy array or list of numpy arrays representing the texts</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – <ul class="simple">
+<li><p>When the model is multi-text and x is not a dict or dataframe</p></li>
+<li><p>When the model is not multi-text and x is a dict or dataframe</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.compile">
+<span class="sig-name descname"><span class="pre">compile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">OptimizerV2</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rmsprop'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Loss</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Metric</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.compile" title="Permalink to this definition"></a></dt>
+<dd><p>Compiles the Keras model and prepares the text inputs to be used</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>optimizer</strong> – optimizer for training</p></li>
+<li><p><strong>loss</strong> – loss for training</p></li>
+<li><p><strong>metrics</strong> – metrics to use while training</p></li>
+<li><p><strong>**kwargs</strong> – <p>accepts any other parameters for use in Keras Model.compile API</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – <ul class="simple">
+<li><p>When the model is not built</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Series</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.build" title="Permalink to this definition"></a></dt>
+<dd><p>Builds the whole chain of models in a recursive manner using the functional API.
+Some operations may need the model to be built.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>texts</strong> – the texts for building if needed, some models have to learn from a sample corpus before working</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.deserialize">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deserialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel" title="gianlp.models.base_model.BaseModel"><span class="pre">BaseModel</span></a></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.deserialize" title="Permalink to this definition"></a></dt>
+<dd><p>Deserializes a model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the data for deserializing</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a BaseModel object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.get_bytes_from_model">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_bytes_from_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.get_bytes_from_model" title="Permalink to this definition"></a></dt>
+<dd><p>Transforms a keras model into bytes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – the keras model</p></li>
+<li><p><strong>copy</strong> – whether to copy the model before saving.
+copying the model is needed for complex nested models because the keras save/load can fail</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a byte array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.get_model_from_bytes">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_model_from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.get_model_from_bytes" title="Permalink to this definition"></a></dt>
+<dd><p>Given bytes from keras model serialized with get_bytes_from_model method
+returns the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the model bytes</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a keras model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.has_multi_text_input">
+<span class="sig-name descname"><span class="pre">has_multi_text_input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.has_multi_text_input" title="Permalink to this definition"></a></dt>
+<dd><p>Method for knowing if the model has multi input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the input of the model need multiple texts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.inputs">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel" title="gianlp.models.base_model.BaseModel"><span class="pre">BaseModel</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel" title="gianlp.models.base_model.BaseModel"><span class="pre">BaseModel</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.inputs" title="Permalink to this definition"></a></dt>
+<dd><p>Method for getting all models that serve as input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list or list of tuples containing BaseModel objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.inputs_shape">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inputs_shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><span class="pre">ModelIOShape</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><span class="pre">ModelIOShape</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.inputs_shape" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the shapes of the inputs of the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of shape tuple or shape tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.outputs_shape">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outputs_shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><span class="pre">ModelIOShape</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><span class="pre">ModelIOShape</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.outputs_shape" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the output shape of the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of shape tuple or shape tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.serialize" title="Permalink to this definition"></a></dt>
+<dd><p>Serializes the model to be deserialized with the deserialize method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a byte array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.trainable_weights_amount">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trainable_weights_amount</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.trainable_weights_amount" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the total amount of trainable weights</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the total amount of trainable weights or none if not built</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.weights_amount">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weights_amount</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.weights_amount" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the total amount of weights</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the total amount of weights or none if not built</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Series</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.fit" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Series</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><span class="pre">Sequence</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Fits the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – <p>Input data. Could be:</p>
+<ul>
+<li><p>A generator that yields (x, y) where x is any valid format for x and y is the target numpy array</p></li>
+<li><p>A <a class="reference internal" href="gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code></a> object that generates (x, y) where x is any valid format for x and y is            the target output</p></li>
+<li><p>A list of texts</p></li>
+<li><p>A pandas Series</p></li>
+<li><p>A pandas Dataframe</p></li>
+<li><p>A dict of lists containing texts</p></li>
+</ul>
+</p></li>
+<li><p><strong>y</strong> – Target, ignored if x is a generator. Numpy array.</p></li>
+<li><p><strong>batch_size</strong> – Batch size for training, ignored if x is a generator or a <a class="reference internal" href="gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code></a></p></li>
+<li><p><strong>epochs</strong> – Amount of epochs to train</p></li>
+<li><p><strong>verbose</strong> – verbose mode for Keras training</p></li>
+<li><p><strong>callbacks</strong> – list of Callback objects for Keras model</p></li>
+<li><p><strong>validation_split</strong> – the proportion of data to use for validation, ignored if x is a generator.
+Takes the last elements of x and y. Ignored if x is a generator or a <a class="reference internal" href="gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code></a> object</p></li>
+<li><p><strong>validation_data</strong> – <p>Validation data. Could be:</p>
+<p><a href="#id3"><span class="problematic" id="id4">*</span></a>. A tuple containing (x, y) where x is a any valid format for x and y is the target numpy array
+<a href="#id5"><span class="problematic" id="id6">*</span></a>. A generator that yields (x, y) where x is a any valid format for x and y is the target numpy array
+<a href="#id7"><span class="problematic" id="id8">*</span></a>. <a class="reference internal" href="gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code></a> object that generates (x, y) where x is any valid format for x and y is            the target output</p>
+</p></li>
+<li><p><strong>steps_per_epoch</strong> – Amount of generator steps to consider an epoch as finished. Ignored if x is not a
+generator</p></li>
+<li><p><strong>validation_steps</strong> – Amount of generator steps to consider to feed each validation evaluation.
+Ignored if validation_data is not a generator</p></li>
+<li><p><strong>max_queue_size</strong> – Maximum size for the generator queue. If unspecified, max_queue_size will default to 10.</p></li>
+<li><p><strong>workers</strong> – Maximum number of processes to spin up when using process-based threading. If unspecified,
+workers will default to 1.</p></li>
+<li><p><strong>use_multiprocessing</strong> – If True, use process-based threading. If unspecified, use_multiprocessing will
+default to False. Note that because this implementation relies on multiprocessing, you should not pass
+non-picklable arguments to the generator as they can’t be passed easily to children processes.</p></li>
+<li><p><strong>**kwargs</strong> – <p>extra arguments to give to keras.models.Model.fit</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A History object. Its History.history attribute is a record of training loss values and metrics values
+at successive epochs, as well as validation loss values and validation metrics values (if applicable).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Series</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Series</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">256</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.predict" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><span class="pre">Sequence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">256</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span></dt>
+<dd><p>Predicts using the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – <p>Could be:</p>
+<ul>
+<li><p>A list of texts</p></li>
+<li><p>A pandas Series</p></li>
+<li><p>A pandas Dataframe</p></li>
+<li><p>A dict of lists containing texts</p></li>
+<li><p>A generator of any of the above formats</p></li>
+<li><p>A <a class="reference internal" href="gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code></a> object that generates batches of text</p></li>
+</ul>
+</p></li>
+<li><p><strong>inference_batch</strong> – the prediction is made in batches for saving ram, this is the batch size used.
+ignored if x is a generator or a <a class="reference internal" href="gianlp.utils.Sequence.html#gianlp.utils.Sequence" title="gianlp.utils.Sequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code></a></p></li>
+<li><p><strong>steps</strong> – steps for the generator, ignored if x is not a generator</p></li>
+<li><p><strong>max_queue_size</strong> – Maximum size for the generator queue. If unspecified, max_queue_size will default to 10.</p></li>
+<li><p><strong>workers</strong> – Maximum number of processes to spin up when using process-based threading. If unspecified,
+workers will default to 1.</p></li>
+<li><p><strong>use_multiprocessing</strong> – If True, use process-based threading. If unspecified, use_multiprocessing will
+default to False. Note that because this implementation relies on multiprocessing, you should not pass
+non-picklable arguments to the generator as they can’t be passed easily to children processes.</p></li>
+<li><p><strong>verbose</strong> – 0, 1, or 2. Verbosity mode. 0 = silent, 1 = progress bar, 2 = single line.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the output of the keras model</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If a generator is given as x but no step amount is specified</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.trainable_model.TrainableModel.freeze">
+<span class="sig-name descname"><span class="pre">freeze</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gianlp.models.trainable_model.TrainableModel.freeze" title="Permalink to this definition"></a></dt>
+<dd><p>Freezes the model weights</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – When the model is not built</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gianlp.models.trainable_model.html" class="btn btn-neutral float-left" title="gianlp.models.trainable_model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gianlp.utils.html" class="btn btn-neutral float-right" title="gianlp.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gianmarco Cafferata.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

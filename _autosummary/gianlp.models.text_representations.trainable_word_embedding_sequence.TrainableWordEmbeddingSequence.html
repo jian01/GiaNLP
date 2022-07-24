@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence &mdash; GiaNLP 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gianlp.models.trainable_model" href="gianlp.models.trainable_model.html" />
+    <link rel="prev" title="gianlp.models.text_representations.trainable_word_embedding_sequence" href="gianlp.models.text_representations.trainable_word_embedding_sequence.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> GiaNLP
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage &amp; tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../library_usage.html">Library usage tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_quickstart.html">Quickstart: Binary Classifier Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_drug_rating_regressor.html">Example: Drug rating regressor tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_siamese_semantic_similarity.html">Example: Siamese semantic similarity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_ner_tagger.html">Advanced example: Ner Tagger via BiLSTM-CRF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Full API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="gianlp.html">gianlp</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gianlp.keras_layers.html">gianlp.keras_layers</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="gianlp.models.html">gianlp.models</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.base_model.html">gianlp.models.base_model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.keras_wrapper.html">gianlp.models.keras_wrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.rnn_digest.html">gianlp.models.rnn_digest</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="gianlp.models.text_representations.html">gianlp.models.text_representations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gianlp.models.trainable_model.html">gianlp.models.trainable_model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gianlp.utils.html">gianlp.utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GiaNLP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">Full API Reference</a> &raquo;</li>
+          <li><a href="gianlp.html">gianlp</a> &raquo;</li>
+          <li><a href="gianlp.models.html">gianlp.models</a> &raquo;</li>
+          <li><a href="gianlp.models.text_representations.html">gianlp.models.text_representations</a> &raquo;</li>
+          <li><a href="gianlp.models.text_representations.trainable_word_embedding_sequence.html">gianlp.models.text_representations.trainable_word_embedding_sequence</a> &raquo;</li>
+      <li>gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/jian01/GiaNLP/blob/main/docs/_autosummary/gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="gianlp-models-text-representations-trainable-word-embedding-sequence-trainablewordembeddingsequence">
+<h1>gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence<a class="headerlink" href="#gianlp-models-text-representations-trainable-word-embedding-sequence-trainablewordembeddingsequence" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gianlp.models.text_representations.trainable_word_embedding_sequence.</span></span><span class="sig-name descname"><span class="pre">TrainableWordEmbeddingSequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word2vec_src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">KeyedVectors</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence_maxlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_freq_percentile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_vocabulary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretrained_trainable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="gianlp.models.text_representations.text_representation.TextRepresentation.html#gianlp.models.text_representations.text_representation.TextRepresentation" title="gianlp.models.text_representations.text_representation.TextRepresentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextRepresentation</span></code></a></p>
+<p>Trainable word embedding sequence input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_keras_model</strong> – Keras model built from processing the text input</p></li>
+<li><p><strong>_word2vec</strong> – the gensim keyedvectors object that contains the word embedding matrix</p></li>
+<li><p><strong>_tokenizer</strong> – word tokenizer function</p></li>
+<li><p><strong>_pretrained_trainable</strong> – if the pretrained vectors are trainable</p></li>
+<li><p><strong>_sequence_maxlen</strong> – the max length of an allowed sequence</p></li>
+<li><p><strong>_embedding_dimension</strong> – target embedding dimension</p></li>
+<li><p><strong>_min_freq_percentile</strong> – the minimum percentile of the frequency to consider a word part of the vocabulary</p></li>
+<li><p><strong>_max_vocabulary</strong> – optional maximum vocabulary size</p></li>
+<li><p><strong>_word_indexes</strong> – the word to index dictionary</p></li>
+<li><p><strong>_random_state</strong> – random seed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tokenizer</strong> – A tokenizer function that transforms each string into a list of string tokens.
+The tokens transformed should match the keywords in the pretrained word embeddings.
+The function must support serialization through pickle</p></li>
+<li><p><strong>word2vec_src</strong> – optional path to word2vec format .txt file or gensim KeyedVectors.
+if provided the common words from the corpus that are in the embedding will have this vectors assigned</p></li>
+<li><p><strong>min_freq_percentile</strong> – the minimum percentile of the frequency to consider a word part of the vocabulary</p></li>
+<li><p><strong>max_vocabulary</strong> – optional maximum vocabulary size</p></li>
+<li><p><strong>embedding_dimension</strong> – the dimension of the target embedding</p></li>
+<li><p><strong>sequence_maxlen</strong> – The maximum allowed sequence length</p></li>
+<li><p><strong>pretrained_trainable</strong> – if the vectors pretrained will also be trained. ignored if word2vec_src is None</p></li>
+<li><p><strong>random_state</strong> – the random seed used for random processes</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if a pretrained embeddings is fed and it’s dimension does not match
+the one in embedding_dimension</p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.build" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p>Builds the whole chain of models in a recursive manner using the functional API.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.deserialize" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.deserialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deserialize</span></code></a></p></td>
+<td><p>Deserializes a model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.has_multi_text_input" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.has_multi_text_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_multi_text_input</span></code></a></p></td>
+<td><p>Method for knowing if the model has multi input</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.preprocess_texts" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.preprocess_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess_texts</span></code></a></p></td>
+<td><p>Given texts returns the array representation needed for forwarding the keras model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.serialize" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.serialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">serialize</span></code></a></p></td>
+<td><p>Serializes the model to be deserialized with the deserialize method</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.inputs" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.inputs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inputs</span></code></a></p></td>
+<td><p>Method for getting all models that serve as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.inputs_shape" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.inputs_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inputs_shape</span></code></a></p></td>
+<td><p>Returns the shapes of the inputs of the model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.outputs_shape" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.outputs_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outputs_shape</span></code></a></p></td>
+<td><p>Returns the output shape of the model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.trainable_weights_amount" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.trainable_weights_amount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trainable_weights_amount</span></code></a></p></td>
+<td><p>Computes the total amount of trainable weights</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.weights_amount" title="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.weights_amount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weights_amount</span></code></a></p></td>
+<td><p>Computes the total amount of weights</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Series</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.build" title="Permalink to this definition"></a></dt>
+<dd><p>Builds the whole chain of models in a recursive manner using the functional API.
+Some operations may need the model to be built.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>texts</strong> – the texts for building if needed, some models have to learn from a sample corpus before working</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.deserialize">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deserialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel" title="gianlp.models.base_model.BaseModel"><span class="pre">BaseModel</span></a></span></span><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.deserialize" title="Permalink to this definition"></a></dt>
+<dd><p>Deserializes a model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the data for deserializing</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a BaseModel object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.get_bytes_from_model">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_bytes_from_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.get_bytes_from_model" title="Permalink to this definition"></a></dt>
+<dd><p>Transforms a keras model into bytes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – the keras model</p></li>
+<li><p><strong>copy</strong> – whether to copy the model before saving.
+copying the model is needed for complex nested models because the keras save/load can fail</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a byte array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.get_model_from_bytes">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_model_from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.get_model_from_bytes" title="Permalink to this definition"></a></dt>
+<dd><p>Given bytes from keras model serialized with get_bytes_from_model method
+returns the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the model bytes</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a keras model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.has_multi_text_input">
+<span class="sig-name descname"><span class="pre">has_multi_text_input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.has_multi_text_input" title="Permalink to this definition"></a></dt>
+<dd><p>Method for knowing if the model has multi input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the input of the model need multiple texts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.inputs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel" title="gianlp.models.base_model.BaseModel"><span class="pre">BaseModel</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gianlp.models.base_model.BaseModel.html#gianlp.models.base_model.BaseModel" title="gianlp.models.base_model.BaseModel"><span class="pre">BaseModel</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.inputs" title="Permalink to this definition"></a></dt>
+<dd><p>Method for getting all models that serve as input.
+All TextRepresentation have no models as an input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list or list of tuples containing BaseModel objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.inputs_shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inputs_shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><span class="pre">ModelIOShape</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><span class="pre">ModelIOShape</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.inputs_shape" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the shapes of the inputs of the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of shape tuple or shape tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.serialize" title="Permalink to this definition"></a></dt>
+<dd><p>Serializes the model to be deserialized with the deserialize method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a byte array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.trainable_weights_amount">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trainable_weights_amount</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.trainable_weights_amount" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the total amount of trainable weights</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the total amount of trainable weights or none if not built</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.weights_amount">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weights_amount</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.weights_amount" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the total amount of weights</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the total amount of weights or none if not built</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.preprocess_texts">
+<span class="sig-name descname"><span class="pre">preprocess_texts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Series</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.preprocess_texts" title="Permalink to this definition"></a></dt>
+<dd><p>Given texts returns the array representation needed for forwarding the
+keras model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>texts</strong> – the texts to preprocess</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a numpy array of shape (#texts, _sequence_maxlen)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.outputs_shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outputs_shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="gianlp.models.base_model.ModelIOShape.html#gianlp.models.base_model.ModelIOShape" title="gianlp.models.base_model.ModelIOShape"><span class="pre">ModelIOShape</span></a></em><a class="headerlink" href="#gianlp.models.text_representations.trainable_word_embedding_sequence.TrainableWordEmbeddingSequence.outputs_shape" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the output shape of the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of shape tuple or shape tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gianlp.models.text_representations.trainable_word_embedding_sequence.html" class="btn btn-neutral float-left" title="gianlp.models.text_representations.trainable_word_embedding_sequence" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gianlp.models.trainable_model.html" class="btn btn-neutral float-right" title="gianlp.models.trainable_model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Gianmarco Cafferata.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
