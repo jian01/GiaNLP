@@ -1,6 +1,5 @@
 pytest
 pytest-cov
-sphinx
 nox==2022.1.7
 pre-commit==2.19.0
 pylint==2.14.4
