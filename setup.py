@@ -11,7 +11,7 @@ def get_version():
     init_f = Path(__file__).parent / "gianlp" / "__init__.py"
     with open(init_f) as f:
         for line in f:
-            if "__version__" in line:
+            if "__version__ =" in line:
                 return line.split("=")[-1].strip().strip('"')
 
 
