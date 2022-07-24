@@ -5,12 +5,8 @@ import sys
 from os import path
 from setuptools import find_packages, setup  # type: ignore
 
-readme_file = path.join(path.dirname(path.abspath(__file__)), "README.md")
-with open(readme_file) as f:
-    readme = f.read()
-
 license_file = path.join(path.dirname(path.abspath(__file__)), "LICENSE")
-with open(license_file) as f:
+with open(license_file, encoding='utf-8') as f:
     license_content = f.read()
 
 # Library dependencies
@@ -24,7 +20,11 @@ setup(
     version="0.0.1",
     description="Natural Language Processing for humans",
     long_description_content_type="text/markdown",
-    long_description=readme,
+    long_description="""
+    # GiaNLP
+    
+    GiaNLP is library created for the fraud team at Mercadolibre for building, training and deploying NLP models fast.
+    """,
     license=license_content,
     author="Gianmarco Cafferata",
     author_email="gcafferata@fi.uba.ar",
