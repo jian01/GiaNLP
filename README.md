@@ -33,5 +33,5 @@ It's main features are:
 ## Installation
 
 ```bash
-$ pip install gianlp
+$ pip install GiaNLP
 ```
