@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example: Drug rating regressor tutorial &mdash; GiaNLP 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <title>Example: Drug rating regressor tutorial &mdash; GiaNLP 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/styles.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,7 +41,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Usage &amp; tutorials:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="library_usage.html">Library usage tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="1_quickstart.html">Quickstart: Binary Classifier Tutorial</a></li>
@@ -87,7 +89,7 @@
            <div itemprop="articleBody">
              
   <div class="section" id="example-drug-rating-regressor-tutorial">
-<h1>Example: Drug rating regressor tutorial<a class="headerlink" href="#example-drug-rating-regressor-tutorial" title="Permalink to this headline">¶</a></h1>
+<h1>Example: Drug rating regressor tutorial<a class="headerlink" href="#example-drug-rating-regressor-tutorial" title="Permalink to this heading"></a></h1>
 <p>We are going to use the Drug Review dataset. (Felix Gräßer, Surya Kallumadi, Hagen Malberg, and Sebastian Zaunseder. 2018. Aspect-Based Sentiment Analysis of Drug Reviews Applying Cross-Domain and Cross-Data Learning. In Proceedings of the 2018 International Conference on Digital Health (DH ‘18). ACM, New York, NY, USA, 121-125. DOI: <a class="reference external" href="https://doi.org/10.1145/3194658.3194677">Web Link</a>)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!curl -O https://archive.ics.uci.edu/ml/machine-learning-databases/00461/drugLib_raw.zip
 !unzip drugLib_raw.zip
@@ -179,7 +181,7 @@
 </pre></div>
 </div>
 <div class="section" id="multi-text-model-building">
-<h2>Multi-text model building<a class="headerlink" href="#multi-text-model-building" title="Permalink to this headline">¶</a></h2>
+<h2>Multi-text model building<a class="headerlink" href="#multi-text-model-building" title="Permalink to this heading"></a></h2>
 <p>The rating will be predicted using benefitsReview, commentsReview, sideEffectsReview and urlDrugName</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gianlp.models</span> <span class="kn">import</span> <span class="n">CharEmbeddingSequence</span><span class="p">,</span> <span class="n">RNNDigest</span><span class="p">,</span> <span class="n">KerasWrapper</span><span class="p">,</span> <span class="n">PreTrainedWordEmbeddingSequence</span>
 </pre></div>
@@ -188,7 +190,7 @@
 </pre></div>
 </div>
 <div class="section" id="word-embedding-for-reviews">
-<h3>Word embedding for reviews<a class="headerlink" href="#word-embedding-for-reviews" title="Permalink to this headline">¶</a></h3>
+<h3>Word embedding for reviews<a class="headerlink" href="#word-embedding-for-reviews" title="Permalink to this heading"></a></h3>
 <p>We are going to use a word embedding for the benefitsReview, commentsReview and sideEffectsReview. We first download uncased 50 dimensions glove word embedding, then we translate it to word2vec format.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!curl -O http://downloads.cs.stanford.edu/nlp/data/glove.6B.zip
 !unzip glove.6B
@@ -240,7 +242,7 @@
 </div>
 </div>
 <div class="section" id="review-digest">
-<h3>Review digest<a class="headerlink" href="#review-digest" title="Permalink to this headline">¶</a></h3>
+<h3>Review digest<a class="headerlink" href="#review-digest" title="Permalink to this heading"></a></h3>
 <p>We build a different RNN for each review</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">benefits_digest</span> <span class="o">=</span> <span class="n">RNNDigest</span><span class="p">(</span><span class="n">word_emb</span><span class="p">,</span> <span class="n">units_per_layer</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">rnn_type</span><span class="o">=</span><span class="s1">&#39;gru&#39;</span><span class="p">,</span> <span class="n">stacked_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">comments_digest</span> <span class="o">=</span> <span class="n">RNNDigest</span><span class="p">(</span><span class="n">word_emb</span><span class="p">,</span> <span class="n">units_per_layer</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">rnn_type</span><span class="o">=</span><span class="s1">&#39;gru&#39;</span><span class="p">,</span> <span class="n">stacked_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -258,7 +260,7 @@
 </div>
 </div>
 <div class="section" id="char-embedding-for-drug-name">
-<h3>Char embedding for drug name<a class="headerlink" href="#char-embedding-for-drug-name" title="Permalink to this headline">¶</a></h3>
+<h3>Char embedding for drug name<a class="headerlink" href="#char-embedding-for-drug-name" title="Permalink to this heading"></a></h3>
 <p>Since we know nothing about drug names I hope char embedding will help.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">char_emb</span> <span class="o">=</span> <span class="n">CharEmbeddingSequence</span><span class="p">(</span><span class="n">embedding_dimension</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">sequence_maxlen</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 <span class="n">char_emb</span><span class="o">.</span><span class="n">outputs_shape</span>
@@ -269,7 +271,7 @@
 </div>
 </div>
 <div class="section" id="convolutional-digest-for-drug-name">
-<h3>Convolutional digest for drug name<a class="headerlink" href="#convolutional-digest-for-drug-name" title="Permalink to this headline">¶</a></h3>
+<h3>Convolutional digest for drug name<a class="headerlink" href="#convolutional-digest-for-drug-name" title="Permalink to this heading"></a></h3>
 <p>We convolute the drug name to, hopefully, extract useful features.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Conv1D</span><span class="p">,</span> <span class="n">GlobalMaxPooling1D</span><span class="p">,</span> <span class="n">Concatenate</span><span class="p">,</span> <span class="n">Input</span>
@@ -334,7 +336,7 @@
 </div>
 </div>
 <div class="section" id="final-model-building">
-<h3>Final model building<a class="headerlink" href="#final-model-building" title="Permalink to this headline">¶</a></h3>
+<h3>Final model building<a class="headerlink" href="#final-model-building" title="Permalink to this heading"></a></h3>
 <p>We have 20 dimensions for each review and 20 for the drug name, we have to build a regressor for that inputs</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">drug_name</span> <span class="o">=</span> <span class="n">Input</span><span class="p">((</span><span class="mi">20</span><span class="p">,))</span>
 <span class="n">review1</span> <span class="o">=</span> <span class="n">Input</span><span class="p">((</span><span class="mi">20</span><span class="p">,))</span>
@@ -367,7 +369,7 @@
 </div>
 </div>
 <div class="section" id="model-build">
-<h3>Model build<a class="headerlink" href="#model-build" title="Permalink to this headline">¶</a></h3>
+<h3>Model build<a class="headerlink" href="#model-build" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">regressor</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s1">&#39;commentsReview&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">+</span>
                 <span class="n">train</span><span class="p">[</span><span class="s1">&#39;sideEffectsReview&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">+</span>
                 <span class="n">train</span><span class="p">[</span><span class="s1">&#39;benefitsReview&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">+</span>
@@ -573,7 +575,7 @@
 </div>
 </div>
 <div class="section" id="evaluation">
-<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
+<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">preds</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -603,7 +605,7 @@
 </div>
 </div>
 <div class="section" id="serialization-and-deserialization">
-<h2>Serialization and deserialization<a class="headerlink" href="#serialization-and-deserialization" title="Permalink to this headline">¶</a></h2>
+<h2>Serialization and deserialization<a class="headerlink" href="#serialization-and-deserialization" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gianlp.models</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>

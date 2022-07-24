@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quickstart: Binary Classifier Tutorial &mdash; GiaNLP 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <title>Quickstart: Binary Classifier Tutorial &mdash; GiaNLP 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/styles.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,7 +41,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Usage &amp; tutorials:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="library_usage.html">Library usage tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart: Binary Classifier Tutorial</a><ul>
@@ -86,7 +88,7 @@
            <div itemprop="articleBody">
              
   <div class="section" id="quickstart-binary-classifier-tutorial">
-<h1>Quickstart: Binary Classifier Tutorial<a class="headerlink" href="#quickstart-binary-classifier-tutorial" title="Permalink to this headline">¶</a></h1>
+<h1>Quickstart: Binary Classifier Tutorial<a class="headerlink" href="#quickstart-binary-classifier-tutorial" title="Permalink to this heading"></a></h1>
 <p>We are going to build a binary classifier for the <a class="reference external" href="https://www.dt.fee.unicamp.br/~tiago/smsspamcollection/">SMS Spam collection</a>. We start by downloading it.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!curl -O https://raw.githubusercontent.com/justmarkham/DAT5/master/data/SMSSpamCollection.txt
 </pre></div>
@@ -113,7 +115,7 @@
 </div>
 <p>Across tutorials we are going to build different classifier architectures, we will start with the simpler one: char embedding sequence</p>
 <div class="section" id="char-embedding-sequence-classifier">
-<h2>Char embedding sequence classifier<a class="headerlink" href="#char-embedding-sequence-classifier" title="Permalink to this headline">¶</a></h2>
+<h2>Char embedding sequence classifier<a class="headerlink" href="#char-embedding-sequence-classifier" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gianlp.models</span> <span class="kn">import</span> <span class="n">CharEmbeddingSequence</span><span class="p">,</span> <span class="n">RNNDigest</span><span class="p">,</span> <span class="n">KerasWrapper</span>
 </pre></div>
 </div>
@@ -122,7 +124,7 @@
 </div>
 <p>We create a char embedding sequences for the texts, with a dimension for each char embedding of 32 and a sequence maxlen that matches percentile 80 of texts lengths</p>
 <div class="section" id="text-representations">
-<h3>Text representations<a class="headerlink" href="#text-representations" title="Permalink to this headline">¶</a></h3>
+<h3>Text representations<a class="headerlink" href="#text-representations" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">CharEmbeddingSequence</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -156,7 +158,7 @@
 </div>
 </div>
 <div class="section" id="sequence-digest">
-<h3>Sequence digest<a class="headerlink" href="#sequence-digest" title="Permalink to this headline">¶</a></h3>
+<h3>Sequence digest<a class="headerlink" href="#sequence-digest" title="Permalink to this heading"></a></h3>
 <p>The output sequence will be colapsed in a single state using RNNs</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">RNNDigest</span><span class="o">.</span><span class="fm">__new__</span><span class="p">)</span>
 </pre></div>
@@ -187,7 +189,7 @@
 </div>
 </div>
 <div class="section" id="binary-classifier">
-<h3>Binary classifier<a class="headerlink" href="#binary-classifier" title="Permalink to this headline">¶</a></h3>
+<h3>Binary classifier<a class="headerlink" href="#binary-classifier" title="Permalink to this heading"></a></h3>
 <p>Now we just simply build a binary classifier with an input of 40 floats and compile the keras model as always</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
@@ -258,7 +260,7 @@ WARNING:nlp_builder:If the model and wrapper inputs mismatch it will only be not
 <p>Note all the warnings and the <code class="docutils literal notranslate"><span class="pre">?</span></code> symbols at the weights. This is because the model has not yet been built, the numbers shown will only work if the models are connected properly and the weights are impossible to know if the representations are not built.</p>
 </div>
 <div class="section" id="train-test-split">
-<h3>Train-test split<a class="headerlink" href="#train-test-split" title="Permalink to this headline">¶</a></h3>
+<h3>Train-test split<a class="headerlink" href="#train-test-split" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
 <span class="n">train</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">*</span><span class="mf">0.8</span><span class="p">)]</span>
 <span class="n">test</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">*</span><span class="mf">0.8</span><span class="p">):]</span>
@@ -284,7 +286,7 @@ WARNING:nlp_builder:If the model and wrapper inputs mismatch it will only be not
 </div>
 </div>
 <div class="section" id="training">
-<h3>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
+<h3>Training<a class="headerlink" href="#training" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -354,7 +356,7 @@ WARNING:nlp_builder:If the model and wrapper inputs mismatch it will only be not
 </div>
 </div>
 <div class="section" id="testing">
-<h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
+<h3>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -400,7 +402,7 @@ WARNING:nlp_builder:If the model and wrapper inputs mismatch it will only be not
 </div>
 </div>
 <div class="section" id="serialization">
-<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline">¶</a></h3>
+<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this heading"></a></h3>
 <p>The model is serialized as bytes for loading later</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
 <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>

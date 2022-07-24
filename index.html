@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to GiaNLP’s documentation! &mdash; GiaNLP 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <title>Welcome to GiaNLP’s documentation! &mdash; GiaNLP 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/styles.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -38,7 +40,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Usage &amp; tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="library_usage.html">Library usage tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="1_quickstart.html">Quickstart: Binary Classifier Tutorial</a></li>
@@ -73,14 +75,14 @@
            <div itemprop="articleBody">
              
   <div class="section" id="welcome-to-gianlp-s-documentation">
-<h1>Welcome to GiaNLP’s documentation!<a class="headerlink" href="#welcome-to-gianlp-s-documentation" title="Permalink to this headline">¶</a></h1>
+<h1>Welcome to GiaNLP’s documentation!<a class="headerlink" href="#welcome-to-gianlp-s-documentation" title="Permalink to this heading"></a></h1>
 <a class="reference external image-reference" href="https://github.com/jian01/GiaNLP/actions/workflows/tests.yml/badge.svg?branch=main"><img alt="Tests on latest tensorflow version" src="https://github.com/jian01/GiaNLP/actions/workflows/tests.yml/badge.svg?branch=main" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/jian01/GiaNLP"><img alt="codecov" src="https://codecov.io/gh/jian01/GiaNLP/branch/main/graph/badge.svg" /></a>
 </div>
 <div class="section" id="gianlp">
-<h1>GiaNLP<a class="headerlink" href="#gianlp" title="Permalink to this headline">¶</a></h1>
+<h1>GiaNLP<a class="headerlink" href="#gianlp" title="Permalink to this heading"></a></h1>
 <div class="section" id="what-is-this">
-<h2>What is this?<a class="headerlink" href="#what-is-this" title="Permalink to this headline">¶</a></h2>
+<h2>What is this?<a class="headerlink" href="#what-is-this" title="Permalink to this heading"></a></h2>
 <p>GiaNLP is library created for the fraud team at Mercadolibre for building, training and deploying NLP models fast.</p>
 <p>It’s main features are:</p>
 <ul class="simple">
@@ -95,7 +97,7 @@
 </ul>
 </div>
 <div class="section" id="good-use-cases-for-this-library">
-<h2>Good use cases for this library<a class="headerlink" href="#good-use-cases-for-this-library" title="Permalink to this headline">¶</a></h2>
+<h2>Good use cases for this library<a class="headerlink" href="#good-use-cases-for-this-library" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>I need to build and deploy an NLP model fast: Following some of the examples should be easy to build simple classifiers, regressors, encoders, siamese architectures, etc.</p></li>
 <li><p>I want to test an hypothesis/architecture/representation: For example, let’s assume that you have a classifier built with word embeddings and an RNN, you think that there are a lot of misspelled words so you want a digest of char embeddings for each word to learn unknown words. You can easily build this with the library without concerns about preprocessing. Testing word embeddings vs word embeddings + char embeddings you can test your hypothesis fast inside the library and if it is true modify your vanilla keras model the way you like.</p></li>
@@ -104,7 +106,7 @@
 </ul>
 </div>
 <div class="section" id="not-so-good-use-cases">
-<h2>Not so good use cases<a class="headerlink" href="#not-so-good-use-cases" title="Permalink to this headline">¶</a></h2>
+<h2>Not so good use cases<a class="headerlink" href="#not-so-good-use-cases" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>I want to make a state of the art model: We don’t have state of the art text representations yet.</p></li>
 <li><p>I want to interact with the keras model: If you need to interact with the keras model (for example for debugging or interpretability) any part of the model encapsulated by the library will make that task very hard, since we need to prepare the code to stack arbitrary architectures the internal keras model we build has a much more confusing graph that the one you would build using just keras.</p></li>
@@ -113,12 +115,12 @@
 </ul>
 </div>
 <div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install gianlp
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install GiaNLP
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Usage &amp; tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="library_usage.html">Library usage tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="library_usage.html#model">Model</a></li>
@@ -152,13 +154,16 @@
 <li class="toctree-l2"><a class="reference internal" href="4_ner_tagger.html#serialization">Serialization</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Full API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/gianlp.html">gianlp</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>

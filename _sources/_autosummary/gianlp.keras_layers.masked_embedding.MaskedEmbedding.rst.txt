@@ -1,0 +1,83 @@
+gianlp.keras\_layers.masked\_embedding.MaskedEmbedding
+======================================================
+
+.. currentmodule:: gianlp.keras_layers.masked_embedding
+
+.. autoclass:: MaskedEmbedding
+   :members:
+   :inherited-members: Embedding
+   :exclude-members: loads, dumps
+   :undoc-members:
+   :show-inheritance:
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MaskedEmbedding.add_loss
+      ~MaskedEmbedding.add_metric
+      ~MaskedEmbedding.add_update
+      ~MaskedEmbedding.add_variable
+      ~MaskedEmbedding.add_weight
+      ~MaskedEmbedding.build
+      ~MaskedEmbedding.call
+      ~MaskedEmbedding.compute_mask
+      ~MaskedEmbedding.compute_output_shape
+      ~MaskedEmbedding.compute_output_signature
+      ~MaskedEmbedding.count_params
+      ~MaskedEmbedding.finalize_state
+      ~MaskedEmbedding.from_config
+      ~MaskedEmbedding.get_config
+      ~MaskedEmbedding.get_input_at
+      ~MaskedEmbedding.get_input_mask_at
+      ~MaskedEmbedding.get_input_shape_at
+      ~MaskedEmbedding.get_output_at
+      ~MaskedEmbedding.get_output_mask_at
+      ~MaskedEmbedding.get_output_shape_at
+      ~MaskedEmbedding.get_weights
+      ~MaskedEmbedding.set_weights
+      ~MaskedEmbedding.with_name_scope
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MaskedEmbedding.activity_regularizer
+      ~MaskedEmbedding.compute_dtype
+      ~MaskedEmbedding.dtype
+      ~MaskedEmbedding.dtype_policy
+      ~MaskedEmbedding.dynamic
+      ~MaskedEmbedding.inbound_nodes
+      ~MaskedEmbedding.input
+      ~MaskedEmbedding.input_mask
+      ~MaskedEmbedding.input_shape
+      ~MaskedEmbedding.input_spec
+      ~MaskedEmbedding.losses
+      ~MaskedEmbedding.metrics
+      ~MaskedEmbedding.name
+      ~MaskedEmbedding.name_scope
+      ~MaskedEmbedding.non_trainable_variables
+      ~MaskedEmbedding.non_trainable_weights
+      ~MaskedEmbedding.outbound_nodes
+      ~MaskedEmbedding.output
+      ~MaskedEmbedding.output_mask
+      ~MaskedEmbedding.output_shape
+      ~MaskedEmbedding.stateful
+      ~MaskedEmbedding.submodules
+      ~MaskedEmbedding.supports_masking
+      ~MaskedEmbedding.trainable
+      ~MaskedEmbedding.trainable_variables
+      ~MaskedEmbedding.trainable_weights
+      ~MaskedEmbedding.updates
+      ~MaskedEmbedding.variable_dtype
+      ~MaskedEmbedding.variables
+      ~MaskedEmbedding.weights
+   
+   

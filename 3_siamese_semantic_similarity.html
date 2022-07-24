@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example: Siamese semantic similarity &mdash; GiaNLP 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <title>Example: Siamese semantic similarity &mdash; GiaNLP 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/styles.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,7 +41,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Usage &amp; tutorials:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="library_usage.html">Library usage tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="1_quickstart.html">Quickstart: Binary Classifier Tutorial</a></li>
@@ -88,7 +90,7 @@
            <div itemprop="articleBody">
              
   <div class="section" id="example-siamese-semantic-similarity">
-<h1>Example: Siamese semantic similarity<a class="headerlink" href="#example-siamese-semantic-similarity" title="Permalink to this headline">¶</a></h1>
+<h1>Example: Siamese semantic similarity<a class="headerlink" href="#example-siamese-semantic-similarity" title="Permalink to this heading"></a></h1>
 <p>We are going to use the siamese semantic similarity dataset used for the task 1 of the semeval 2016. (Agirre, E., Banea, C., Cer, D., Diab, M., Gonzalez Agirre, A., Mihalcea, R., … &amp; Wiebe, J. (2016). Semeval-2016 task 1: Semantic textual similarity, monolingual and cross-lingual evaluation. In SemEval-2016. 10th International Workshop on Semantic Evaluation; 2016 Jun 16-17; San Diego, CA. Stroudsburg (PA): ACL; 2016. p. 497-511.. ACL (Association for Computational Linguistics).)</p>
 <p>The model we are going to implement is inspired by the one implemented by the team HTCI in SemEval 2017 competition (Shao, Y. (2017, August). Hcti at semeval-2017 task 1: Use convolutional neural network to evaluate semantic textual similarity. In Proceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017) (pp. 130-133).)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!curl -OL http://ixa2.si.ehu.es/stswiki/images/4/40/STS2012-en-test.zip
@@ -234,7 +236,7 @@
 </pre></div>
 </div>
 <div class="section" id="model-architecture">
-<h2>Model architecture<a class="headerlink" href="#model-architecture" title="Permalink to this headline">¶</a></h2>
+<h2>Model architecture<a class="headerlink" href="#model-architecture" title="Permalink to this heading"></a></h2>
 <a class="reference external image-reference" href="_static/hcti_semeval.png"><img alt="HTCI model architecture" src="_images/hcti_semeval.png" /></a>
 <p>We are not going to use the hand-crafted features, instead we will use char embeddings per word</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!curl -O http://downloads.cs.stanford.edu/nlp/data/glove.6B.zip
@@ -308,7 +310,7 @@ True
 </pre></div>
 </div>
 <div class="section" id="word-embedding-sequence">
-<h3>Word embedding sequence<a class="headerlink" href="#word-embedding-sequence" title="Permalink to this headline">¶</a></h3>
+<h3>Word embedding sequence<a class="headerlink" href="#word-embedding-sequence" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">word_emb</span> <span class="o">=</span> <span class="n">PreTrainedWordEmbeddingSequence</span><span class="p">(</span><span class="s2">&quot;glove.6B.50d.w2vformat.txt&quot;</span><span class="p">,</span>
                                            <span class="n">tokenizer</span><span class="o">=</span><span class="n">word_tokenizer</span><span class="p">,</span>
                                            <span class="n">sequence_maxlen</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
@@ -322,7 +324,7 @@ True
 </div>
 </div>
 <div class="section" id="char-per-word-sequence">
-<h3>Char per word sequence<a class="headerlink" href="#char-per-word-sequence" title="Permalink to this headline">¶</a></h3>
+<h3>Char per word sequence<a class="headerlink" href="#char-per-word-sequence" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">CharPerWordEmbeddingSequence</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -350,7 +352,7 @@ True
 </div>
 </div>
 <div class="section" id="char-digest">
-<h3>Char digest<a class="headerlink" href="#char-digest" title="Permalink to this headline">¶</a></h3>
+<h3>Char digest<a class="headerlink" href="#char-digest" title="Permalink to this heading"></a></h3>
 <p>The RNNDigest knows how to process the input in a time-distributed manner implicitly (ndims of <code class="docutils literal notranslate"><span class="pre">char_per_word</span></code> is 3 and plain keras RNN expects ndim 2)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">char_digest_per_word</span> <span class="o">=</span> <span class="n">RNNDigest</span><span class="p">(</span><span class="n">char_per_word</span><span class="p">,</span> <span class="n">units_per_layer</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rnn_type</span><span class="o">=</span><span class="s1">&#39;gru&#39;</span><span class="p">,</span> <span class="n">stacked_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">char_digest_per_word</span><span class="o">.</span><span class="n">outputs_shape</span>
@@ -367,7 +369,7 @@ True
 </div>
 </div>
 <div class="section" id="encoder">
-<h3>Encoder<a class="headerlink" href="#encoder" title="Permalink to this headline">¶</a></h3>
+<h3>Encoder<a class="headerlink" href="#encoder" title="Permalink to this heading"></a></h3>
 <p>We will convolute the sequences. The input works as an implicit concatenate with the library</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Conv1D</span><span class="p">,</span> <span class="n">GlobalMaxPooling1D</span><span class="p">,</span> <span class="n">Concatenate</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Multiply</span><span class="p">,</span> <span class="n">Subtract</span><span class="p">,</span> <span class="n">Dropout</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
@@ -398,7 +400,7 @@ True
 <p>Now we have an encoder that transforms each text into a vector of 50 dimensions.</p>
 </div>
 <div class="section" id="siamese-architecture">
-<h3>Siamese architecture<a class="headerlink" href="#siamese-architecture" title="Permalink to this headline">¶</a></h3>
+<h3>Siamese architecture<a class="headerlink" href="#siamese-architecture" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text1</span> <span class="o">=</span> <span class="n">Input</span><span class="p">((</span><span class="mi">50</span><span class="p">,))</span>
 <span class="n">text2</span> <span class="o">=</span> <span class="n">Input</span><span class="p">((</span><span class="mi">50</span><span class="p">,))</span>
 
@@ -436,7 +438,7 @@ True
 </div>
 </div>
 <div class="section" id="train-test-split-model-build">
-<h2>Train-test split &amp; Model build<a class="headerlink" href="#train-test-split-model-build" title="Permalink to this headline">¶</a></h2>
+<h2>Train-test split &amp; Model build<a class="headerlink" href="#train-test-split-model-build" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">final_df</span> <span class="o">=</span> <span class="n">final_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">final_df</span><span class="p">))</span>
 <span class="n">train</span> <span class="o">=</span> <span class="n">final_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">final_df</span><span class="p">)</span><span class="o">*</span><span class="mf">0.8</span><span class="p">)]</span>
 <span class="n">test</span> <span class="o">=</span> <span class="n">final_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">final_df</span><span class="p">)</span><span class="o">*</span><span class="mf">0.8</span><span class="p">):]</span>
@@ -464,7 +466,7 @@ True
 </div>
 </div>
 <div class="section" id="model-train">
-<h2>Model train<a class="headerlink" href="#model-train" title="Permalink to this headline">¶</a></h2>
+<h2>Model train<a class="headerlink" href="#model-train" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
 
 <span class="n">siamese</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mse&#39;</span><span class="p">])</span>
@@ -566,7 +568,7 @@ True
 <p>With the same data HTCI achieved 0.7781.</p>
 </div>
 <div class="section" id="text-embedding">
-<h2>Text embedding<a class="headerlink" href="#text-embedding" title="Permalink to this headline">¶</a></h2>
+<h2>Text embedding<a class="headerlink" href="#text-embedding" title="Permalink to this heading"></a></h2>
 <p>We are going to drop the siamese model and just keep the encoder (the encoder can be serialized independently and is trained along with the siamese). Also we want to freeze the encoder, specially if we are going to use it to train other model.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">siamese</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">encoder</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
@@ -598,7 +600,7 @@ You should consider upgrading via the &#39;/home/jian01/.pyenv/versions/3.9.5/en
 </div>
 </div>
 <div class="section" id="random-encoder-neighbors">
-<h2>Random encoder neighbors<a class="headerlink" href="#random-encoder-neighbors" title="Permalink to this headline">¶</a></h2>
+<h2>Random encoder neighbors<a class="headerlink" href="#random-encoder-neighbors" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">NearestNeighbors</span>
 
 <span class="n">nbrs</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;brute&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>

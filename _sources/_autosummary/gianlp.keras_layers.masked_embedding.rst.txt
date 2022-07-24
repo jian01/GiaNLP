@@ -1,0 +1,32 @@
+gianlp.keras\_layers.masked\_embedding
+======================================
+
+.. automodule:: gianlp.keras_layers.masked_embedding
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: _autosummary/classes.rst
+   
+         MaskedEmbedding
+      
+   
+   
+
+   
+   
+   
+
+
+

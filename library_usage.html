@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Library usage tutorial &mdash; GiaNLP 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <title>Library usage tutorial &mdash; GiaNLP 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/styles.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,7 +41,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Usage &amp; tutorials:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Usage &amp; tutorials:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Library usage tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#model">Model</a><ul>
@@ -118,13 +120,13 @@
            <div itemprop="articleBody">
              
   <div class="section" id="library-usage-tutorial">
-<h1>Library usage tutorial<a class="headerlink" href="#library-usage-tutorial" title="Permalink to this headline">¶</a></h1>
+<h1>Library usage tutorial<a class="headerlink" href="#library-usage-tutorial" title="Permalink to this heading"></a></h1>
 <div class="section" id="model">
-<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this heading"></a></h2>
 <p>The library allows using text as an input to a Keras model in an easy way. All the building blocks are considered models, although not all models are the same kind the share some similarities.</p>
 <p>All the models are in the package <code class="xref py py-mod docutils literal notranslate"><span class="pre">gianlp.models</span></code>.</p>
 <div class="section" id="shared-methods-properties">
-<h3>Shared methods/properties<a class="headerlink" href="#shared-methods-properties" title="Permalink to this headline">¶</a></h3>
+<h3>Shared methods/properties<a class="headerlink" href="#shared-methods-properties" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">serialize()</span></code>:
 This method can be called on any model and will return a byte array that contains all the information needed for loading it again.</p></li>
@@ -148,7 +150,7 @@ A <code class="xref py py-class docutils literal notranslate"><span class="pre">
 </ul>
 </div>
 <div class="section" id="all-models-are-callable">
-<h3>All models are callable<a class="headerlink" href="#all-models-are-callable" title="Permalink to this headline">¶</a></h3>
+<h3>All models are callable<a class="headerlink" href="#all-models-are-callable" title="Permalink to this heading"></a></h3>
 <p>Let’s assume you have <strong>any</strong> model instantiated and built:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">#model instantiation</span>
 <span class="n">model</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
@@ -177,7 +179,7 @@ A <code class="xref py py-class docutils literal notranslate"><span class="pre">
 <p>Here model output would be a numpy array or list of numpy arrays (again, as specified in <code class="xref py py-meth docutils literal notranslate"><span class="pre">model.outputs_shape</span></code>).</p>
 </div>
 <div class="section" id="all-models-know-how-to-preprocess-text">
-<h3>All models know how to preprocess text<a class="headerlink" href="#all-models-know-how-to-preprocess-text" title="Permalink to this headline">¶</a></h3>
+<h3>All models know how to preprocess text<a class="headerlink" href="#all-models-know-how-to-preprocess-text" title="Permalink to this heading"></a></h3>
 <p>Any model from out library knows how to compute text into numbers that are interpretable for the inputs. With input shapes <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> and <code class="docutils literal notranslate"><span class="pre">(2,2)</span></code> an example would be:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessed</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">preprocess_texts</span><span class="p">([</span><span class="s2">&quot;hi this is an example&quot;</span><span class="p">,</span>
                                        <span class="s2">&quot;still an example&quot;</span><span class="p">])</span>
@@ -186,18 +188,18 @@ A <code class="xref py py-class docutils literal notranslate"><span class="pre">
 <p>This will return a list with of arrays of shape <code class="docutils literal notranslate"><span class="pre">(2,3)</span></code> and <code class="docutils literal notranslate"><span class="pre">(2,2,2)</span></code> where the first dimension is the amount of texts. This can be used for calling the model and evaluate the model although for <em>trainable models</em> we will have a <code class="docutils literal notranslate"><span class="pre">.predict</span></code> method much more recommended.</p>
 </div>
 <div class="section" id="all-models-are-printable">
-<h3>All models are printable<a class="headerlink" href="#all-models-are-printable" title="Permalink to this headline">¶</a></h3>
+<h3>All models are printable<a class="headerlink" href="#all-models-are-printable" title="Permalink to this heading"></a></h3>
 <p>Finally, any model can be printed or converted to string returning a summary similar to keras <code class="xref py py-meth docutils literal notranslate"><span class="pre">summary()</span></code> method.</p>
 </div>
 </div>
 <div class="section" id="text-representation-models">
-<h2>Text representation models<a class="headerlink" href="#text-representation-models" title="Permalink to this headline">¶</a></h2>
+<h2>Text representation models<a class="headerlink" href="#text-representation-models" title="Permalink to this heading"></a></h2>
 <p>The models are going to be built using <em>text representation</em> models as input to <em>trainable models</em>, this is the first kind of building blocks we want to learn.</p>
 <p>A text representation is a way to transform a text into numbers for the neural network to use.</p>
 <div class="section" id="word-representations">
-<h3>Word representations<a class="headerlink" href="#word-representations" title="Permalink to this headline">¶</a></h3>
+<h3>Word representations<a class="headerlink" href="#word-representations" title="Permalink to this heading"></a></h3>
 <div class="section" id="pre-trained-word-embedding">
-<h4>Pre trained word embedding<a class="headerlink" href="#pre-trained-word-embedding" title="Permalink to this headline">¶</a></h4>
+<h4>Pre trained word embedding<a class="headerlink" href="#pre-trained-word-embedding" title="Permalink to this heading"></a></h4>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -235,7 +237,7 @@ A <code class="xref py py-class docutils literal notranslate"><span class="pre">
 <p>No embedding in this layer is trainable since this are pretrained, for trainable word embedding or transfer learning word embeddings we have another object.</p>
 </div>
 <div class="section" id="trainable-word-embedding">
-<h4>Trainable word embedding<a class="headerlink" href="#trainable-word-embedding" title="Permalink to this headline">¶</a></h4>
+<h4>Trainable word embedding<a class="headerlink" href="#trainable-word-embedding" title="Permalink to this heading"></a></h4>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -300,7 +302,7 @@ The behaviour of this embedding is the following:</p>
 <p>The behaviour for 0 padding, masking and unknown words is the same as in the <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedWordEmbeddingSequence</span></code> class.</p>
 </div>
 <div class="section" id="fasttext-embedding-sequence">
-<h4>Fasttext embedding sequence<a class="headerlink" href="#fasttext-embedding-sequence" title="Permalink to this headline">¶</a></h4>
+<h4>Fasttext embedding sequence<a class="headerlink" href="#fasttext-embedding-sequence" title="Permalink to this heading"></a></h4>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -344,9 +346,9 @@ The behaviour of this embedding is the following:</p>
 </div>
 </div>
 <div class="section" id="char-representations">
-<h3>Char representations<a class="headerlink" href="#char-representations" title="Permalink to this headline">¶</a></h3>
+<h3>Char representations<a class="headerlink" href="#char-representations" title="Permalink to this heading"></a></h3>
 <div class="section" id="char-embedding-sequence">
-<h4>Char embedding sequence<a class="headerlink" href="#char-embedding-sequence" title="Permalink to this headline">¶</a></h4>
+<h4>Char embedding sequence<a class="headerlink" href="#char-embedding-sequence" title="Permalink to this heading"></a></h4>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -380,9 +382,9 @@ The behaviour of this embedding is the following:</p>
 </div>
 </div>
 <div class="section" id="other-representations">
-<h3>Other representations<a class="headerlink" href="#other-representations" title="Permalink to this headline">¶</a></h3>
+<h3>Other representations<a class="headerlink" href="#other-representations" title="Permalink to this heading"></a></h3>
 <div class="section" id="chars-per-word-sequence">
-<h4>Chars per word sequence<a class="headerlink" href="#chars-per-word-sequence" title="Permalink to this headline">¶</a></h4>
+<h4>Chars per word sequence<a class="headerlink" href="#chars-per-word-sequence" title="Permalink to this heading"></a></h4>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -418,7 +420,7 @@ The behaviour of this embedding is the following:</p>
 <p>In all our objects masking are vectors of zeros, if you need keras masking you can use the keras <code class="docutils literal notranslate"><span class="pre">Masking</span></code> layer before feeding your layers. Beware, if you compute the final vector for each word be sure that the resulting word vector is all zeros if all the sequence char vectors were 0, we want to keep the mapping of a word that didn’t exist as a zero vector so we can use masking over the word sequence too. How can i make sure of this? Use CNNs and RNNs with NO biases, you actually don’t really need biases, since the vectors are trainable.</p>
 </div>
 <div class="section" id="per-chunk-sequencer">
-<h4>Per chunk sequencer<a class="headerlink" href="#per-chunk-sequencer" title="Permalink to this headline">¶</a></h4>
+<h4>Per chunk sequencer<a class="headerlink" href="#per-chunk-sequencer" title="Permalink to this heading"></a></h4>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -482,7 +484,7 @@ Now we can concatenate the two and obtain a vector of 150 dimensions per word <c
 Digesting those shapes with high <em>ndims</em> will be equally easier when we reach the <em>trainable models</em> section of the tutorial.</p>
 </div>
 <div class="section" id="mapping-embedding">
-<h4>Mapping embedding<a class="headerlink" href="#mapping-embedding" title="Permalink to this headline">¶</a></h4>
+<h4>Mapping embedding<a class="headerlink" href="#mapping-embedding" title="Permalink to this heading"></a></h4>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -514,16 +516,16 @@ Digesting those shapes with high <em>ndims</em> will be equally easier when we r
 </div>
 </div>
 <div class="section" id="trainable-models">
-<h2>Trainable models<a class="headerlink" href="#trainable-models" title="Permalink to this headline">¶</a></h2>
+<h2>Trainable models<a class="headerlink" href="#trainable-models" title="Permalink to this heading"></a></h2>
 <div class="section" id="common-methods">
-<h3>Common methods<a class="headerlink" href="#common-methods" title="Permalink to this headline">¶</a></h3>
+<h3>Common methods<a class="headerlink" href="#common-methods" title="Permalink to this heading"></a></h3>
 <p>The common methods in all trainable models are:</p>
 <div class="section" id="compile">
-<h4>compile<a class="headerlink" href="#compile" title="Permalink to this headline">¶</a></h4>
+<h4>compile<a class="headerlink" href="#compile" title="Permalink to this heading"></a></h4>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">compile()</span></code> is a method for compiling the model following the same parameters as keras models. Previous building is required.</p>
 </div>
 <div class="section" id="fit">
-<h4>fit<a class="headerlink" href="#fit" title="Permalink to this headline">¶</a></h4>
+<h4>fit<a class="headerlink" href="#fit" title="Permalink to this heading"></a></h4>
 <p>For training the model, building and compiling is required.</p>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> is the method for training the model, very similar to keras.</p>
 <p>No matter which format is used for x or validation data, the model is always internally trained with a generator so if batch size elements can fit in ram when preprocessed you will have no ram issues.
@@ -531,17 +533,17 @@ Multi-text models only accept dicts and dataframes in x and simple-text models o
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainableModel</span></code> supports the use of multiprocessing along with generators or inheriting our own <code class="xref py py-class docutils literal notranslate"><span class="pre">gianlp.utils.Sequence</span></code>.</p>
 </div>
 <div class="section" id="predict">
-<h4>predict<a class="headerlink" href="#predict" title="Permalink to this headline">¶</a></h4>
+<h4>predict<a class="headerlink" href="#predict" title="Permalink to this heading"></a></h4>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code> supports the same formats as <code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> along with multiprocessing too!</p>
 <p>If the data is in the form of plain texts, an inference batch must be set.</p>
 </div>
 <div class="section" id="freeze">
-<h4>freeze<a class="headerlink" href="#freeze" title="Permalink to this headline">¶</a></h4>
+<h4>freeze<a class="headerlink" href="#freeze" title="Permalink to this heading"></a></h4>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">freeze()</span></code> is inplace, freezes the model’s weights (can’t be undone).</p>
 </div>
 </div>
 <div class="section" id="keras-wrapper">
-<h3>Keras Wrapper<a class="headerlink" href="#keras-wrapper" title="Permalink to this headline">¶</a></h3>
+<h3>Keras Wrapper<a class="headerlink" href="#keras-wrapper" title="Permalink to this heading"></a></h3>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">KerasWrapper</span></code> as the name says is a wrapper for any keras model.</p>
 <p>This wrapper can accept inputs in multiple ways.</p>
 <p>The initialization parameters are:</p>
@@ -550,7 +552,7 @@ Multi-text models only accept dicts and dataframes in x and simple-text models o
 <li><p>wrapped_model: the keras model to wrap. if it has multiple inputs, inputs parameter should have the same len</p></li>
 </ul>
 <div class="section" id="examples">
-<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h4>
 <p>Given the following text representations:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
 
@@ -561,7 +563,7 @@ Multi-text models only accept dicts and dataframes in x and simple-text models o
 <p>We know that <code class="docutils literal notranslate"><span class="pre">char_emb</span></code> has an output shape of <code class="docutils literal notranslate"><span class="pre">(20,32)</span></code> and <code class="docutils literal notranslate"><span class="pre">char_emb_per_word</span></code> of <code class="docutils literal notranslate"><span class="pre">(10,8,32)</span></code>.</p>
 <p>Let’s see a few examples:</p>
 <div class="section" id="example-1-one-input">
-<h5>Example 1: one input<a class="headerlink" href="#example-1-one-input" title="Permalink to this headline">¶</a></h5>
+<h5>Example 1: one input<a class="headerlink" href="#example-1-one-input" title="Permalink to this heading"></a></h5>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span><span class="p">,</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">Conv1D</span><span class="p">,</span> <span class="n">GlobalMaxPooling1D</span><span class="p">,</span> <span class="n">Concatenate</span>
 <span class="kn">from</span> <span class="nn">gianlp.models</span> <span class="kn">import</span> <span class="n">KerasWrapper</span>
@@ -578,7 +580,7 @@ Multi-text models only accept dicts and dataframes in x and simple-text models o
 <p>After that if we want to train this model we need to build it, which will build always all the graph, including all models chained. We then compile it and use the fit method.</p>
 </div>
 <div class="section" id="example-2-classifier-per-word">
-<h5>Example 2: classifier per word<a class="headerlink" href="#example-2-classifier-per-word" title="Permalink to this headline">¶</a></h5>
+<h5>Example 2: classifier per word<a class="headerlink" href="#example-2-classifier-per-word" title="Permalink to this heading"></a></h5>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span><span class="mi">32</span><span class="p">)))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
@@ -591,7 +593,7 @@ Multi-text models only accept dicts and dataframes in x and simple-text models o
 <p>KerasWrapper will assume that any extra ndim (when possible and shapes compatible) needs a time distribution over each extra dimension.</p>
 </div>
 <div class="section" id="example-3-multiple-inputs-chaining-and-automatic-concatenation">
-<h5>Example 3: Multiple inputs, chaining and automatic concatenation<a class="headerlink" href="#example-3-multiple-inputs-chaining-and-automatic-concatenation" title="Permalink to this headline">¶</a></h5>
+<h5>Example 3: Multiple inputs, chaining and automatic concatenation<a class="headerlink" href="#example-3-multiple-inputs-chaining-and-automatic-concatenation" title="Permalink to this heading"></a></h5>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder1</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 <span class="n">encoder1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span><span class="mi">32</span><span class="p">)))</span>
 <span class="n">encoder1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
@@ -632,7 +634,7 @@ Multi-text models only accept dicts and dataframes in x and simple-text models o
 <p>We can always chain as many models as we want.</p>
 </div>
 <div class="section" id="example-4-multi-text-input">
-<h5>Example 4: Multi-text input<a class="headerlink" href="#example-4-multi-text-input" title="Permalink to this headline">¶</a></h5>
+<h5>Example 4: Multi-text input<a class="headerlink" href="#example-4-multi-text-input" title="Permalink to this heading"></a></h5>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 <span class="n">encoder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Input</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span><span class="mi">32</span><span class="p">)))</span>
 <span class="n">encoder</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalMaxPooling1D</span><span class="p">())</span>
@@ -653,12 +655,12 @@ Since this classifier is multi-text it need to be fed to the two different texts
 </div>
 </div>
 <div class="section" id="more-examples">
-<h4>More examples<a class="headerlink" href="#more-examples" title="Permalink to this headline">¶</a></h4>
+<h4>More examples<a class="headerlink" href="#more-examples" title="Permalink to this heading"></a></h4>
 <p>Real examples involving fiting and predicting are in next pages of this tutorial.</p>
 </div>
 </div>
 <div class="section" id="rnndigest">
-<h3>RNNDigest<a class="headerlink" href="#rnndigest" title="Permalink to this headline">¶</a></h3>
+<h3>RNNDigest<a class="headerlink" href="#rnndigest" title="Permalink to this heading"></a></h3>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">RNNDigest</span></code> is an easier way of digesting sequences in deep-RNNs but in reality is another implementation of <code class="xref py py-class docutils literal notranslate"><span class="pre">KerasWrapper</span></code>.</p>
 <p>Its initialization parameters are:</p>
 <ul class="simple">
