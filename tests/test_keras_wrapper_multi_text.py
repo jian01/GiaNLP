@@ -147,7 +147,10 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         preds1 = siamese.predict(df)
         preds2 = siamese(siamese.preprocess_texts(df))
 
-        self.assertEqual([p.tolist() for p in preds1], [p.tolist() for p in preds2])
+        self.assertEqual(
+            [p.round(3).astype("float32").tolist() for p in preds1],
+            [p.round(3).astype("float32").tolist() for p in preds2],
+        )
 
     def test_train_with_dicts(self) -> None:
         """

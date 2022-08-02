@@ -23,7 +23,7 @@ with open(license_file, encoding='utf-8') as f:
 INSTALL_REQUIRES = ["gensim>=4.0.0", "pandas", "tqdm"]
 
 # Testing dependencies
-TEST_REQUIRES = ["pytest", "pytest-cov", "tensorflow>=2.3.0"]
+TEST_REQUIRES = ["pytest", "pytest-cov", "tensorflow>=2.3.4"]
 
 setup(
     name="GiaNLP",

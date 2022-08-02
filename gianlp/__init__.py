@@ -3,14 +3,19 @@ GiaNLP module
 """
 import os
 
+_TENSORFLOW_REQUIRED_MIN_VERSION = "2.3.0"
+
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 try:
     import tensorflow as tf
 except ModuleNotFoundError:
-    raise ModuleNotFoundError("tensorflow or tensorflow-gpu >=2.3.0 is needed")
+    raise ModuleNotFoundError(f"tensorflow or tensorflow-gpu >={_TENSORFLOW_REQUIRED_MIN_VERSION} is needed")
 
-if tf.__version__ < "2.3.0":
-    raise ModuleNotFoundError(f"tensorflow or tensorflow-gpu >=2.3.0 is needed. You have version {tf.__version__}.")
+if tf.__version__ < _TENSORFLOW_REQUIRED_MIN_VERSION:
+    raise ModuleNotFoundError(
+        f"tensorflow or tensorflow-gpu >={_TENSORFLOW_REQUIRED_MIN_VERSION} is needed. "
+        f"You have version {tf.__version__}."
+    )
 
 if hasattr(tf, "get_logger"):
     tf.get_logger().setLevel("ERROR")

@@ -105,13 +105,16 @@ class TrainableModel(BaseModel, ABC):
     It mimics Keras API.
 
     :var _random_seed: random_seed used in training and can be used for any random process of subclasses
+    :var _frozen: if the model was frozen, this is needed for older tensorflow versions
     """
 
     _random_seed: int
+    _frozen: int
 
     def __init__(self, random_seed: int = 42):
         super().__init__()
         self._random_seed = random_seed
+        self._frozen = False
 
     def preprocess_texts(self, texts: TextsInput) -> KerasInputOutput:
         """
@@ -556,3 +559,4 @@ class TrainableModel(BaseModel, ABC):
         for inp in self._iterate_model_inputs(self.inputs):
             if isinstance(inp, TrainableModel):
                 inp.freeze()
+        self._frozen = True

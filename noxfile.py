@@ -2,16 +2,37 @@
 
 import tempfile
 import nox
+import os
+import sys
+from os.path import isfile, join
+from pathlib import Path
+
+PATH = os.environ["PATH"]
+# Maybe change this to get the result from subprocess.run(["pyenv", "root"])
+target = Path(Path.home() / ".pyenv/versions/")
+
+dirs = [
+    d
+    for d in [
+        str(target / e / "bin")
+        for e in os.listdir(target)
+        if not isfile(join(target, e))
+    ]
+    if d not in PATH
+]
+
+for d in dirs:
+    sys.path.append(d)
 
 
 @nox.session(
-    python="3.7"
+    python="3.7.0"
 )
 def tests_tensorflow_23(session):
     """Run all tests."""
-    session.install("tensorflow==2.3.0")
-    session.install(".")
-    session.install("-r", "./requirements.txt")
+    session.install("tensorflow==2.3.0", silent=False)
+    session.install(".", silent=False)
+    session.install("-r", "./requirements.txt", silent=False)
 
     cmd = ["pytest"]
     if session.posargs:
@@ -23,9 +44,9 @@ def tests_tensorflow_23(session):
 )
 def tests_tensorflow_24(session):
     """Run all tests."""
-    session.install("tensorflow==2.4.0")
-    session.install(".")
-    session.install("-r", "./requirements.txt")
+    session.install("tensorflow==2.4.0", silent=False)
+    session.install(".", silent=False)
+    session.install("-r", "./requirements.txt", silent=False)
 
     cmd = ["pytest"]
     if session.posargs:
@@ -37,9 +58,9 @@ def tests_tensorflow_24(session):
 )
 def tests_tensorflow_25(session):
     """Run all tests."""
-    session.install("tensorflow==2.5.0")
-    session.install(".")
-    session.install("-r", "./requirements.txt")
+    session.install("tensorflow==2.5.0", silent=False)
+    session.install(".", silent=False)
+    session.install("-r", "./requirements.txt", silent=False)
 
     cmd = ["pytest"]
     if session.posargs:
@@ -51,9 +72,9 @@ def tests_tensorflow_25(session):
 )
 def tests_tensorflow_26(session):
     """Run all tests."""
-    session.install("tensorflow==2.6.0")
-    session.install(".")
-    session.install("-r", "./requirements.txt")
+    session.install("tensorflow==2.6.0", silent=False)
+    session.install(".", silent=False)
+    session.install("-r", "./requirements.txt", silent=False)
 
     cmd = ["pytest"]
     if session.posargs:
@@ -65,9 +86,9 @@ def tests_tensorflow_26(session):
 )
 def tests_tensorflow_27(session):
     """Run all tests."""
-    session.install("tensorflow==2.7.0")
-    session.install(".")
-    session.install("-r", "./requirements.txt")
+    session.install("tensorflow==2.7.0", silent=False)
+    session.install(".", silent=False)
+    session.install("-r", "./requirements.txt", silent=False)
 
     cmd = ["pytest"]
     if session.posargs:
@@ -79,9 +100,9 @@ def tests_tensorflow_27(session):
 )
 def tests_tensorflow_28(session):
     """Run all tests."""
-    session.install("tensorflow==2.8.0")
-    session.install(".")
-    session.install("-r", "./requirements.txt")
+    session.install("tensorflow==2.8.0", silent=False)
+    session.install(".", silent=False)
+    session.install("-r", "./requirements.txt", silent=False)
 
     cmd = ["pytest"]
     if session.posargs:
@@ -93,9 +114,9 @@ def tests_tensorflow_28(session):
 )
 def tests_tensorflow_latest(session):
     """Run all tests."""
-    session.install("tensorflow")
-    session.install(".")
-    session.install("-r", "./requirements.txt")
+    session.install("tensorflow", silent=False)
+    session.install(".", silent=False)
+    session.install("-r", "./requirements.txt", silent=False)
 
     cmd = ["pytest", "--cov=.", "--cov-report", "xml"]
     if session.posargs:
@@ -105,8 +126,8 @@ def tests_tensorflow_latest(session):
 @nox.session(reuse_venv=True, python="3.9")
 def cop(session):
     """Run all pre-commit hooks."""
-    session.install(".")
-    session.install("-r", "./requirements.txt")
+    session.install(".", silent=False)
+    session.install("-r", "./requirements.txt", silent=False)
 
     session.run("pre-commit", "install")
     session.run("pre-commit", "run")
@@ -116,7 +137,7 @@ def cop(session):
 def test_sphinx_build(session):
     """Build docs with sphinx."""
     with tempfile.TemporaryDirectory() as tmpdirname:
-        session.install(".")
-        session.install("-r", "./requirements.txt")
-        session.install("-r", "./docs/requirements.txt")
+        session.install(".", silent=False)
+        session.install("-r", "./requirements.txt", silent=False)
+        session.install("-r", "./docs/requirements.txt", silent=False)
         session.run("sphinx-build", "-E", "-n", "-b", "html", "docs", tmpdirname)

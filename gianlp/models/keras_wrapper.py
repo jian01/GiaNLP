@@ -248,7 +248,9 @@ class KerasWrapper(TrainableModel):
         keras_model_bytes = None
         if self._keras_model:
             keras_model_bytes = self.get_bytes_from_model(self._keras_model, copy=True)
-        return pickle.dumps((inputs_bytes, wrapped_model_bytes, keras_model_bytes, self._random_seed, self._built))
+        return pickle.dumps(
+            (inputs_bytes, wrapped_model_bytes, keras_model_bytes, self._random_seed, self._built, self._frozen)
+        )
 
     @classmethod
     def loads(cls, data: bytes) -> "KerasWrapper":
@@ -258,7 +260,7 @@ class KerasWrapper(TrainableModel):
         :param data: the source bytes to load the model
         :return: a Serializable Model
         """
-        inputs_bytes, wrapped_model_bytes, keras_model_bytes, random_seed, _built = pickle.loads(data)
+        inputs_bytes, wrapped_model_bytes, keras_model_bytes, random_seed, _built, _frozen = pickle.loads(data)
         if isinstance(inputs_bytes[0], tuple):
             inputs = [
                 (name, [BaseModel.deserialize(inp_bytes) for inp_bytes in inps_bytes])
@@ -271,4 +273,6 @@ class KerasWrapper(TrainableModel):
             obj._keras_model = cls.get_model_from_bytes(keras_model_bytes)
             obj._built = _built
         obj._random_seed = random_seed
+        if _frozen:
+            obj.freeze()
         return obj
