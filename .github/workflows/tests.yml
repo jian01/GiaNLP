@@ -20,7 +20,7 @@ jobs:
       run: pip install nox
     - name: Run tests with tensorflow latest
       run: nox --sessions tests_tensorflow_latest
-      working-directory: .
+      working-directory: ..
     - name: Codecov
       uses: codecov/codecov-action@v3
       with:
