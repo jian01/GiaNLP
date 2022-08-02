@@ -1,0 +1,33 @@
+repos:
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint gianlp
+        language: system
+        types: [python]
+        args:
+          [
+            "--rcfile=.pylintrc",
+            "--fail-under=9"
+          ]
+        exclude: docs/*
+      - id: darglint
+        name: darglint
+        entry: darglint -v 2 gianlp
+        language: system
+        types: [python]
+        files: gianlp/*
+      - id: black
+        name: black
+        entry: black --line-length 120
+        language: system
+        types: [python]
+        files: (gianlp|tests)/*
+      - id: mypy
+        name: mypy
+        entry: mypy --show-error-codes gianlp/
+        language: system
+        types: [ python ]
+        pass_filenames: false
+        files: gianlp/*|.mypy.ini
