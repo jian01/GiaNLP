@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: pip install nox
     - name: Run tests with tensorflow latest
-      run: nox --noxfile noxfile.py --sessions tests_tensorflow_latest
+      run: nox --noxfile ../noxfile.py --noxfile noxfile.py --sessions tests_tensorflow_latest
     - name: Codecov
       uses: codecov/codecov-action@v3
       with:

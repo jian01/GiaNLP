@@ -17,18 +17,18 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
-      run: pip install nox --noxfile noxfile.py
+      run: pip install nox --noxfile ../noxfile.py
     - name: Run tests with tensorflow 2.3.0
-      run: nox --noxfile noxfile.py --sessions tests_tensorflow_23
+      run: nox --noxfile ../noxfile.py --sessions tests_tensorflow_23
     - name: Run tests with tensorflow 2.4.0
-      run: nox --noxfile noxfile.py --sessions tests_tensorflow_24
+      run: nox --noxfile ../noxfile.py --sessions tests_tensorflow_24
     - name: Run tests with tensorflow 2.4.0
-      run: nox --noxfile noxfile.py --sessions tests_tensorflow_24
+      run: nox --noxfile ../noxfile.py --sessions tests_tensorflow_24
     - name: Run tests with tensorflow 2.5.0
-      run: nox --noxfile noxfile.py --sessions tests_tensorflow_25
+      run: nox --noxfile ../noxfile.py --sessions tests_tensorflow_25
     - name: Run tests with tensorflow 2.6.0
-      run: nox --noxfile noxfile.py --sessions tests_tensorflow_26
+      run: nox --noxfile ../noxfile.py --sessions tests_tensorflow_26
     - name: Run tests with tensorflow 2.7.0
-      run: nox --noxfile noxfile.py --sessions tests_tensorflow_27
+      run: nox --noxfile ../noxfile.py --sessions tests_tensorflow_27
     - name: Run tests with tensorflow 2.8.0
-      run: nox --noxfile noxfile.py --sessions tests_tensorflow_28
+      run: nox --noxfile ../noxfile.py --sessions tests_tensorflow_28
