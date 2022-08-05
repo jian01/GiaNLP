@@ -17,7 +17,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
-      run: pip install nox --noxfile ../noxfile.py
+      run: pip install nox
     - name: Run tests with tensorflow 2.3.0
       run: nox --noxfile ../noxfile.py --sessions tests_tensorflow_23
     - name: Run tests with tensorflow 2.4.0
