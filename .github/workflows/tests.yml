@@ -18,9 +18,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: pip install nox
-    - run: ls
     - name: Run tests with tensorflow latest
-      run: nox --sessions tests_tensorflow_latest
+      run: nox --noxfile noxfile.py --sessions tests_tensorflow_latest
     - name: Codecov
       uses: codecov/codecov-action@v3
       with:
