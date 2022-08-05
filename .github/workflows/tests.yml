@@ -11,14 +11,14 @@ jobs:
         python-version: [3.9]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: pip install nox
+    - run: ls
     - name: Run tests with tensorflow latest
       run: nox --sessions tests_tensorflow_latest
     - name: Codecov
