@@ -2,27 +2,6 @@
 
 import tempfile
 import nox
-import os
-import sys
-from os.path import isfile, join
-from pathlib import Path
-
-PATH = os.environ["PATH"]
-# Maybe change this to get the result from subprocess.run(["pyenv", "root"])
-target = Path(Path.home() / ".pyenv/versions/")
-
-dirs = [
-    d
-    for d in [
-        str(target / e / "bin")
-        for e in os.listdir(target)
-        if not isfile(join(target, e))
-    ]
-    if d not in PATH
-]
-
-for d in dirs:
-    sys.path.append(d)
 
 
 @nox.session(
