@@ -89,7 +89,7 @@ def tests_tensorflow_28(session):
     session.run(*cmd)
 
 @nox.session(
-    python="3.10"
+    python="3.9"
 )
 def tests_tensorflow_latest(session):
     """Run all tests."""
