@@ -9,7 +9,7 @@ import nox
 )
 def tests_tensorflow_23(session):
     """Run all tests."""
-    session.install("tensorflow==2.3.0", silent=False)
+    session.install("tensorflow==2.3.4", "protobuf<=3.20.1", silent=False)
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
@@ -51,7 +51,7 @@ def tests_tensorflow_25(session):
 )
 def tests_tensorflow_26(session):
     """Run all tests."""
-    session.install("tensorflow==2.6.0", silent=False)
+    session.install("tensorflow==2.6.0", "keras==2.6", silent=False)
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
@@ -65,7 +65,7 @@ def tests_tensorflow_26(session):
 )
 def tests_tensorflow_27(session):
     """Run all tests."""
-    session.install("tensorflow==2.7.0", silent=False)
+    session.install("tensorflow==2.7.3", "protobuf<=3.20.1", silent=False)
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
@@ -79,7 +79,7 @@ def tests_tensorflow_27(session):
 )
 def tests_tensorflow_28(session):
     """Run all tests."""
-    session.install("tensorflow==2.8.0", silent=False)
+    session.install("tensorflow==2.8.0", "protobuf<=3.20.1", silent=False)
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
@@ -89,7 +89,7 @@ def tests_tensorflow_28(session):
     session.run(*cmd)
 
 @nox.session(
-    python="3.9"
+    python="3.10"
 )
 def tests_tensorflow_latest(session):
     """Run all tests."""
@@ -97,7 +97,7 @@ def tests_tensorflow_latest(session):
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
-    cmd = ["pytest", "--cov=.", "--cov-report", "xml"]
+    cmd = ["pytest", "--cov=.", "--cov-report", "xml:/tmp/coverage.xml"]
     if session.posargs:
         cmd.extend(session.posargs)
     session.run(*cmd)
