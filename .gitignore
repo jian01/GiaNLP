@@ -100,3 +100,4 @@ ENV/
 __pycache__
 *.DS_Store
 docs/_autosummary/
+.nox/*

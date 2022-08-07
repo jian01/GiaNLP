@@ -1,0 +1,7 @@
+.nox
+.pytest*
+.mypy*
+.eggs
+htmlcov
+.coverage*
+build

@@ -5,7 +5,7 @@ import nox
 
 
 @nox.session(
-    python="3.8"
+    python="3.7"
 )
 def tests_tensorflow_23(session):
     """Run all tests."""
@@ -89,7 +89,7 @@ def tests_tensorflow_28(session):
     session.run(*cmd)
 
 @nox.session(
-    python="3.9"
+    python="3.10"
 )
 def tests_tensorflow_latest(session):
     """Run all tests."""
@@ -97,7 +97,7 @@ def tests_tensorflow_latest(session):
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
-    cmd = ["pytest", "--cov=.", "--cov-report", "xml"]
+    cmd = ["pytest", "--cov=.", "--cov-report", "xml:/tmp/coverage.xml"]
     if session.posargs:
         cmd.extend(session.posargs)
     session.run(*cmd)
