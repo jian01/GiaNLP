@@ -51,7 +51,7 @@ def tests_tensorflow_25(session):
 )
 def tests_tensorflow_26(session):
     """Run all tests."""
-    session.install("tensorflow==2.6.0", silent=False)
+    session.install("tensorflow==2.6.0", "keras==2.6", silent=False)
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
@@ -79,7 +79,7 @@ def tests_tensorflow_27(session):
 )
 def tests_tensorflow_28(session):
     """Run all tests."""
-    session.install("tensorflow==2.8.0", silent=False)
+    session.install("tensorflow==2.8.0", "protobuf<=3.20.1", silent=False)
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
