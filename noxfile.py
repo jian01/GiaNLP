@@ -5,11 +5,11 @@ import nox
 
 
 @nox.session(
-    python="3.7"
+    python="3.8"
 )
 def tests_tensorflow_23(session):
     """Run all tests."""
-    session.install("tensorflow==2.3.0", silent=False)
+    session.install("tensorflow==2.3.4", "protobuf<=3.20.1", silent=False)
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
@@ -65,7 +65,7 @@ def tests_tensorflow_26(session):
 )
 def tests_tensorflow_27(session):
     """Run all tests."""
-    session.install("tensorflow==2.7.0", silent=False)
+    session.install("tensorflow==2.7.3", "protobuf<=3.20.1", silent=False)
     session.install(".", silent=False)
     session.install("-r", "./requirements.txt", silent=False)
 
