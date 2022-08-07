@@ -1,0 +1,6 @@
+pytest
+pytest-cov
+nox==2022.1.7
+pre-commit==2.19.0
+pylint==2.14.4
+darglint==1.8.1

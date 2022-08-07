@@ -1,0 +1,34 @@
+name: Run tests on all versions
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: pip install nox
+    - name: Run tests with tensorflow 2.3.0
+      run: nox --sessions tests_tensorflow_23
+    - name: Run tests with tensorflow 2.4.0
+      run: nox --sessions tests_tensorflow_24
+    - name: Run tests with tensorflow 2.4.0
+      run: nox --sessions tests_tensorflow_24
+    - name: Run tests with tensorflow 2.5.0
+      run: nox --sessions tests_tensorflow_25
+    - name: Run tests with tensorflow 2.6.0
+      run: nox --sessions tests_tensorflow_26
+    - name: Run tests with tensorflow 2.7.0
+      run: nox --sessions tests_tensorflow_27
+    - name: Run tests with tensorflow 2.8.0
+      run: nox --sessions tests_tensorflow_28

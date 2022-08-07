@@ -1,0 +1,18 @@
+[run]
+source = giannlp
+omit =
+	tests/*
+	.nox/*
+	.eggs/*
+	.pytest_cache/*
+	build/*
+	docs/*
+	noxfile.py
+	setup.py
+[report]
+exclude_lines =
+	pragma: no cover
+    @abstractmethod
+    @abc.abstractmethod
+    raise NotImplementedError
+    \.\.\.
