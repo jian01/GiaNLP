@@ -2,8 +2,9 @@
 GiaNLP module
 """
 import os
+from packaging import version
 
-_TENSORFLOW_REQUIRED_MIN_VERSION = "2.3.0"
+_TENSORFLOW_REQUIRED_MIN_VERSION = version.parse("2.3.0")
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 try:
@@ -11,7 +12,7 @@ try:
 except ModuleNotFoundError:
     raise ModuleNotFoundError(f"tensorflow or tensorflow-gpu >={_TENSORFLOW_REQUIRED_MIN_VERSION} is needed")
 
-if tf.__version__ < _TENSORFLOW_REQUIRED_MIN_VERSION:
+if version.parse(tf.__version__) < _TENSORFLOW_REQUIRED_MIN_VERSION:
     raise ModuleNotFoundError(
         f"tensorflow or tensorflow-gpu >={_TENSORFLOW_REQUIRED_MIN_VERSION} is needed. "
         f"You have version {tf.__version__}."

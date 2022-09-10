@@ -102,7 +102,7 @@ def tests_tensorflow_latest(session):
         cmd.extend(session.posargs)
     session.run(*cmd)
 
-@nox.session(reuse_venv=True, python="3.9")
+@nox.session(reuse_venv=True, python="3.7")
 def cop(session):
     """Run all pre-commit hooks."""
     session.install(".", silent=False)
@@ -112,7 +112,7 @@ def cop(session):
     session.run("pre-commit", "run")
 
 
-@nox.session(reuse_venv=True, python="3.9")
+@nox.session(reuse_venv=True, python="3.7")
 def test_sphinx_build(session):
     """Build docs with sphinx."""
     with tempfile.TemporaryDirectory() as tmpdirname:
