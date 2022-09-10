@@ -78,7 +78,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
         else:
             self._fasttext = fasttext_src
 
-        self._tokenizer = tokenizer  # type: ignore[assignment]
+        self._tokenizer = tokenizer
         self._keras_model = None
         self._sequence_maxlen = int(sequence_maxlen)
         self._min_freq_percentile = min_freq_percentile
@@ -96,12 +96,12 @@ class FasttextEmbeddingSequence(TextRepresentation):
         """
         assert self._built
 
-        tokenized_texts = [self._tokenizer(text) for text in texts]
+        tokenized_texts = self.tokenize_texts(texts, self._tokenizer, sequence_maxlength=self._sequence_maxlen)  # type: ignore[arg-type]
         words = keras_seq.pad_sequences(
             [
                 [
                     self._word_indexes[w] if w in self._word_indexes else self._word_indexes[self._WORD_UNKNOWN_TOKEN]
-                    for w in words[: self._sequence_maxlen]
+                    for w in words
                 ]
                 for words in tokenized_texts
             ],
@@ -124,7 +124,9 @@ class FasttextEmbeddingSequence(TextRepresentation):
             random.seed(self._random_state)
             random.shuffle(text_sample)
             text_sample = text_sample[: min(len(text_sample), self._MAX_SAMPLE_TO_FIT)]
-            tokenized_texts = [token for text in text_sample for token in self._tokenizer(text)]
+            tokenized_texts = self.tokenize_texts(
+                text_sample, self._tokenizer, sequence_maxlength=self._sequence_maxlen  # type: ignore[arg-type]
+            )
             frequencies = Counter(tokenized_texts)
             p_freq = np.percentile(list(frequencies.values()), self._min_freq_percentile)
             if (

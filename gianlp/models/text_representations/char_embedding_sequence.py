@@ -41,7 +41,6 @@ class CharEmbeddingSequence(TextRepresentation):
     _min_freq_percentile: int
     _random_state: int
 
-    _MAX_SAMPLE_TO_FIT = 200000
     _CHAR_EMB_UNK_TOKEN = "UNK"
 
     def __init__(
@@ -97,15 +96,9 @@ class CharEmbeddingSequence(TextRepresentation):
         :param texts: the texts input
         """
         if not self._built:
-            text_sample = texts.copy()
-            random.seed(self._random_state)
-            random.shuffle(text_sample)
-            text_sample = text_sample[: min(len(text_sample), self._MAX_SAMPLE_TO_FIT)]
-
-            char_ocurrences = [list(text) for text in text_sample]
             char_ocurrence_counter = Counter()  # type: ignore
-            for seq in char_ocurrences:
-                char_ocurrence_counter.update(seq)
+            for text in texts:
+                char_ocurrence_counter.update(list(text)[: self._sequence_maxlen])
             p_freq = np.percentile(list(char_ocurrence_counter.values()), self._min_freq_percentile)
             char_ocurrence_dict = {k: v for k, v in char_ocurrence_counter.items() if v >= p_freq}
             self._char_indexes = {
