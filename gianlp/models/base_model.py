@@ -8,10 +8,9 @@ import tarfile
 from abc import abstractmethod, ABC
 from io import BytesIO
 from tempfile import NamedTemporaryFile, TemporaryDirectory
-from typing import Iterator, NamedTuple, Optional, overload, cast, List, Tuple, Union
+from typing import NamedTuple, Optional, List, Tuple, Union
 
 import numpy as np
-import pandas as pd
 
 # pylint: disable=no-name-in-module
 from tensorflow import Tensor
@@ -26,14 +25,10 @@ from tensorflow.keras.models import Model, load_model, clone_model
 
 from gianlp.logging import warning
 from gianlp.models._health_utils import get_dependencies_signature, warn_for_dependencies_signature
-from gianlp.models._report_utils import model_list_to_summary_string
-from gianlp.types import SimpleTypeTexts, KerasInputOutput
+from gianlp.models._report_utils import compute_model_summary
+from gianlp.types import KerasInputOutput, TextsInput, TextsInputWrapper, ModelInputsWrapper, SimpleTypeModels
 
 MODEL_DATA_PATHNAME = "model_data"
-
-SimpleTypeModels = List["BaseModel"]
-MultiTypeModels = List[Tuple[str, List["BaseModel"]]]
-ModelInputs = Union[SimpleTypeModels, MultiTypeModels]
 
 
 class ModelIOShape(NamedTuple):
@@ -66,26 +61,12 @@ class BaseModel(ABC):
 
     @property
     @abstractmethod
-    def inputs(self) -> ModelInputs:
+    def inputs(self) -> ModelInputsWrapper:
         """
         Method for getting all models that serve as input
 
-        :return: a list or list of tuples containing BaseModel objects
+        :return: a ModelInputsWrapper
         """
-
-    def has_multi_text_input(self) -> bool:
-        """
-        Method for knowing if the model has multi input
-
-        :return: True if the input of the model need multiple texts
-        """
-        input_models = self.inputs
-        if input_models:
-            if isinstance(input_models[0], tuple):
-                return True
-            first_model: "BaseModel" = input_models[0]
-            return first_model.has_multi_text_input()
-        return False
 
     @property
     @abstractmethod
@@ -127,36 +108,17 @@ class BaseModel(ABC):
             return None
         return sum(K.count_params(w) for w in self._get_keras_model().trainable_weights)
 
-    def __model_finder(self, model: "BaseModel") -> SimpleTypeModels:
-        """
-        Finds all models chained to this one
-
-        :param model: the initial model
-        :return: a list of base models
-        """
-        models = [model]
-        for m in self._iterate_model_inputs(model.inputs):
-            models += self.__model_finder(m)
-        return models
-
     def __str__(self) -> str:
         """
-        Get's the model summary as string
+        Gets the model summary as string
 
         :return: the model summary
         """
-        models = list(reversed(self.__model_finder(self)))
-        seen_models = set()
-        no_repetition_models = []
-        for model in models:
-            if repr(model) not in seen_models:
-                no_repetition_models.append(model)
-                seen_models.update([repr(model)])
-        return model_list_to_summary_string(no_repetition_models)
+        return compute_model_summary(self)
 
     def __repr__(self) -> str:
         """
-        Get's a string for identifying the model
+        Gets a string for identifying the model
 
         :return: an object identifier string
         """
@@ -165,62 +127,47 @@ class BaseModel(ABC):
     @abstractmethod
     def _get_keras_model(self) -> Model:
         """
-        Get's the internal keras model that is being serialized
+        Gets the internal keras model that is being serialized
 
         :return: The internal keras model
         """
 
     @abstractmethod
-    def _unitary_build(self, texts: SimpleTypeTexts) -> None:
+    def _unitary_build(self, texts: TextsInput) -> None:
         """
         Builds the model using its inputs
 
         :param texts: a text list for building if needed
         """
 
-    @staticmethod
-    @overload
-    def _iterate_model_inputs(model_inputs: SimpleTypeModels) -> Iterator["BaseModel"]:
-        ...
-
-    @staticmethod
-    @overload
-    def _iterate_model_inputs(model_inputs: MultiTypeModels) -> Iterator["BaseModel"]:
-        ...
-
-    @staticmethod
-    def _iterate_model_inputs(model_inputs: ModelInputs) -> Iterator["BaseModel"]:
-        """
-        Iterates model inputs in the proper order
-        :param model_inputs: the model inputs
-
-        :return: An iterator of model inputs
-        """
-        if not model_inputs:
-            return
-        if isinstance(model_inputs[0], tuple):
-            model_inputs = cast(MultiTypeModels, model_inputs)
-            for t in model_inputs:
-                for model in t[1]:
-                    yield model
-        else:
-            model_inputs = cast(SimpleTypeModels, model_inputs)
-            for model in model_inputs:
-                yield model
-
-    def build(self, texts: SimpleTypeTexts) -> None:
+    def build(self, texts: TextsInput) -> None:
         """
         Builds the whole chain of models in a recursive manner using the functional API.
         Some operations may need the model to be built.
 
         :param texts: the texts for building if needed, some models have to learn from a sample corpus before working
+        :raises ValueError: If the multi-text input keys do not match with the ones in a multi-text model
         """
-        if isinstance(texts, pd.Series):
-            texts = texts.values.tolist()
+        texts = TextsInputWrapper(texts)
 
-        for model in self._iterate_model_inputs(self.inputs):
-            model.build(texts)
-        self._unitary_build(texts)
+        if self.inputs.is_multi_text():
+            if texts.is_multi_text():
+                if set(self.inputs.keys()) - set(texts.keys()):
+                    raise ValueError(
+                        f"The texts keys have missing multi-text model "
+                        f"keys: {set(self.inputs.keys()) - set(texts.keys())}"
+                    )
+            for name, inps in self.inputs.items():
+                if texts.is_multi_text():
+                    current_texts = texts[name]
+                else:
+                    current_texts = texts.to_texts_inputs()
+                for model in inps:
+                    model.build(current_texts)
+        else:
+            for model in self.inputs:
+                model.build(texts.to_texts_inputs())
+        self._unitary_build(texts.flatten().to_texts_inputs())
 
     @staticmethod
     def _call_keras_layer(keras_model: Model, inputs: Union[List[Layer], Layer]) -> Tensor:
@@ -403,7 +350,7 @@ class BaseModel(ABC):
         return model
 
     @abstractmethod
-    def preprocess_texts(self, texts: SimpleTypeTexts) -> KerasInputOutput:
+    def preprocess_texts(self, texts: TextsInput) -> KerasInputOutput:
         """
         Given texts returns the array representation needed for forwarding the
         keras model

@@ -433,3 +433,89 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
 
         # still frozen
         self.assertEqual(siamese.trainable_weights_amount, 0)
+
+    def test_simple_multi_text_build(self) -> None:
+        """
+        Test simple multi-text build
+        """
+        char_emb1 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
+        char_emb2 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
+
+        model = Sequential([Input((32,)), Dense(5, activation="tanh")])
+        model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
+        model.build({"text1": LOREM_IPSUM.split("\n"), "text2": LOREM_IPSUM.split("\n")})
+        self.assertEqual(model.outputs_shape.shape, (10, 5))
+
+    def test_multi_text_build_bifurcation(self) -> None:
+        """
+        Test multi-text build with texts for each input
+        """
+        char_emb1 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+        char_emb2 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+
+        model = Sequential([Input((32,)), Dense(5, activation="tanh")])
+        model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
+        model.build({"text1": ["asd", "dsa"], "text2": ["qwe", "ewq"]})
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["q"])).tolist(), char_emb2(char_emb2.preprocess_texts(["a"])).tolist()
+        )
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["q"])).tolist(), char_emb2(char_emb2.preprocess_texts(["s"])).tolist()
+        )
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["a"])).tolist(), char_emb2(char_emb2.preprocess_texts(["q"])).tolist()
+        )
+
+        self.assertEqual(model.outputs_shape.shape, (1, 5))
+
+    def test_multi_text_build_with_extra_key(self) -> None:
+        """
+        Test multi-text build with an extra key. Extra key gets ignored.
+        """
+        char_emb1 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+        char_emb2 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+
+        model = Sequential([Input((32,)), Dense(5, activation="tanh")])
+        model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
+        model.build({"text1": ["asd", "dsa"], "text2": ["qwe", "ewq"], "text3": ["322", "434"]})
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["q"])).tolist(), char_emb2(char_emb2.preprocess_texts(["a"])).tolist()
+        )
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["q"])).tolist(), char_emb2(char_emb2.preprocess_texts(["s"])).tolist()
+        )
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["a"])).tolist(), char_emb2(char_emb2.preprocess_texts(["q"])).tolist()
+        )
+
+        self.assertEqual(model.outputs_shape.shape, (1, 5))
+
+    def test_multi_text_build_with_missing_key_raises_error(self) -> None:
+        """
+        Test multi-text build with a missing key raises a value error.
+        """
+        char_emb1 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+        char_emb2 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+
+        model = Sequential([Input((32,)), Dense(5, activation="tanh")])
+        model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
+        with self.assertRaises(ValueError):
+            model.build({"text1": ["asd", "dsa"]})

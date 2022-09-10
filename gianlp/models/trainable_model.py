@@ -129,16 +129,15 @@ class TrainableModel(BaseModel, ABC):
         """
         texts = TextsInputWrapper(texts)
 
-        if self.has_multi_text_input():
+        if self.inputs.is_multi_text():
             if not texts.is_multi_text():
                 raise ValueError("The model has multi-text input but there's only one type of text to preprocess.")
         else:
             if texts.is_multi_text():
                 raise ValueError("The model has input of only one type of text but multiple texts where feeded.")
         texts_preprocessed: List[np.ndarray] = []
-        input_models = self.inputs
-        if isinstance(input_models[0], tuple):
-            for name, inps in input_models:
+        if self.inputs.is_multi_text():
+            for name, inps in self.inputs.items():
                 for inp in inps:
                     result = inp.preprocess_texts(texts[name])
                     if isinstance(result, list):
@@ -146,8 +145,7 @@ class TrainableModel(BaseModel, ABC):
                     else:
                         texts_preprocessed.append(result)
         else:
-            input_models = cast(SimpleTypeModels, input_models)
-            for inp in input_models:
+            for inp in self.inputs:
                 result = inp.preprocess_texts(texts.to_texts_inputs())
                 if isinstance(result, list):
                     texts_preprocessed += result
@@ -556,7 +554,7 @@ class TrainableModel(BaseModel, ABC):
         model = self._get_keras_model()
         for k, _ in model._get_trainable_state().items():
             k.trainable = False
-        for inp in self._iterate_model_inputs(self.inputs):
+        for inp in self.inputs:
             if isinstance(inp, TrainableModel):
                 inp.freeze()
         self._frozen = True

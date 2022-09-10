@@ -6,7 +6,8 @@ from typing import List, Union
 
 from tensorflow import int32
 
-from gianlp.models.base_model import BaseModel, ModelInputs, ModelIOShape
+from gianlp.models.base_model import BaseModel, ModelIOShape
+from gianlp.types import ModelInputsWrapper
 
 
 class TextRepresentation(BaseModel, ABC):
@@ -15,7 +16,7 @@ class TextRepresentation(BaseModel, ABC):
     """
 
     @property
-    def inputs(self) -> ModelInputs:
+    def inputs(self) -> ModelInputsWrapper:
         """
         Method for getting all models that serve as input.
         All TextRepresentation have no models as an input.
@@ -23,7 +24,7 @@ class TextRepresentation(BaseModel, ABC):
         :return: a list or list of tuples containing BaseModel objects
         """
 
-        return []  # type: ignore[return-value]
+        return ModelInputsWrapper([])
 
     @property
     @abstractmethod

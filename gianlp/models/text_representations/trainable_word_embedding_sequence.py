@@ -21,7 +21,7 @@ from tensorflow.keras.preprocessing import sequence as keras_seq
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
 from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.types import SimpleTypeTexts, KerasInputOutput
+from gianlp.types import KerasInputOutput, SimpleTypeTexts
 
 
 class TrainableWordEmbeddingSequence(TextRepresentation):
@@ -135,7 +135,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
         """
         Builds the model using its inputs
 
-        :param texts: a text list for building if needed
+        :param texts: the texts input
         """
         if not self._built:
             text_sample = texts.copy()
@@ -273,7 +273,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
 
     def _get_keras_model(self) -> Model:
         """
-        Get's the internal keras model that is being serialized
+        Gets the internal keras model that is being serialized
 
         :return: The internal keras model
         """
