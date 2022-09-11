@@ -143,7 +143,10 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
             random.shuffle(text_sample)
             text_sample = text_sample[: min(len(text_sample), self._MAX_SAMPLE_TO_FIT)]
             tokenized_texts = self.tokenize_texts(
-                text_sample, self._tokenizer, sequence_maxlength=self._sequence_maxlen  # type: ignore[arg-type]
+                text_sample,
+                self._tokenizer,  # type: ignore[arg-type]
+                sequence_maxlength=self._sequence_maxlen,
+                njobs=1,
             )
             frequencies = Counter(tokenized_texts)
             p_freq = np.percentile(list(frequencies.values()), self._min_freq_percentile)
