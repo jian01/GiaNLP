@@ -79,8 +79,6 @@ def set_seed(seed: int) -> None:
     :param seed: the seed
     """
     os.environ["PYTHONHASHSEED"] = str(seed)
-    os.environ["TF_DETERMINISTIC_OPS"] = "1"
-    os.environ["TF_CUDNN_DETERMINISTIC"] = "1"
     random.seed(seed)
     set_tf_seed(seed)
     np.random.seed(seed)
@@ -91,15 +89,11 @@ def ensure_reproducibility(seed: int) -> None:
     Ensures the tensorflow encironment is reproducible
     :param seed: the seed
     """
+    os.environ["TF_DETERMINISTIC_OPS"] = "1"
+    os.environ["TF_CUDNN_DETERMINISTIC"] = "1"
     set_seed(seed)
     tf.config.threading.set_inter_op_parallelism_threads(1)
     tf.config.threading.set_intra_op_parallelism_threads(1)
-    from tfdeterminism import patch
-
-    try:
-        patch()
-    except Exception:
-        return
 
 
 def accuracy(labels: List[int], preds: List[int]) -> float:
