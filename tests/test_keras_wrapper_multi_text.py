@@ -189,7 +189,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
             {"text1": ["asd", "fgh"] * 2 * 10, "text2": ["asd", "asd", "fgh", "fgh"] * 10},
             np.asarray([0, 1, 1, 0] * 10),
             batch_size=7,
-            epochs=20,
+            epochs=25,
         )
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1, delta=0.01)
 
@@ -246,7 +246,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
             pd.DataFrame.from_dict({"text1": ["asd", "fgh"] * 2 * 10, "text2": ["asd", "asd", "fgh", "fgh"] * 10}),
             np.asarray([0, 1, 1, 0] * 10),
             batch_size=7,
-            epochs=20,
+            epochs=25,
         )
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1, delta=0.01)
 
