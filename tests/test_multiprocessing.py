@@ -10,12 +10,11 @@ import random
 import numpy as np
 from tensorflow.keras.layers import Input, GRU, Dense, Masking, GlobalMaxPooling1D, Conv1D
 from tensorflow.keras.models import Sequential
-from tensorflow.random import set_seed
 
 from gianlp.models import KerasWrapper, BaseModel, CharEmbeddingSequence, PerChunkSequencer
 from gianlp.utils import Sequence
 from tests.utils import dot_chunker
-from tests.utils import LOREM_IPSUM, accuracy, generator_from_list, SequenceFromList
+from tests.utils import LOREM_IPSUM, accuracy, generator_from_list, SequenceFromList, set_seed
 
 
 class TestSpamSequence(Sequence):
@@ -109,7 +108,7 @@ class TestMultiprocessing(unittest.TestCase):
             use_multiprocessing=True,
         )
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.1)
-        self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.1)
+        self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.15)
         preds1 = model.predict(["prueba 1", "prueba. prueba 2"])
         serialized = model.serialize()
         try:
@@ -215,7 +214,7 @@ class TestMultiprocessing(unittest.TestCase):
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
         hst = model.fit(
             self.starts_with_vocal_generator(),
@@ -251,7 +250,7 @@ class TestMultiprocessing(unittest.TestCase):
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         model.predict(
             generator_from_list([["A"], ["E"], ["I"], ["O"], ["U"], ["JS4DS"], ["S4DS"], ["4DS"], ["DS"], ["S"]]),
             use_multiprocessing=True,
@@ -277,7 +276,7 @@ class TestMultiprocessing(unittest.TestCase):
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         preds = model.predict(["A", "E", "I", "O", "U", "JS4DS", "S4DS", "4DS", "DS", "S"]).round(3).astype("float32")
         preds2 = (
             model.predict(
@@ -316,7 +315,7 @@ class TestMultiprocessing(unittest.TestCase):
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         preds = model.predict(["A", "E", "I", "O", "U", "JS4DS", "S4DS", "4DS", "DS", "S"]).round(3).astype("float32")
         preds2 = (
             model.predict(SequenceFromList([["A"], ["E"], ["I"], ["O"], ["U", "JS4DS"], ["S4DS", "4DS", "DS"], ["S"]]))
