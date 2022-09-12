@@ -137,7 +137,7 @@ class TestKerasWrapperExceptions(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         siamese.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 
         with self.assertRaises(ValueError):

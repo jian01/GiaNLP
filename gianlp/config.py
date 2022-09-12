@@ -3,6 +3,7 @@ Configuration module
 """
 
 import os
+from multiprocessing import current_process
 
 
 def is_ipython() -> bool:
@@ -37,4 +38,6 @@ def get_default_jobs() -> int:
     Gets the current default jobs for parallelization
     :return: the processes that will be used in parallel operations
     """
+    if current_process().daemon:
+        return 1
     return __default_processes

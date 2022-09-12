@@ -8,10 +8,10 @@ from typing import List, Tuple
 import numpy as np
 from tensorflow.keras.layers import Input, GRU, Dense, Masking, GlobalMaxPooling1D
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.random import set_seed
+from tensorflow.keras.optimizers import Adam
 
 from gianlp.models import KerasWrapper, CharEmbeddingSequence, PerChunkSequencer
-from tests.utils import dot_chunker
+from tests.utils import dot_chunker, set_seed
 
 
 class TestMultipleOutputs(unittest.TestCase):
@@ -41,7 +41,7 @@ class TestMultipleOutputs(unittest.TestCase):
         """
         set_seed(42)
 
-        char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
+        char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128, min_freq_percentile=0)
         char_digest = Sequential(
             [
                 Input(char_emb.outputs_shape.shape),
@@ -75,7 +75,7 @@ class TestMultipleOutputs(unittest.TestCase):
         texts, labels = self.read_sms_spam_dset()
         model.build(texts)
         print(model)
-        model.compile(optimizer="adam", loss="mean_absolute_error")
+        model.compile(optimizer=Adam(0.002), loss="mean_absolute_error")
         hst = model.fit(
             texts, [np.asarray(labels), 1 - np.asarray(labels)], batch_size=256, epochs=2, validation_split=0.1
         )
@@ -92,7 +92,7 @@ class TestMultipleOutputs(unittest.TestCase):
         """
         set_seed(42)
 
-        char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
+        char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128, min_freq_percentile=0)
         char_digest = Sequential(
             [
                 Input(char_emb.outputs_shape.shape),
@@ -137,7 +137,7 @@ class TestMultipleOutputs(unittest.TestCase):
         texts, labels = self.read_sms_spam_dset()
         final.build(texts)
         print(final)
-        final.compile(optimizer="adam", loss="mean_absolute_error")
+        final.compile(optimizer=Adam(0.002), loss="mean_absolute_error")
         hst = final.fit(
             texts, [np.asarray(labels), 1 - np.asarray(labels)], batch_size=256, epochs=2, validation_split=0.1
         )

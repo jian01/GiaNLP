@@ -69,7 +69,6 @@ class TextRepresentation(BaseModel, ABC):
         texts: SimpleTypeTexts,
         tokenizer: Callable[[str], List[str]],
         sequence_maxlength: Optional[int] = None,
-        njobs: Optional[int] = None,
     ) -> List[List[str]]:
         """
         Function for tokenizing texts
@@ -77,11 +76,12 @@ class TextRepresentation(BaseModel, ABC):
         :param texts: the texts to tokenize
         :param tokenizer: the tokenizer
         :param sequence_maxlength: optional sequence maxlength.
-        :param njobs: processes used for parallelization. If None uses default
         :return: a list of lists with string tokens
         """
-        tokenizer = partial(tokenizer, tokenizer=tokenizer, sequence_maxlength=sequence_maxlength)
-        if (njobs is None and get_default_jobs() > 1) or (njobs is not None and njobs > 1):
-            with Pool((get_default_jobs() if njobs is None else njobs)) as p:
+        tokenizer = partial(
+            TextRepresentation.parallel_tokenizer, tokenizer=tokenizer, sequence_maxlength=sequence_maxlength
+        )
+        if get_default_jobs() > 1:
+            with Pool(get_default_jobs()) as p:
                 return p.map(tokenizer, texts)
         return [tokenizer(text) for text in texts]

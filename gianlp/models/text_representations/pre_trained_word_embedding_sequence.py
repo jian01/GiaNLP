@@ -71,7 +71,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
         assert self._tokenizer
         assert self._word2vec
 
-        tokenized_texts = self.tokenize_texts(texts, self._tokenizer, sequence_maxlength=self._sequence_maxlen, njobs=1)  # type: ignore[arg-type]
+        tokenized_texts = self.tokenize_texts(texts, self._tokenizer, sequence_maxlength=self._sequence_maxlen)  # type: ignore[arg-type]
         words = keras_seq.pad_sequences(
             [
                 [self._word2vec.key_to_index[w] + 2 if w in self._word2vec.key_to_index else 1 for w in words]
