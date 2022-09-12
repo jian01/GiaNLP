@@ -25,9 +25,9 @@ from gianlp.models.text_representations.text_representation import TextRepresent
 from gianlp.types import SimpleTypeTexts, KerasInputOutput
 
 
-class FasttextEmbeddingSequence(TextRepresentation):
+class FasttextWordEmbeddingSequence(TextRepresentation):
     """
-    Fasttext (non-trainable) embedding sequence input
+    Fasttext (non-trainable) word embedding sequence input
 
     :var _keras_model: Keras model built from processing the text input
     :var _fasttext: the gensim fasttext object
@@ -51,7 +51,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
     _random_state: int
 
     _WORD_UNKNOWN_TOKEN = "<UNK>"
-    _MAX_SAMPLE_TO_FIT = 5000000
+    _MAX_SIZE_TO_TOKENIZE = 500000
 
     def __init__(
         self,
@@ -120,14 +120,12 @@ class FasttextEmbeddingSequence(TextRepresentation):
         :param texts: the texts input
         """
         if not self._built:
-            text_sample = texts.copy()
-            random.seed(self._random_state)
-            random.shuffle(text_sample)
-            text_sample = text_sample[: min(len(text_sample), self._MAX_SAMPLE_TO_FIT)]
-            tokenized_texts = self.tokenize_texts(
-                text_sample, self._tokenizer, sequence_maxlength=self._sequence_maxlen  # type: ignore[arg-type]
-            )
-            frequencies = Counter([token for text in tokenized_texts for token in text])
+            frequencies: Counter = Counter()
+            for i in range(0, len(texts), self._MAX_SIZE_TO_TOKENIZE):
+                tokenized_texts = self.tokenize_texts(
+                    texts[i : i + self._MAX_SIZE_TO_TOKENIZE], self._tokenizer, sequence_maxlength=self._sequence_maxlen  # type: ignore[arg-type]
+                )
+                frequencies.update([token for text in tokenized_texts for token in text])
             p_freq = np.percentile(list(frequencies.values()), self._min_freq_percentile)
             if (
                 not self._max_vocabulary is None
@@ -212,7 +210,7 @@ class FasttextEmbeddingSequence(TextRepresentation):
         )
 
     @classmethod
-    def loads(cls, data: bytes) -> "FasttextEmbeddingSequence":
+    def loads(cls, data: bytes) -> "FasttextWordEmbeddingSequence":
         """
         Loads a model
 

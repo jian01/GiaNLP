@@ -10,11 +10,11 @@ from tensorflow.keras.layers import Dense, GlobalAveragePooling1D
 from tensorflow.keras.models import Sequential
 from gensim.models.fasttext import load_facebook_model
 
-from gianlp.models import FasttextEmbeddingSequence, KerasWrapper, BaseModel
+from gianlp.models import FasttextWordEmbeddingSequence, KerasWrapper, BaseModel
 from tests.utils import split_tokenizer
 
 
-class TestTrainableWordEmbeddingSequence(unittest.TestCase):
+class TestFasttextWordEmbedding(unittest.TestCase):
     """
     Fasttext embedding sequence tests
     """
@@ -23,7 +23,7 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test shapes
         """
-        emb = FasttextEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=4)
+        emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=4)
         self.assertEqual(emb.inputs_shape.shape, (4,))
         self.assertEqual(emb.outputs_shape.shape, (4, 2))
 
@@ -31,7 +31,7 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test shapes
         """
-        emb = FasttextEmbeddingSequence(
+        emb = FasttextWordEmbeddingSequence(
             split_tokenizer, load_facebook_model("tests/resources/fasttext.bin"), sequence_maxlen=4
         )
         self.assertEqual(emb.inputs_shape.shape, (4,))
@@ -41,7 +41,7 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test zero vector assignment
         """
-        emb = FasttextEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=4)
+        emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=4)
         emb.build(
             [
                 "hola como va",
@@ -64,7 +64,7 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test that the unknown embedding can't be trained if it does not appear in fit texts
         """
-        emb = FasttextEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
+        emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
         texts = [
             "hola como va",
             "hola que te importa",
@@ -95,7 +95,7 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test that the unknown embedding is always trainable
         """
-        emb = FasttextEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
+        emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
         texts = [
             "hola como va",
             "hola que te importa",
@@ -126,7 +126,7 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test serialization
         """
-        emb = FasttextEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
+        emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
         texts = [
             "hola como va",
             "hola que te importa",
@@ -163,7 +163,7 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test that al valid vectors are != 0
         """
-        emb = FasttextEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
+        emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
         texts = [
             "hola como va",
             "hola que te importa",
@@ -196,7 +196,7 @@ class TestTrainableWordEmbeddingSequence(unittest.TestCase):
         """
         Test that the max vocabulary parameter works
         """
-        emb = FasttextEmbeddingSequence(
+        emb = FasttextWordEmbeddingSequence(
             split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10, max_vocabulary=6
         )
         texts = [
