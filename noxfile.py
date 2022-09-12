@@ -112,7 +112,7 @@ def cop(session):
     session.run("pre-commit", "run")
 
 
-@nox.session(reuse_venv=True, python="3.7")
+@nox.session(reuse_venv=True, python="3.9")
 def test_sphinx_build(session):
     """Build docs with sphinx."""
     with tempfile.TemporaryDirectory() as tmpdirname:
