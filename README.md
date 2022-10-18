@@ -4,7 +4,7 @@
 
 ## What is this?
 
-GiaNLP is a library created for the fraud team at Mercadolibre for building, training and deploying NLP models with keras fast.
+GiaNLP is a library created for building, training and deploying NLP models with keras fast.
 
 It's main features are:
 * Easy text representation integration: The goal of the library is to plug in costless text representations to a vanilla keras model.
