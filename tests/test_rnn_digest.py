@@ -1,5 +1,5 @@
 """
-RNN Digest tests
+RNN Digest utils
 """
 
 import unittest

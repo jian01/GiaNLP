@@ -1,9 +1,8 @@
 """
-Module for pre-trained word embedding sequence input
+Module for fasttext word embedding sequence input
 """
 
 import pickle
-import random
 from collections import Counter
 from typing import List, Optional, Callable, Union, Dict, cast
 
@@ -32,23 +31,24 @@ class FasttextWordEmbeddingSequence(TextRepresentation):
     :var _keras_model: Keras model built from processing the text input
     :var _fasttext: the gensim fasttext object
     :var _tokenizer: word tokenizer function
-    :var _pretrained_trainable: if the pretrained vectors are trainable
     :var _sequence_maxlen: the max length of an allowed sequence
     :var _embedding_dimension: target embedding dimension
     :var _min_freq_percentile: the minimum percentile of the frequency to consider a word part of the vocabulary
     :var _max_vocabulary: optional maximum vocabulary size
     :var _word_indexes: the word to index dictionary
     :var _random_state: random seed
+    :var _vector_size: the word vector size
     """
 
     _keras_model: Optional[Model]
-    _fasttext: FastText
+    _fasttext: Optional[FastText]
     _tokenizer: Callable[[str], List[str]]
     _sequence_maxlen: int
     _min_freq_percentile: float
     _max_vocabulary: Optional[int]
     _word_indexes: Dict[str, int]
     _random_state: int
+    _vector_size: int
 
     _WORD_UNKNOWN_TOKEN = "<UNK>"
     _MAX_SIZE_TO_TOKENIZE = 500000
@@ -73,12 +73,14 @@ class FasttextWordEmbeddingSequence(TextRepresentation):
         :param random_state: the random seed used for random processes
         """
         super().__init__()
-        if isinstance(fasttext_src, str):
-            self._fasttext = load_facebook_model(fasttext_src)
-        else:
-            self._fasttext = fasttext_src
+        if fasttext_src:
+            if isinstance(fasttext_src, str):
+                self._fasttext = load_facebook_model(fasttext_src)
+            else:
+                self._fasttext = fasttext_src
 
         self._tokenizer = tokenizer
+        self._vector_size = self._fasttext.wv.vector_size if self._fasttext else None
         self._keras_model = None
         self._sequence_maxlen = int(sequence_maxlen)
         self._min_freq_percentile = min_freq_percentile
@@ -120,6 +122,9 @@ class FasttextWordEmbeddingSequence(TextRepresentation):
         :param texts: the texts input
         """
         if not self._built:
+            assert self._fasttext
+            self._fasttext = cast(FastText, self._fasttext)
+
             frequencies: Counter = Counter()
             for i in range(0, len(texts), self._MAX_SIZE_TO_TOKENIZE):
                 tokenized_texts = self.tokenize_texts(
@@ -176,6 +181,7 @@ class FasttextWordEmbeddingSequence(TextRepresentation):
 
             self._keras_model = Model(inputs=inp, outputs=embedding)
             self._built = True
+            self._fasttext = None
 
     @property
     def outputs_shape(self) -> ModelIOShape:
@@ -184,7 +190,7 @@ class FasttextWordEmbeddingSequence(TextRepresentation):
 
         :return: a list of shape tuple or shape tuple
         """
-        return ModelIOShape((self._sequence_maxlen, self._fasttext.vector_size))
+        return ModelIOShape((self._sequence_maxlen, self._vector_size))
 
     def dumps(self) -> bytes:
         """
@@ -206,6 +212,7 @@ class FasttextWordEmbeddingSequence(TextRepresentation):
                 self._min_freq_percentile,
                 self._max_vocabulary,
                 self._random_state,
+                self._vector_size,
             )
         )
 
@@ -227,12 +234,14 @@ class FasttextWordEmbeddingSequence(TextRepresentation):
             min_freq_percentile,
             max_vocabulary,
             random_state,
+            vector_size,
         ) = pickle.loads(data)
         obj = cls(tokenizer, word2vec, sequence_maxlen, min_freq_percentile, max_vocabulary, random_state)
         if model_bytes:
             obj._keras_model = cls.get_model_from_bytes(model_bytes)
             obj._built = built
             obj._word_indexes = word_indexes
+            obj._vector_size = vector_size
         return obj
 
     def _get_keras_model(self) -> Model:

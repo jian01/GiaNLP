@@ -1,14 +1,15 @@
 """
 Utils for testing
 """
-from typing import List, Any, Generator
-from gianlp.utils import Sequence
-import random
 import os
+import random
+from typing import List, Any, Generator
 
 import numpy as np
 import tensorflow as tf
 from tensorflow.random import set_seed as set_tf_seed
+
+from gianlp.utils import Sequence
 
 LOREM_IPSUM = (
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
@@ -94,6 +95,22 @@ def ensure_reproducibility(seed: int) -> None:
     set_seed(seed)
     tf.config.threading.set_inter_op_parallelism_threads(1)
     tf.config.threading.set_intra_op_parallelism_threads(1)
+
+
+def read_sms_spam_dset():
+    """
+    Reads and returns sms spam dataset
+    :return: a tuple containing a list with the text and a list with the labels
+    """
+    texts = []
+    labels = []
+    with open("tests/resources/SMSSpamCollection.txt", "r") as file:
+        for line in file:
+            if line:
+                line = line.split("\t")
+                texts.append(line[1])
+                labels.append((1 if line[0] == "spam" else 0))
+    return texts, labels
 
 
 def accuracy(labels: List[int], preds: List[int]) -> float:

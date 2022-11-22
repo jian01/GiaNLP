@@ -1,5 +1,5 @@
 """
-Char embedding sequence tests
+Char embedding sequence utils
 """
 
 import unittest
@@ -13,12 +13,12 @@ from tests.utils import LOREM_IPSUM
 
 class TestCharEmbeddingSequence(unittest.TestCase):
     """
-    Char embedding sequence tests
+    Char embedding sequence utils
     """
 
     @staticmethod
     def create_char_emb(
-        embedding_dimension: int = 16, sequence_maxlen: int = 10, random_state: int = 42
+            embedding_dimension: int = 16, sequence_maxlen: int = 10, random_state: int = 42
     ) -> CharEmbeddingSequence:
         """
         Creates a char embedding

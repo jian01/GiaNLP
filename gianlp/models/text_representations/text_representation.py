@@ -2,7 +2,7 @@
 Text input interface
 """
 from abc import ABC, abstractmethod
-from typing import List, Union, Callable, Optional
+from typing import List, Union, Callable, Optional, Any
 from multiprocessing import Pool
 from functools import partial
 
@@ -49,15 +49,15 @@ class TextRepresentation(BaseModel, ABC):
 
     @staticmethod
     def parallel_tokenizer(
-        text: str, tokenizer: Callable[[str], List[str]], sequence_maxlength: Optional[int] = None
-    ) -> List[str]:
+        text: str, tokenizer: Callable[[str], List[Any]], sequence_maxlength: Optional[int] = None
+    ) -> List[Any]:
         """
         Parallelizable wrapper for the tokenizer
 
         :param text: the text to tokenize
         :param tokenizer: the tokenizer
         :param sequence_maxlength: optional sequence maxlength.
-        :return: a list of lists with string tokens
+        :return: a list of token elements
         """
         if sequence_maxlength is None:
             return tokenizer(text)
@@ -67,21 +67,21 @@ class TextRepresentation(BaseModel, ABC):
     @staticmethod
     def tokenize_texts(
         texts: SimpleTypeTexts,
-        tokenizer: Callable[[str], List[str]],
+        tokenizer: Callable[[str], List[Any]],
         sequence_maxlength: Optional[int] = None,
-    ) -> List[List[str]]:
+    ) -> List[List[Any]]:
         """
         Function for tokenizing texts
 
         :param texts: the texts to tokenize
         :param tokenizer: the tokenizer
         :param sequence_maxlength: optional sequence maxlength.
-        :return: a list of lists with string tokens
+        :return: a list of lists with tokens
         """
         tokenizer = partial(
             TextRepresentation.parallel_tokenizer, tokenizer=tokenizer, sequence_maxlength=sequence_maxlength
         )
-        if get_default_jobs() > 1:
+        if get_default_jobs() > 1:  # pragma: no cover
             with Pool(get_default_jobs()) as p:
                 return p.map(tokenizer, texts)
         return [tokenizer(text) for text in texts]

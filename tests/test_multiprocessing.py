@@ -2,10 +2,9 @@
 Tests for multiprocessing
 """
 
-import unittest
-from typing import List, Tuple
-import string
 import random
+import string
+import unittest
 
 import numpy as np
 from tensorflow.keras.layers import Input, GRU, Dense, Masking, GlobalMaxPooling1D, Conv1D
@@ -13,8 +12,8 @@ from tensorflow.keras.models import Sequential
 
 from gianlp.models import KerasWrapper, BaseModel, CharEmbeddingSequence, PerChunkSequencer
 from gianlp.utils import Sequence
-from tests.utils import dot_chunker
 from tests.utils import LOREM_IPSUM, accuracy, generator_from_list, SequenceFromList, set_seed
+from tests.utils import dot_chunker, read_sms_spam_dset
 
 
 class TestSpamSequence(Sequence):
@@ -31,8 +30,8 @@ class TestSpamSequence(Sequence):
         return len(self.texts) // 256
 
     def __getitem__(self, index: int):
-        texts = self.texts[index * self.batch_size : (index + 1) * self.batch_size]
-        labels = self.labels[index * self.batch_size : (index + 1) * self.batch_size]
+        texts = self.texts[index * self.batch_size: (index + 1) * self.batch_size]
+        labels = self.labels[index * self.batch_size: (index + 1) * self.batch_size]
 
         return texts, np.asarray(labels)
 
@@ -41,22 +40,6 @@ class TestMultiprocessing(unittest.TestCase):
     """
     Tests for multiprocessing
     """
-
-    @staticmethod
-    def read_sms_spam_dset() -> Tuple[List[str], List[int]]:
-        """
-        Reads and returns sms spam dataset
-        :return: a tuple containing a list with the text and a list with the labels
-        """
-        texts = []
-        labels = []
-        with open("tests/resources/SMSSpamCollection.txt", "r") as file:
-            for line in file:
-                if line:
-                    line = line.split("\t")
-                    texts.append(line[1])
-                    labels.append((1 if line[0] == "spam" else 0))
-        return texts, labels
 
     def test_fit_with_sequence_valid_with_raw(self) -> None:
         """
@@ -92,7 +75,7 @@ class TestMultiprocessing(unittest.TestCase):
         model = Sequential([Input((30,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([char_digest, line_digest], model)
 
-        texts, labels = self.read_sms_spam_dset()
+        texts, labels = read_sms_spam_dset()
         val_texts, val_labels = texts[-500:], labels[-500:]
         texts, labels = texts[:-500], labels[:-500]
         model.build(texts)
@@ -152,7 +135,7 @@ class TestMultiprocessing(unittest.TestCase):
         model = Sequential([Input((30,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([char_digest, line_digest], model)
 
-        texts, labels = self.read_sms_spam_dset()
+        texts, labels = read_sms_spam_dset()
         val_texts, val_labels = texts[-500:], labels[-500:]
         texts, labels = texts[:-500], labels[:-500]
         model.build(texts)

@@ -3,7 +3,6 @@ Test complex model buildings
 """
 
 import unittest
-from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -11,29 +10,13 @@ from tensorflow.keras.layers import Input, GRU, Dense, Masking, GlobalMaxPooling
 from tensorflow.keras.models import Sequential, Model
 
 from gianlp.models import KerasWrapper, BaseModel, CharEmbeddingSequence, PerChunkSequencer
-from tests.utils import dot_chunker, LOREM_IPSUM, set_seed
+from tests.utils import dot_chunker, LOREM_IPSUM, set_seed, read_sms_spam_dset
 
 
 class TestComplexModelBuildings(unittest.TestCase):
     """
     Tests for complex model architectures
     """
-
-    @staticmethod
-    def read_sms_spam_dset() -> Tuple[List[str], List[int]]:
-        """
-        Reads and returns sms spam dataset
-        :return: a tuple containing a list with the text and a list with the labels
-        """
-        texts = []
-        labels = []
-        with open("tests/resources/SMSSpamCollection.txt", "r") as file:
-            for line in file:
-                if line:
-                    line = line.split("\t")
-                    texts.append(line[1])
-                    labels.append((1 if line[0] == "spam" else 0))
-        return texts, labels
 
     def test_fit_over_multiple_inputs(self) -> None:
         """
@@ -69,7 +52,7 @@ class TestComplexModelBuildings(unittest.TestCase):
         model = Sequential([Input((30,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([char_digest, line_digest], model)
 
-        texts, labels = self.read_sms_spam_dset()
+        texts, labels = read_sms_spam_dset()
         model.build(texts)
         print(model)
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
@@ -119,7 +102,7 @@ class TestComplexModelBuildings(unittest.TestCase):
         model = Sequential([Input((30,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([char_digest, line_digest], model)
 
-        texts, labels = self.read_sms_spam_dset()
+        texts, labels = read_sms_spam_dset()
         model.build(texts)
         print(model)
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
@@ -175,7 +158,7 @@ class TestComplexModelBuildings(unittest.TestCase):
         model = Model(inputs=[inp1, inp2], outputs=out)
         model = KerasWrapper([char_digest, line_digest], model)
 
-        texts, labels = self.read_sms_spam_dset()
+        texts, labels = read_sms_spam_dset()
         model.build(texts)
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 

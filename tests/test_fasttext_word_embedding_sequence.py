@@ -1,22 +1,22 @@
 """
-Fasttext embedding sequence tests
+Fasttext embedding sequence utils
 """
 
 import unittest
 
 import numpy as np
-from scipy.spatial.distance import cosine
-from tensorflow.keras.layers import Dense, GlobalAveragePooling1D
-from tensorflow.keras.models import Sequential
 from gensim.models.fasttext import load_facebook_model
+from scipy.spatial.distance import cosine
+from tensorflow.keras.layers import Dense, GlobalAveragePooling1D, Masking, Input, GRU
+from tensorflow.keras.models import Sequential
 
 from gianlp.models import FasttextWordEmbeddingSequence, KerasWrapper, BaseModel
-from tests.utils import split_tokenizer
+from tests.utils import split_tokenizer, set_seed, read_sms_spam_dset
 
 
 class TestFasttextWordEmbedding(unittest.TestCase):
     """
-    Fasttext embedding sequence tests
+    Fasttext embedding sequence utils
     """
 
     def test_shapes(self) -> None:
@@ -25,7 +25,7 @@ class TestFasttextWordEmbedding(unittest.TestCase):
         """
         emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=4)
         self.assertEqual(emb.inputs_shape.shape, (4,))
-        self.assertEqual(emb.outputs_shape.shape, (4, 2))
+        self.assertEqual(emb.outputs_shape.shape, (4, 50))
 
     def test_fasttext_as_parameter(self) -> None:
         """
@@ -35,7 +35,7 @@ class TestFasttextWordEmbedding(unittest.TestCase):
             split_tokenizer, load_facebook_model("tests/resources/fasttext.bin"), sequence_maxlen=4
         )
         self.assertEqual(emb.inputs_shape.shape, (4,))
-        self.assertEqual(emb.outputs_shape.shape, (4, 2))
+        self.assertEqual(emb.outputs_shape.shape, (4, 50))
 
     def test_zero_vectors(self) -> None:
         """
@@ -56,9 +56,9 @@ class TestFasttextWordEmbedding(unittest.TestCase):
         self.assertEqual(preproc[0][1:].tolist(), [0, 0, 0])
         self.assertGreater(preproc[0][0], 0)
         preproc_embs = emb(preproc)
-        self.assertEqual(preproc_embs[0][1].tolist(), [0] * 2)
-        self.assertEqual(preproc_embs[0][2].tolist(), [0] * 2)
-        self.assertEqual(preproc_embs[0][3].tolist(), [0] * 2)
+        self.assertEqual(preproc_embs[0][1].tolist(), [0] * 50)
+        self.assertEqual(preproc_embs[0][2].tolist(), [0] * 50)
+        self.assertEqual(preproc_embs[0][3].tolist(), [0] * 50)
 
     def test_unknown_embedding_wont_train_if_dont_appear(self) -> None:
         """
@@ -188,9 +188,9 @@ class TestFasttextWordEmbedding(unittest.TestCase):
 
         for embs, text in zip(preproc_embs, inference_texts):
             for i in range(len(split_tokenizer(text))):
-                self.assertNotEqual(embs[i], [0, 0])
+                self.assertNotEqual(embs[i], [0] * 50)
             for i in range(len(split_tokenizer(text)), 10):
-                self.assertEqual(embs[i], [0, 0])
+                self.assertEqual(embs[i], [0] * 50)
 
     def test_max_vocabulary(self) -> None:
         """
@@ -223,3 +223,32 @@ class TestFasttextWordEmbedding(unittest.TestCase):
                     not_unknown_tokens.update([split_tokenizer(text)[i]])
 
         self.assertEqual(len(not_unknown_tokens), 6)
+
+    def test_spam_train(self) -> None:
+        """
+        Test spam train
+        """
+        set_seed(42)
+
+        emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
+
+        texts, labels = read_sms_spam_dset()
+
+        model = Sequential(
+            [
+                Input(emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+                Dense(1, activation="sigmoid")
+            ]
+        )
+        model = KerasWrapper(emb, model)
+        model.build(texts)
+        print(model)
+        model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+        hst = model.fit(texts, np.asarray(labels), batch_size=256, epochs=6, validation_split=0.1)
+        self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.2)
+        self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.2)
+        for i in range(len(hst.history["loss"]) - 1):
+            self.assertLess(hst.history["loss"][i + 1], hst.history["loss"][i])

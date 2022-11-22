@@ -1,5 +1,5 @@
 """
-Per chunk sequencer tests
+Per chunk sequencer utils
 """
 
 import unittest

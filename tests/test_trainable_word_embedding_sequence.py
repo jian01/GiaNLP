@@ -1,13 +1,13 @@
 """
-Trainable word embedding sequence tests
+Trainable word embedding sequence utils
 """
 
 import unittest
 
 import numpy as np
+from scipy.spatial.distance import cosine
 from tensorflow.keras.layers import Dense, GlobalAveragePooling1D
 from tensorflow.keras.models import Sequential
-from scipy.spatial.distance import cosine
 
 from gianlp.models import TrainableWordEmbeddingSequence, KerasWrapper, BaseModel
 from tests.utils import split_tokenizer
@@ -15,7 +15,7 @@ from tests.utils import split_tokenizer
 
 class TestTrainableWordEmbeddingSequence(unittest.TestCase):
     """
-    Trainable word embedding sequence tests
+    Trainable word embedding sequence utils
     """
 
     def test_dimension_exception(self) -> None:

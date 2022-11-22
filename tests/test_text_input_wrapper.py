@@ -3,6 +3,7 @@ Tests internal text input wrapper
 """
 
 import unittest
+
 from gianlp.types import TextsInputWrapper
 
 

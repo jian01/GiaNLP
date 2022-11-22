@@ -187,7 +187,7 @@ class KerasWrapper(TrainableModel):
                 input_shapes = (
                     [model.inputs_shape] if isinstance(model.inputs_shape, ModelIOShape) else model.inputs_shape
                 )
-                model_inps = [Input(shape.shape, dtype=shape.dtype) for shape in input_shapes]
+                model_inps = [Input(shape.shape, dtype=shape.dtype, ragged=shape.ragged) for shape in input_shapes]
                 inputs += model_inps
                 model_out = model(model_inps)
                 if isinstance(model_out, list):

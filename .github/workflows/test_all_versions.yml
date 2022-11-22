@@ -1,4 +1,4 @@
-name: Run tests on all versions
+name: Run utils on all versions
 
 on: [pull_request, workflow_dispatch]
 
@@ -8,40 +8,40 @@ jobs:
     timeout-minutes: 50
     steps:
     - uses: actions/checkout@v2
-    - name: Run tests with tensorflow 2.3.0
+    - name: Run utils with tensorflow 2.3.0
       run: docker-compose -f .ci/docker-compose.yml run test_tensorflow_23
   test_tensorflow_24:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
     - uses: actions/checkout@v2
-    - name: Run tests with tensorflow 2.4.0
+    - name: Run utils with tensorflow 2.4.0
       run: docker-compose -f .ci/docker-compose.yml run test_tensorflow_24
   test_tensorflow_25:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
       - uses: actions/checkout@v2
-      - name: Run tests with tensorflow 2.5.0
+      - name: Run utils with tensorflow 2.5.0
         run: docker-compose -f .ci/docker-compose.yml run test_tensorflow_25
   test_tensorflow_26:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
       - uses: actions/checkout@v2
-      - name: Run tests with tensorflow 2.6.0
+      - name: Run utils with tensorflow 2.6.0
         run: docker-compose -f .ci/docker-compose.yml run test_tensorflow_26
   test_tensorflow_27:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
       - uses: actions/checkout@v2
-      - name: Run tests with tensorflow 2.7.0
+      - name: Run utils with tensorflow 2.7.0
         run: docker-compose -f .ci/docker-compose.yml run test_tensorflow_27
   test_tensorflow_28:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
       - uses: actions/checkout@v2
-      - name: Run tests with tensorflow 2.8.0
+      - name: Run utils with tensorflow 2.8.0
         run: docker-compose -f .ci/docker-compose.yml run test_tensorflow_28

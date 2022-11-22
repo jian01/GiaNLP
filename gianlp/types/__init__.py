@@ -1,8 +1,10 @@
 from typing import Union, List, Dict, Tuple, TypeVar, Generator, Iterator, Sequence, cast, overload, TYPE_CHECKING
 
 import numpy as np
+import tensorflow as tf
 from numpy import ndarray
 from pandas import Series, DataFrame
+from keras.engine.keras_tensor import RaggedKerasTensor
 import itertools
 
 if TYPE_CHECKING:
@@ -12,7 +14,8 @@ T = TypeVar("T")
 
 YielderGenerator = Generator[T, None, None]
 
-KerasInputOutput = Union[List[ndarray], ndarray]
+RaggedIO = Union[tf.RaggedTensor, RaggedKerasTensor]
+KerasInputOutput = Union[List[ndarray], ndarray, RaggedIO]
 SimpleTypeTexts = Union[List[str], Series]
 MultiTypeTexts = Union[Dict[str, List[str]], DataFrame]
 TextsInput = Union[SimpleTypeTexts, MultiTypeTexts]
