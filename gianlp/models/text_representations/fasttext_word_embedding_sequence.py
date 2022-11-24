@@ -73,6 +73,7 @@ class FasttextWordEmbeddingSequence(TextRepresentation):
         :param random_state: the random seed used for random processes
         """
         super().__init__()
+        self._fasttext = None
         if fasttext_src:
             if isinstance(fasttext_src, str):
                 self._fasttext = load_facebook_model(fasttext_src)

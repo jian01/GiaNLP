@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 from gensim.models.fasttext import load_facebook_model
 from scipy.spatial.distance import cosine
-from tensorflow.keras.layers import Dense, GlobalAveragePooling1D, Input, Masking, GRU
+from tensorflow.keras.layers import Dense, GlobalAveragePooling1D, Input, Masking, GRU, Conv1D
 from tensorflow.keras.models import Sequential
 
 from gianlp.models import FasttextNgramEmbeddingSequence, KerasWrapper, BaseModel
@@ -190,5 +190,81 @@ class TestFasttextNgramEmbedding(unittest.TestCase):
         hst = model.fit(texts, np.asarray(labels), batch_size=256, epochs=6, validation_split=0.1)
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.2)
         self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.2)
+        for i in range(len(hst.history["loss"]) - 1):
+            self.assertLess(hst.history["loss"][i + 1], hst.history["loss"][i])
+
+    def test_spam_train_serialization(self) -> None:
+        """
+        Test spam train and serialization
+        """
+        set_seed(42)
+
+        fasttext = load_facebook_model("tests/resources/fasttext.bin")
+        emb = FasttextNgramEmbeddingSequence(split_tokenizer, fasttext,
+                                             sequence_maxlen=10, normalized=True)
+
+        texts, labels = read_sms_spam_dset()
+
+        model = Sequential(
+            [
+                Input(emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+                Dense(1, activation="sigmoid")
+            ]
+        )
+        model = KerasWrapper(emb, model)
+        data = model.serialize()
+        model = BaseModel.deserialize(data)
+        model.build(texts)
+        data = model.serialize()
+        model = BaseModel.deserialize(data)
+        print(model)
+        model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+        hst = model.fit(texts, np.asarray(labels), batch_size=256, epochs=6, validation_split=0.1)
+        self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.2)
+        self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.2)
+        for i in range(len(hst.history["loss"]) - 1):
+            self.assertLess(hst.history["loss"][i + 1], hst.history["loss"][i])
+        preds1 = model.predict(texts[:10])
+        data = model.serialize()
+        model = BaseModel.deserialize(data)
+        preds2 = model.predict(texts[:10])
+
+        self.assertEqual(preds1.tolist(), preds2.tolist())
+
+    def test_model_train_ragged(self) -> None:
+        """
+        Test model ragged chain
+        """
+        set_seed(42)
+
+        fasttext = load_facebook_model("tests/resources/fasttext.bin")
+        emb = FasttextNgramEmbeddingSequence(split_tokenizer, fasttext,
+                                             sequence_maxlen=10, normalized=True)
+
+        texts, labels = read_sms_spam_dset()
+
+        model = Sequential(
+            [
+                Input(emb.outputs_shape.shape),
+                Conv1D(10, 2, activation="tanh"),
+                Conv1D(10, 1, activation="tanh")
+            ]
+        )
+        wrapped_model = KerasWrapper(emb, model)
+        model = Sequential(
+            [
+                Input(wrapped_model.outputs_shape.shape),
+                GlobalAveragePooling1D(),
+                Dense(1, activation="sigmoid")
+            ]
+        )
+        wrapped_model = KerasWrapper(wrapped_model, model)
+        wrapped_model.build(texts)
+        print(wrapped_model)
+        wrapped_model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+        hst = wrapped_model.fit(texts, np.asarray(labels), batch_size=256, epochs=6, validation_split=0.1)
         for i in range(len(hst.history["loss"]) - 1):
             self.assertLess(hst.history["loss"][i + 1], hst.history["loss"][i])

@@ -252,3 +252,42 @@ class TestFasttextWordEmbedding(unittest.TestCase):
         self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.2)
         for i in range(len(hst.history["loss"]) - 1):
             self.assertLess(hst.history["loss"][i + 1], hst.history["loss"][i])
+
+    def test_spam_train_serialization(self) -> None:
+        """
+        Test spam train and serialization
+        """
+        set_seed(42)
+
+        emb = FasttextWordEmbeddingSequence(split_tokenizer, "tests/resources/fasttext.bin", sequence_maxlen=10)
+
+        texts, labels = read_sms_spam_dset()
+
+        model = Sequential(
+            [
+                Input(emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+                Dense(1, activation="sigmoid")
+            ]
+        )
+        model = KerasWrapper(emb, model)
+        data = model.serialize()
+        model = BaseModel.deserialize(data)
+        model.build(texts)
+        data = model.serialize()
+        model = BaseModel.deserialize(data)
+        print(model)
+        model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+        hst = model.fit(texts, np.asarray(labels), batch_size=256, epochs=6, validation_split=0.1)
+        self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.2)
+        self.assertAlmostEqual(hst.history["val_accuracy"][-1], 1.0, delta=0.2)
+        for i in range(len(hst.history["loss"]) - 1):
+            self.assertLess(hst.history["loss"][i + 1], hst.history["loss"][i])
+        preds1 = model.predict(texts[:10])
+        data = model.serialize()
+        model = BaseModel.deserialize(data)
+        preds2 = model.predict(texts[:10])
+
+        self.assertEqual(preds1.tolist(), preds2.tolist())

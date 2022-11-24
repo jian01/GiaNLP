@@ -43,7 +43,7 @@ class FasttextNgramEmbeddingSequence(TextRepresentation):
     """
 
     _keras_model: Optional[Model]
-    _fasttext: Optional[FastTextKeyedVectors]
+    _fasttext: Optional[FastText]
     _max_n: int
     _min_n: int
     _bucket: int
@@ -76,16 +76,17 @@ class FasttextNgramEmbeddingSequence(TextRepresentation):
         :param random_state: the random seed used for random processes
         """
         super().__init__()
+        self._fasttext = None
         if fasttext_src:
             if isinstance(fasttext_src, str):
-                self._fasttext = load_facebook_model(fasttext_src).wv
+                self._fasttext = load_facebook_model(fasttext_src)
             else:
-                self._fasttext = fasttext_src.wv
+                self._fasttext = fasttext_src
 
         self._tokenizer = tokenizer
-        self._max_n = self._fasttext.max_n if self._fasttext else None
-        self._min_n = self._fasttext.min_n if self._fasttext else None
-        self._bucket = self._fasttext.bucket if self._fasttext else None
+        self._max_n = self._fasttext.wv.max_n if self._fasttext else None
+        self._min_n = self._fasttext.wv.min_n if self._fasttext else None
+        self._bucket = self._fasttext.wv.bucket if self._fasttext else None
         self._vector_size = self._fasttext.vector_size if self._fasttext else None
         self._keras_model = None
         self._normalized = normalized
@@ -154,9 +155,9 @@ class FasttextNgramEmbeddingSequence(TextRepresentation):
         """
 
         if not self._built:
-            self._fasttext = cast(FastTextKeyedVectors, self._fasttext)
+            self._fasttext = cast(FastText, self._fasttext)
 
-            vectors = self._fasttext.vectors_ngrams
+            vectors = self._fasttext.wv.vectors_ngrams
             embeddings = np.concatenate((np.zeros((1, self._vector_size)), vectors))
             self._fasttext = None
             inp = Input(shape=(self._sequence_maxlen, None), dtype="int32", ragged=True)
