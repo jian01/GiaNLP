@@ -19,8 +19,6 @@ from tensorflow.keras.backend import clear_session, floatx
 from tensorflow.keras.layers import Concatenate, TimeDistributed
 from tensorflow.keras.layers import Layer
 from tensorflow.keras.models import Model, load_model, clone_model
-from tensorflow import ragged
-from keras.engine.keras_tensor import RaggedKerasTensor
 
 # pylint: enable=no-name-in-module
 
