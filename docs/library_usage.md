@@ -155,7 +155,31 @@ Knowing the behaviour, the parameters for initializing the object are:
 
 The behaviour for 0 padding, masking and unknown words is the same as in the :class:`.PreTrainedWordEmbeddingSequence` class.
 
-#### Fasttext embedding sequence
+#### Fasttext ngram embedding sequence
+
+| Name              | Value                                      |
+|-------------------|--------------------------------------------|
+| Trainable weights | #possible ngrams x #embedding dimensions   |
+| Input shape       | (# sequence maxlen,)                       |
+| Output shape      | (# sequence maxlen, #embedding dimensions) |
+
+
+Fasttext is a way of building word embeddings using ngrams. For example let's assume you have the word `automagical`, we can split it in `au`-`to`-`ma`-`gi`-`cal`, then learn representations for each ngram such as when every ngram vector get's summed up the vector for `automagical` makes sense.
+
+If we train this with a big corpus then we have a good embedding generator for words that may not have appeared in the training set, because we can always split a word in it's ngrams and then sum them.
+
+This class, :class:`.FasttextNgramEmbeddingSequence`, allows the whole behaviour of Fasttext inference in Keras model graph, this may be expensive in memory so a better alternative could be :class:`.FasttextWordEmbeddingSequence`
+
+It's parameters are:
+
+* tokenizer: this is a function used for tokenizing the texts, knows how to transform a string into a list of tokens. Must be possible to serialize it with pickle.
+* fasttext_src: path to **.bin** facebook format fasttext or gensim FastText object.
+* normalized: If True, the result vector of each word is normalized with euclidean length
+* trainable: if the ngram embeddings are trainable, False is recommended.
+* sequence_maxlen: The maximum allowed sequence length
+* random_state: the random seed used for random processes
+
+#### Fasttext word embedding sequence
 
 | Name              | Value                                      |
 |-------------------|--------------------------------------------|
@@ -163,11 +187,7 @@ The behaviour for 0 padding, masking and unknown words is the same as in the :cl
 | Input shape       | (# sequence maxlen,)                       |
 | Output shape      | (# sequence maxlen, #embedding dimensions) |
 
-Fasttext is a way of building word embeddings using ngrams. For example let's assume you have the word `automagical`, we can split it in `au`-`to`-`ma`-`gi`-`cal`, then learn representations for each ngram such as when every ngram vector get's summed up the vector for `automagical` makes sense.
-
-If we train this with a big corpus then we have a good embedding generator for words that may not have appeared in the training set, because we can always split a word in it's ngrams and then sum them.
-
-Sadly there's no performant way to compute new vectors for each word, unknown or not, using keras. We need to have a discrete and defined vocabulary, so, given a pretrained fasttext our object does the following:
+For performance, in contras with the ngram fasttext base embedding, we create a discrete and defined vocabulary, so, given a pretrained fasttext our object does the following:
 
 1. In build time creates the vocabulary using the most common words with the same parameters as :class:`.TrainableWordEmbeddingSequence`.
 2. Computes the word embedding for each word of the vocabulary.

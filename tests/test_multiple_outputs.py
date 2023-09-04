@@ -3,7 +3,6 @@ Tests for multiple model outputs
 """
 
 import unittest
-from typing import List, Tuple
 
 import numpy as np
 from tensorflow.keras.layers import Input, GRU, Dense, Masking, GlobalMaxPooling1D
@@ -11,29 +10,13 @@ from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.optimizers import Adam
 
 from gianlp.models import KerasWrapper, CharEmbeddingSequence, PerChunkSequencer
-from tests.utils import dot_chunker, set_seed
+from tests.utils import dot_chunker, set_seed, read_sms_spam_dset
 
 
 class TestMultipleOutputs(unittest.TestCase):
     """
     Tests for multiple model outputs
     """
-
-    @staticmethod
-    def read_sms_spam_dset() -> Tuple[List[str], List[int]]:
-        """
-        Reads and returns sms spam dataset
-        :return: a tuple containing a list with the text and a list with the labels
-        """
-        texts = []
-        labels = []
-        with open("tests/resources/SMSSpamCollection.txt", "r") as file:
-            for line in file:
-                if line:
-                    line = line.split("\t")
-                    texts.append(line[1])
-                    labels.append((1 if line[0] == "spam" else 0))
-        return texts, labels
 
     def test_fit_two_outputs(self) -> None:
         """
@@ -72,7 +55,7 @@ class TestMultipleOutputs(unittest.TestCase):
         model = Model(inputs=inp, outputs=[out1, out2])
         model = KerasWrapper([char_digest, line_digest], model)
 
-        texts, labels = self.read_sms_spam_dset()
+        texts, labels = read_sms_spam_dset()
         model.build(texts)
         print(model)
         model.compile(optimizer=Adam(0.002), loss="mean_absolute_error")
@@ -134,7 +117,7 @@ class TestMultipleOutputs(unittest.TestCase):
         final = Model(inputs=inp, outputs=[out1, out2])
         final = KerasWrapper([model, model2], final)
 
-        texts, labels = self.read_sms_spam_dset()
+        texts, labels = read_sms_spam_dset()
         final.build(texts)
         print(final)
         final.compile(optimizer=Adam(0.002), loss="mean_absolute_error")

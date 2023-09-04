@@ -3,7 +3,9 @@ Tests internal model outputs wrapper
 """
 
 import unittest
+
 import numpy as np
+
 from gianlp.types import ModelOutputsWrapper
 
 

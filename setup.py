@@ -44,7 +44,7 @@ setup(
     setup_requires=["wheel"],
     install_requires=INSTALL_REQUIRES,
     tests_require=TEST_REQUIRES,
-    test_suite="tests",
+    test_suite="utils",
     classifiers=[
         "Development Status :: 1 - Planning",
         "License :: OSI Approved :: Apache Software License v2.0",

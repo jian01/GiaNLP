@@ -1,5 +1,5 @@
 """
-Pre trained word embedding sequence tests
+Pre trained word embedding sequence utils
 """
 
 import unittest
@@ -14,7 +14,7 @@ from tests.utils import split_tokenizer
 
 class TestPreTrainedWordEmbeddingSequence(unittest.TestCase):
     """
-    Pre trained word embedding sequence tests
+    Pre trained word embedding sequence utils
     """
 
     @staticmethod

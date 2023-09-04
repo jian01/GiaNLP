@@ -1,19 +1,19 @@
 """
-Keras wrapper exceptions tests
+Keras wrapper exceptions utils
 """
 
 import unittest
 
-from tensorflow.keras.layers import Input, GRU, Dense, Masking, GlobalMaxPooling1D, Concatenate
+from tensorflow.keras.layers import Input, GRU, Dense, Masking, Concatenate
 from tensorflow.keras.models import Sequential, Model
 
-from gianlp.models import KerasWrapper, CharEmbeddingSequence, PerChunkSequencer
-from tests.utils import dot_chunker, LOREM_IPSUM
+from gianlp.models import KerasWrapper, CharEmbeddingSequence
+from tests.utils import LOREM_IPSUM
 
 
 class TestKerasWrapperExceptions(unittest.TestCase):
     """
-    Keras wrapper exceptions tests
+    Keras wrapper exceptions utils
     """
 
     def test_no_input_exception(self) -> None:

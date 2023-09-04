@@ -1,5 +1,5 @@
 """
-Trainable mapping embedding tests
+Trainable mapping embedding utils
 """
 
 import unittest
@@ -9,7 +9,7 @@ from gianlp.models import MappingEmbedding, BaseModel
 
 class TestTrainableWordEmbeddingSequence(unittest.TestCase):
     """
-    Trainable mapping embedding tests
+    Trainable mapping embedding utils
     """
 
     def test_shapes(self) -> None:

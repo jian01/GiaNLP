@@ -1,5 +1,5 @@
 """
-Keras wrapper multi-text tests
+Keras wrapper multi-text utils
 """
 
 import unittest
@@ -10,14 +10,13 @@ from tensorflow.keras.layers import Input, GRU, Dense, Subtract, Masking, Concat
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.optimizers import Adam
 
-
 from gianlp.models import KerasWrapper, CharEmbeddingSequence, BaseModel
 from tests.utils import LOREM_IPSUM, set_seed
 
 
 class TestKerasWrapperMultiTexts(unittest.TestCase):
     """
-    Keras wrapper multi-text tests
+    Keras wrapper multi-text utils
     """
 
     def test_simple_concatenate(self) -> None:

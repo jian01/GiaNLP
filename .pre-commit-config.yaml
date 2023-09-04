@@ -23,7 +23,7 @@ repos:
         entry: black --line-length 120
         language: system
         types: [python]
-        files: (gianlp|tests)/*
+        files: (gianlp|utils)/*
       - id: mypy
         name: mypy
         entry: mypy --show-error-codes gianlp/

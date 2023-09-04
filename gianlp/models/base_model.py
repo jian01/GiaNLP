@@ -13,7 +13,7 @@ from typing import NamedTuple, Optional, List, Tuple, Union
 import numpy as np
 
 # pylint: disable=no-name-in-module
-from tensorflow import Tensor
+from tensorflow import Tensor, RaggedTensor
 from tensorflow.keras import backend as K
 from tensorflow.keras.backend import clear_session, floatx
 from tensorflow.keras.layers import Concatenate, TimeDistributed
@@ -36,8 +36,9 @@ class ModelIOShape(NamedTuple):
     Mopdel IO Shape object
     """
 
-    shape: Tuple[int, ...]
+    shape: Tuple[Union[int, None], ...]
     dtype: np.dtype = np.dtype(getattr(np, floatx()))
+    ragged: bool = False
 
     def __str__(self):
         return self.__repr__()
@@ -190,7 +191,7 @@ class BaseModel(ABC):
                 keras_model = TimeDistributed(keras_model)
         return keras_model(inputs)
 
-    def __call__(self, inputs: Union[List[Layer], Layer, np.ndarray]) -> Union[Tensor, KerasInputOutput]:
+    def __call__(self, inputs: Union[List[Layer], Layer, np.ndarray]) -> KerasInputOutput:
         """
         Allows calling the internal Keras model supporting multiple formats
 
@@ -202,8 +203,10 @@ class BaseModel(ABC):
             raise ValueError("This model has not yet been built.")
 
         keras_model = self._get_keras_model()
-        if type(inputs).__module__ == np.__name__ or (
-            isinstance(inputs, list) and type(inputs[0]).__module__ == np.__name__
+        if (
+            type(inputs).__module__ == np.__name__
+            or (isinstance(inputs, list) and type(inputs[0]).__module__ == np.__name__)
+            or isinstance(inputs, RaggedTensor)
         ):
             return keras_model.predict(inputs)
         if isinstance(inputs, list) and len(keras_model.inputs) != len(inputs):

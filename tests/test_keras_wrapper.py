@@ -1,5 +1,5 @@
 """
-Keras wrapper tests
+Keras wrapper utils
 """
 
 import random
@@ -18,7 +18,7 @@ from tests.utils import LOREM_IPSUM, accuracy, generator_from_list, set_seed
 
 class TestKerasWrapper(unittest.TestCase):
     """
-    Keras wrapper tests
+    Keras wrapper utils
     """
 
     def test_simple_gru_classifier_shapes(self) -> None:

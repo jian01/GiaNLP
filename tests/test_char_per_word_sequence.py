@@ -1,5 +1,5 @@
 """
-Char embedding sequence tests
+Char embedding sequence utils
 """
 
 import unittest
@@ -14,7 +14,7 @@ from tests.utils import split_tokenizer, LOREM_IPSUM
 
 class TestCharPerWordEmbeddingSequence(unittest.TestCase):
     """
-    Char per word embedding sequence tests
+    Char per word embedding sequence utils
     """
 
     @staticmethod
