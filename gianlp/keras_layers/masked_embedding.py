@@ -8,6 +8,7 @@ import tensorflow as tf
 import tensorflow.keras.backend as K
 from tensorflow.keras.layers import Embedding
 
+
 # pylint: enable=no-name-in-module
 
 

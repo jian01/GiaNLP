@@ -70,7 +70,7 @@ class PerChunkSequencer(TextRepresentation):
         """
         Builds the model using its inputs
 
-        :param texts: a text list for building if needed
+        :param texts: the texts input
         """
         if not self._built:
             inp = Input(shape=self.outputs_shape.shape[:-1], dtype=self.outputs_shape.dtype)
@@ -85,7 +85,7 @@ class PerChunkSequencer(TextRepresentation):
         :param texts: the texts for building if needed
         """
         self._sequencer.build(texts)
-        super().build(texts)
+        self._unitary_build(texts)
 
     @property
     def outputs_shape(self) -> ModelIOShape:
@@ -134,7 +134,7 @@ class PerChunkSequencer(TextRepresentation):
 
     def _get_keras_model(self) -> Model:
         """
-        Get's the internal keras model that is being serialized
+        Gets the internal keras model that is being serialized
 
         :return: The internal keras model
         """

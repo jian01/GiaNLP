@@ -9,10 +9,9 @@ import numpy as np
 import pandas as pd
 from tensorflow.keras.layers import Input, GRU, Dense, Masking, GlobalMaxPooling1D, Concatenate
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.random import set_seed
 
 from gianlp.models import KerasWrapper, BaseModel, CharEmbeddingSequence, PerChunkSequencer
-from tests.utils import dot_chunker, LOREM_IPSUM
+from tests.utils import dot_chunker, LOREM_IPSUM, set_seed
 
 
 class TestComplexModelBuildings(unittest.TestCase):
@@ -103,7 +102,7 @@ class TestComplexModelBuildings(unittest.TestCase):
         )
         char_digest = KerasWrapper(char_emb, char_digest)
 
-        char_emb2 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128)
+        char_emb2 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=128, min_freq_percentile=0)
         per_chunk_sequencer = PerChunkSequencer(char_emb2, dot_chunker, chunking_maxlen=10)
         word_digestor = Sequential(
             [
@@ -204,7 +203,7 @@ class TestComplexModelBuildings(unittest.TestCase):
 
         siamese = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         siamese = KerasWrapper([encoder, encoder], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
 
         preds1 = siamese.predict(["prueba 1", "prueba. prueba 2"])
         serialized = siamese.serialize()

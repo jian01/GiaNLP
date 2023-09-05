@@ -20,7 +20,7 @@ class TestRNNDigest(unittest.TestCase):
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
         model = RNNDigest(char_emb, 10, "lstm", stacked_layers=2, bidirectional=False, masking=False)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertEqual(model.outputs_shape.shape, (10,))
 
     def test_time_distributed_gru_digest(self) -> None:
@@ -31,7 +31,7 @@ class TestRNNDigest(unittest.TestCase):
         per_chunk_sequencer = PerChunkSequencer(char_emb, newline_chunker, 2)
 
         model = RNNDigest(per_chunk_sequencer, 10, "gru", stacked_layers=2, bidirectional=True)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertEqual(model.outputs_shape.shape, (2, 20))
 
     def test_simple_lstm_digest_multiple_inputs(self) -> None:
@@ -42,7 +42,7 @@ class TestRNNDigest(unittest.TestCase):
         char_emb2 = CharEmbeddingSequence(embedding_dimension=20, sequence_maxlen=10)
 
         model = RNNDigest([char_emb1, char_emb2], 10, "lstm", stacked_layers=2, bidirectional=False, masking=False)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertEqual(model.outputs_shape.shape, (10,))
 
     def test_sequence_mismatch_exception(self) -> None:
@@ -71,5 +71,5 @@ class TestRNNDigest(unittest.TestCase):
             masking=False,
             return_sequences=True,
         )
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertEqual(model.outputs_shape.shape, (10, 10))

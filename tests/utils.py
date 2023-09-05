@@ -3,8 +3,12 @@ Utils for testing
 """
 from typing import List, Any, Generator
 from gianlp.utils import Sequence
+import random
+import os
 
 import numpy as np
+import tensorflow as tf
+from tensorflow.random import set_seed as set_tf_seed
 
 LOREM_IPSUM = (
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
@@ -66,6 +70,30 @@ LOREM_IPSUM = (
     "erat. Donec nisl libero, imperdiet ut diam ac, sollicitudin "
     "faucibus nulla. Cras non magna vel dolor blandit scelerisque."
 )
+
+
+def set_seed(seed: int) -> None:
+    """
+    Sets seed for all randomness in python
+
+    :param seed: the seed
+    """
+    os.environ["PYTHONHASHSEED"] = str(seed)
+    random.seed(seed)
+    set_tf_seed(seed)
+    np.random.seed(seed)
+
+
+def ensure_reproducibility(seed: int) -> None:
+    """
+    Ensures the tensorflow encironment is reproducible
+    :param seed: the seed
+    """
+    os.environ["TF_DETERMINISTIC_OPS"] = "1"
+    os.environ["TF_CUDNN_DETERMINISTIC"] = "1"
+    set_seed(seed)
+    tf.config.threading.set_inter_op_parallelism_threads(1)
+    tf.config.threading.set_intra_op_parallelism_threads(1)
 
 
 def accuracy(labels: List[int], preds: List[int]) -> float:

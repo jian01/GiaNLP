@@ -56,7 +56,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
             self._word2vec = KeyedVectors.load_word2vec_format(word2vec_src)
         else:
             self._word2vec = word2vec_src
-        self._tokenizer = tokenizer  # type: ignore[assignment]
+        self._tokenizer = tokenizer
         self._keras_model = None
         self._sequence_maxlen = int(sequence_maxlen)
 
@@ -71,13 +71,10 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
         assert self._tokenizer
         assert self._word2vec
 
-        tokenized_texts = [self._tokenizer(text) for text in texts]
+        tokenized_texts = self.tokenize_texts(texts, self._tokenizer, sequence_maxlength=self._sequence_maxlen)  # type: ignore[arg-type]
         words = keras_seq.pad_sequences(
             [
-                [
-                    self._word2vec.key_to_index[w] + 2 if w in self._word2vec.key_to_index else 1
-                    for w in words[: self._sequence_maxlen]
-                ]
+                [self._word2vec.key_to_index[w] + 2 if w in self._word2vec.key_to_index else 1 for w in words]
                 for words in tokenized_texts
             ],
             maxlen=self._sequence_maxlen,
@@ -92,7 +89,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
         """
         Builds the model using its inputs
 
-        :param texts: a text list for building if needed
+        :param texts: the texts input
         """
         if not self._built:
             embeddings = np.concatenate(
@@ -155,7 +152,7 @@ class PreTrainedWordEmbeddingSequence(TextRepresentation):
 
     def _get_keras_model(self) -> Model:
         """
-        Get's the internal keras model that is being serialized
+        Gets the internal keras model that is being serialized
 
         :return: The internal keras model
         """

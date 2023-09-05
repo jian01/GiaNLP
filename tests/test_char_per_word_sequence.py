@@ -25,7 +25,7 @@ class TestCharPerWordEmbeddingSequence(unittest.TestCase):
         char_emb = CharPerWordEmbeddingSequence(
             tokenizer=split_tokenizer, word_maxlen=4, char_maxlen=5, random_state=random_seed
         )
-        char_emb.build(LOREM_IPSUM.split("\n"))
+        char_emb.build(LOREM_IPSUM.split(" "))
         return char_emb
 
     def test_preprocess(self) -> None:
