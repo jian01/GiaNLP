@@ -1,8 +1,12 @@
-from typing import Union, List, Dict, Tuple, TypeVar, Generator, cast, overload
+from typing import Union, List, Dict, Tuple, TypeVar, Generator, Iterator, Sequence, cast, overload, TYPE_CHECKING
 
 import numpy as np
 from numpy import ndarray
 from pandas import Series, DataFrame
+import itertools
+
+if TYPE_CHECKING:
+    from gianlp.models import BaseModel
 
 T = TypeVar("T")
 
@@ -14,6 +18,70 @@ MultiTypeTexts = Union[Dict[str, List[str]], DataFrame]
 TextsInput = Union[SimpleTypeTexts, MultiTypeTexts]
 ModelFitTuple = Tuple[TextsInput, KerasInputOutput]
 KerasModelFitTuple = Tuple[KerasInputOutput, KerasInputOutput]
+
+SimpleTypeModels = Sequence["BaseModel"]
+MultiTypeModels = Sequence[Tuple[str, SimpleTypeModels]]
+ModelInputs = Union[SimpleTypeModels, MultiTypeModels]
+
+
+class ModelInputsWrapper:
+    __models: ModelInputs
+
+    def __init__(self, models: ModelInputs):
+        self.__models = models
+
+    def __str__(self):
+        """
+        User-friendly string conversion
+        :return: a string
+        """
+        return str(self.__models)
+
+    def is_multi_text(self) -> bool:
+        """
+        Returns True if input is multi-text
+
+        :return: a boolean indicating if it's multi-text
+        """
+        if not self.__models:
+            return False
+        if isinstance(self.__models[0], tuple):
+            return True
+        first_model: "BaseModel" = self.__models[0]
+        return first_model.inputs.is_multi_text()
+
+    def __iter__(self) -> Iterator["BaseModel"]:
+        """
+        Iterator over all models
+        :return: an Iterator
+        """
+        if self.__models and isinstance(self.__models[0], tuple):
+            self.__models = cast(MultiTypeModels, self.__models)
+            return (model for t in self.__models for model in t[1])
+        else:
+            self.__models = cast(SimpleTypeModels, self.__models)
+            return (model for model in self.__models)
+
+    def keys(self) -> Iterator[Union[int, str]]:
+        """
+        Computes the possible keys for indexing
+        :return: an Iterator with the keys
+        """
+        if self.__models and isinstance(self.__models[0], tuple):
+            return (t[0] for t in self.__models)
+        else:
+            return (i for i in range(len(self.__models)))
+
+    def items(self) -> Iterator[Tuple[Union[int, str], SimpleTypeModels]]:
+        """
+        Computes the items as key, value pairs and returns an Iterator
+        :return: Iterator of key-value pairs
+        """
+        if self.__models and isinstance(self.__models[0], tuple):
+            return ((t[0], t[1]) for t in self.__models)
+        else:
+            self.__models = cast(SimpleTypeModels, self.__models)
+            return ((i, ms) for i, ms in zip(range(len(self.__models)), self.__models))
 
 
 class TextsInputWrapper:
@@ -136,6 +204,28 @@ class TextsInputWrapper:
         :return: a text input type object
         """
         return self.texts.copy()
+
+    def flatten(self) -> "TextsInputWrapper":
+        """
+        Returns all the texts in the corpus in a simple text wrapper
+
+        :return: a text input wrapper
+        """
+        if self.is_multi_text():
+            self.texts = cast(Dict[str, List[str]], self.texts)
+            return TextsInputWrapper(list(itertools.chain(*self.texts.values())))
+        return self
+
+    def keys(self) -> Iterator[Union[int, str]]:
+        """
+        Computes the possible keys for indexing
+        :return: an Iterator with the keys
+        """
+        if self.is_multi_text():
+            self.texts = cast(Dict[str, List[str]], self.texts)
+            return (k for k in self.texts.keys())
+        else:
+            return (i for i in range(len(self.texts)))
 
 
 class ModelOutputsWrapper:

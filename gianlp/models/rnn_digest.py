@@ -10,8 +10,9 @@ from tensorflow.random import set_seed
 
 # pylint: enable=no-name-in-module,import-error
 
-from gianlp.models.base_model import BaseModel, ModelInputs, ModelIOShape
+from gianlp.models.base_model import BaseModel, ModelIOShape
 from gianlp.models.keras_wrapper import KerasWrapper
+from gianlp.types import ModelInputs
 
 
 class RNNDigest(KerasWrapper):
@@ -48,7 +49,7 @@ class RNNDigest(KerasWrapper):
         set_seed(random_seed)
 
         if isinstance(inputs, list):
-            iterator = cls._iterate_model_inputs(inputs)
+            iterator = inputs.__iter__()
             initial_shape = next(iterator).outputs_shape
             if isinstance(initial_shape, list):
                 raise ValueError("Can't use RNNDigest with input models that have multiple outputs.")
@@ -61,6 +62,7 @@ class RNNDigest(KerasWrapper):
                     raise ValueError("Inputs have different sequence length")
                 initial_shape_tuple = (initial_shape_tuple[0], initial_shape_tuple[1] + actual_shape.shape[-1])
         else:
+            inputs = cast(BaseModel, inputs)
             initial_shape = inputs.outputs_shape
             if isinstance(initial_shape, list):
                 raise ValueError("Can't use RNNDigest with input models that have multiple outputs.")

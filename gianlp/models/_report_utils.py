@@ -2,7 +2,11 @@
 Report utils module
 """
 
-from typing import List, Any
+from typing import List, TYPE_CHECKING
+from gianlp.types import SimpleTypeModels
+
+if TYPE_CHECKING:
+    from gianlp.models import BaseModel
 
 MODEL_NAME_LENGTH = 21
 SHAPE_LENGTH = 23
@@ -41,7 +45,20 @@ def _produce_line(
     )
 
 
-def model_list_to_summary_string(models: List[Any]) -> str:
+def __model_finder(model: "BaseModel") -> SimpleTypeModels:
+    """
+    Finds all models chained to the one passed
+
+    :param model: the initial model
+    :return: a list of base models
+    """
+    models = [model]
+    for m in model.inputs:
+        models += __model_finder(m)
+    return models
+
+
+def __model_list_to_summary_string(models: List["BaseModel"]) -> str:
     """
     Given a list of chained models returns a string summarizing it
 
@@ -57,19 +74,15 @@ def model_list_to_summary_string(models: List[Any]) -> str:
         output_shape = [str(model.outputs_shape)]
         trainable_weights = [str(model.trainable_weights_amount) if model.trainable_weights_amount is not None else "?"]
         weights = [str(model.weights_amount) if model.weights_amount is not None else "?"]
-        inputs = model.inputs
-        if isinstance(inputs, list) and inputs and isinstance(inputs[0], tuple):
-            inputs_shape = [str(m.outputs_shape) for _, ms in inputs for m in ms]
-            connection = [f'"{name}": ' + repr(m) for name, ms in inputs for m in ms]
+        if model.inputs.is_multi_text():
+            connection = [f'"{name}": ' + repr(m) for name, ms in model.inputs.items() for m in ms]
         else:
-            inputs_shape = [str(m.outputs_shape) for m in inputs]
-            connection = [repr(m) for m in inputs]
-        if not inputs:
-            inputs_shape = (
-                [str(inp) for inp in model.inputs_shape]
-                if isinstance(model.inputs_shape, list)
-                else [str(model.inputs_shape)]
-            )
+            connection = [repr(m) for m in model.inputs]
+        inputs_shape = (
+            [str(inp) for inp in model.inputs_shape]
+            if isinstance(model.inputs_shape, list)
+            else [str(model.inputs_shape)]
+        )
         line_length = max(len(connection), len(inputs_shape), 1)
         for _ in range(line_length):
             out_lines.append(
@@ -79,7 +92,7 @@ def model_list_to_summary_string(models: List[Any]) -> str:
                     output_shape.pop(0) if output_shape else "",
                     trainable_weights.pop(0) if trainable_weights else "",
                     weights.pop(0) if weights else "",
-                    connection.pop(0) if inputs else "",
+                    connection.pop(0) if connection else "",
                 )
             )
     out_lines.append("=" * len(out_lines[0]))
@@ -96,3 +109,20 @@ def model_list_to_summary_string(models: List[Any]) -> str:
     )
 
     return "\n".join(out_lines)
+
+
+def compute_model_summary(model: "BaseModel") -> str:
+    """
+    Computes a model summary as string
+
+    :param model: the model to summary
+    :return: the model summary
+    """
+    models = list(reversed(__model_finder(model)))
+    seen_models = set()
+    no_repetition_models = []
+    for model in models:
+        if repr(model) not in seen_models:
+            no_repetition_models.append(model)
+            seen_models.update([repr(model)])
+    return __model_list_to_summary_string(no_repetition_models)

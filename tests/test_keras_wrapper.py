@@ -11,10 +11,9 @@ import pandas as pd
 from tensorflow.keras.layers import Input, GRU, Dense, Subtract, Masking, Conv1D, GlobalMaxPooling1D, Concatenate
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.optimizers import Adam
-from tensorflow.random import set_seed
 
 from gianlp.models import KerasWrapper, BaseModel, CharEmbeddingSequence
-from tests.utils import LOREM_IPSUM, accuracy, generator_from_list
+from tests.utils import LOREM_IPSUM, accuracy, generator_from_list, set_seed
 
 
 class TestKerasWrapper(unittest.TestCase):
@@ -34,7 +33,7 @@ class TestKerasWrapper(unittest.TestCase):
         model = KerasWrapper(char_emb, model)
         self.assertEqual(model.inputs_shape.shape, (10,))
         self.assertEqual(model.outputs_shape.shape, (1,))
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertEqual(model.outputs_shape.shape, (1,))
         print(model)
 
@@ -48,7 +47,7 @@ class TestKerasWrapper(unittest.TestCase):
             [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
         )
         model = KerasWrapper(char_emb, model)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         preds1 = model.predict(pd.Series(["asd", "fgh"]))
         preprocessed = model.preprocess_texts(pd.Series(["asd", "fgh"]))
         preds2 = model(preprocessed)
@@ -99,7 +98,7 @@ class TestKerasWrapper(unittest.TestCase):
         model = KerasWrapper(char_emb, model)
         self.assertEqual(model.inputs_shape.shape, (10,))
         self.assertEqual(model.outputs_shape.shape, (10, 5))
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertEqual(model.outputs_shape.shape, (10, 5))
         print(model)
 
@@ -114,7 +113,7 @@ class TestKerasWrapper(unittest.TestCase):
         model = KerasWrapper([char_emb1, char_emb2], model)
         self.assertEqual([s.shape for s in model.inputs_shape], [(10,), (10,)])
         self.assertEqual(model.outputs_shape.shape, (10, 5))
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertEqual(model.outputs_shape.shape, (10, 5))
         print(model)
 
@@ -135,7 +134,7 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(encoder.inputs_shape.shape, (10,))
         self.assertEqual(encoder.outputs_shape.shape, (15,))
         self.assertEqual(siamese.outputs_shape.shape, (1,))
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         self.assertEqual(encoder.outputs_shape.shape, (15,))
         self.assertEqual(siamese.outputs_shape.shape, (1,))
         print(siamese)
@@ -162,7 +161,7 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(encoder.inputs_shape.shape, (10,))
         self.assertEqual(encoder.outputs_shape.shape, (15,))
         self.assertEqual(siamese.outputs_shape.shape, (1,))
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         self.assertEqual(encoder.outputs_shape.shape, (15,))
         self.assertEqual(siamese.outputs_shape.shape, (1,))
         print(siamese)
@@ -187,8 +186,8 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(classifier.outputs_shape.shape, (1,))
         self.assertEqual(regressor.outputs_shape.shape, (1,))
 
-        classifier.build(LOREM_IPSUM.split("\n"))
-        regressor.build(LOREM_IPSUM.split("\n"))
+        classifier.build(LOREM_IPSUM.split(" "))
+        regressor.build(LOREM_IPSUM.split(" "))
 
         self.assertEqual(classifier.outputs_shape.shape, (1,))
         self.assertEqual(regressor.outputs_shape.shape, (1,))
@@ -204,7 +203,7 @@ class TestKerasWrapper(unittest.TestCase):
             [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
         )
         model = KerasWrapper(char_emb, model)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
         hst = model.fit(["asd", "bcd"] * 6, np.asarray([0, 1] * 6), batch_size=1, epochs=10)
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.01)
@@ -223,7 +222,7 @@ class TestKerasWrapper(unittest.TestCase):
             [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
         )
         model = KerasWrapper(char_emb, model)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
         hst = model.fit(
             ["asd", "bcd"] * 6,
@@ -280,7 +279,7 @@ class TestKerasWrapper(unittest.TestCase):
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
         hst = model.fit(
             self.starts_with_vocal_generator(),
@@ -313,7 +312,7 @@ class TestKerasWrapper(unittest.TestCase):
         model = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         model = KerasWrapper([gru_digest, cnn_digest], model)
 
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
         hst = model.fit(self.starts_with_vocal_generator(), epochs=30, steps_per_epoch=100)
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1.0, delta=0.15)
@@ -330,7 +329,7 @@ class TestKerasWrapper(unittest.TestCase):
         model = KerasWrapper(char_emb, model)
         serialized = model.serialize()
         model: KerasWrapper = BaseModel.deserialize(serialized)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         serialized = model.serialize()
         model2: KerasWrapper = BaseModel.deserialize(serialized)
         self.assertEqual(model.predict(["asd"]).tolist(), model2.predict(["asd"]).tolist())
@@ -372,7 +371,7 @@ class TestKerasWrapper(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
         hst = siamese.fit(
             {"text1": ["asd", "fgh"] * 2, "text2": ["asd", "asd", "fgh", "fgh"]},
@@ -396,7 +395,7 @@ class TestKerasWrapper(unittest.TestCase):
             [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
         )
         model = KerasWrapper(char_emb, model)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         preds1 = model.predict(["asd", "123", "test"])
         preds2 = model.predict(generator_from_list([["asd", "123"], ["test"]]), steps=3)
         self.assertEqual(preds1.tolist(), preds2.tolist())
@@ -413,7 +412,7 @@ class TestKerasWrapper(unittest.TestCase):
             [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
         )
         model = KerasWrapper(char_emb, model)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         with self.assertRaises(ValueError):
             model.predict(generator_from_list([["asd", "123"], ["test"]]))
 
@@ -430,7 +429,7 @@ class TestKerasWrapper(unittest.TestCase):
         model = Model(inputs=inp1, outputs=[out1, out2])
 
         model = KerasWrapper(char_emb, model)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         preds1 = model.predict(["asd", "123", "test"])
         preds2 = model.predict(generator_from_list([["asd", "123"], ["test"]]), steps=3)
         self.assertEqual([p.tolist() for p in preds1], [p.tolist() for p in preds2])
@@ -467,7 +466,7 @@ class TestKerasWrapper(unittest.TestCase):
 
         self.assertEqual(model.outputs_shape.shape, (1,))
 
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
 
         self.assertEqual([s.shape for s in double_out.outputs_shape], [(1,), (1,)])
         self.assertEqual(model.outputs_shape.shape, (1,))
@@ -495,7 +494,7 @@ class TestKerasWrapper(unittest.TestCase):
             [Input(char_emb.outputs_shape.shape), GRU(10, activation="tanh"), Dense(1, activation="sigmoid")]
         )
         model = KerasWrapper(char_emb, model)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertGreater(model.trainable_weights_amount, 0)
         self.assertGreater(model.weights_amount, 0)
         model.freeze()

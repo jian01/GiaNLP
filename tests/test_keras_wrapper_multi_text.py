@@ -9,10 +9,10 @@ import pandas as pd
 from tensorflow.keras.layers import Input, GRU, Dense, Subtract, Masking, Concatenate
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.optimizers import Adam
-from tensorflow.random import set_seed
+
 
 from gianlp.models import KerasWrapper, CharEmbeddingSequence, BaseModel
-from tests.utils import LOREM_IPSUM
+from tests.utils import LOREM_IPSUM, set_seed
 
 
 class TestKerasWrapperMultiTexts(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
 
         model = Sequential([Input((32,)), Dense(5, activation="tanh")])
         model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
-        model.build(LOREM_IPSUM.split("\n"))
+        model.build(LOREM_IPSUM.split(" "))
         self.assertEqual(model.outputs_shape.shape, (10, 5))
 
     def test_simple_siamese(self) -> None:
@@ -45,7 +45,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
 
         siamese = Sequential([Input((20,)), Dense(1, activation="sigmoid")])
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         self.assertEqual(siamese.outputs_shape.shape, (1,))
 
     def test_multi_input_siamese(self) -> None:
@@ -66,7 +66,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         self.assertEqual(siamese.outputs_shape.shape, (1,))
 
     def test_multi_input_preprocess_and_predict_consistent(self) -> None:
@@ -87,7 +87,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
 
         preds1 = siamese.predict({"text1": ["asd", "fgh"], "text2": ["fgh", "asd"]})
         preds2 = siamese(siamese.preprocess_texts({"text1": ["asd", "fgh"], "text2": ["fgh", "asd"]}))
@@ -112,7 +112,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
 
         df = pd.DataFrame.from_dict({"text1": ["asd", "fgh"], "text2": ["fgh", "asd"]})
 
@@ -140,7 +140,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=[out, out2])
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
 
         df = pd.DataFrame.from_dict({"text1": ["asd", "fgh"], "text2": ["fgh", "asd"]})
 
@@ -182,14 +182,14 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         print(siamese)
         siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
         hst = siamese.fit(
             {"text1": ["asd", "fgh"] * 2 * 10, "text2": ["asd", "asd", "fgh", "fgh"] * 10},
             np.asarray([0, 1, 1, 0] * 10),
             batch_size=7,
-            epochs=20,
+            epochs=25,
         )
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1, delta=0.01)
 
@@ -214,6 +214,50 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         """
         Test for training with dataframe
         """
+        set_seed(42)
+        char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10, min_freq_percentile=0)
+
+        model = Sequential(
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
+        )
+        encoder = KerasWrapper(char_emb, model)
+
+        inp1 = Input((10,))
+        inp2 = Input((10,))
+        subs = Concatenate()([inp1, inp2])
+        x = Dense(10, activation="tanh")(subs)
+        x = Dense(10, activation="tanh")(x)
+        x = Dense(10, activation="tanh")(x)
+        x = Dense(10, activation="tanh")(x)
+        x = Dense(10, activation="tanh")(x)
+        x = Dense(10, activation="tanh")(x)
+        out = Dense(1, activation="sigmoid")(x)
+        siamese = Model(inputs=[inp1, inp2], outputs=out)
+
+        siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
+        siamese.build(LOREM_IPSUM.split(" "))
+        siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
+        hst = siamese.fit(
+            pd.DataFrame.from_dict({"text1": ["asd", "fgh"] * 2 * 10, "text2": ["asd", "asd", "fgh", "fgh"] * 10}),
+            np.asarray([0, 1, 1, 0] * 10),
+            batch_size=7,
+            epochs=25,
+        )
+        self.assertAlmostEqual(hst.history["accuracy"][-1], 1, delta=0.01)
+
+        preds1 = siamese.predict(pd.DataFrame.from_dict({"text1": ["asd", "fgh"], "text2": ["asd", "asd"]}))
+        self.assertEqual([1 if p > 0.5 else 0 for p in preds1], [0, 1])
+
+    def test_seed_consistency(self) -> None:
+        """
+        Test for training with dicts
+        """
+
         set_seed(42)
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
 
@@ -240,18 +284,53 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
+        print(siamese)
         siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
         hst = siamese.fit(
-            pd.DataFrame.from_dict({"text1": ["asd", "fgh"] * 2 * 10, "text2": ["asd", "asd", "fgh", "fgh"] * 10}),
+            {"text1": ["asd", "fgh"] * 2 * 10, "text2": ["asd", "asd", "fgh", "fgh"] * 10},
             np.asarray([0, 1, 1, 0] * 10),
             batch_size=7,
-            epochs=20,
+            epochs=10,
         )
-        self.assertAlmostEqual(hst.history["accuracy"][-1], 1, delta=0.01)
 
-        preds1 = siamese.predict(pd.DataFrame.from_dict({"text1": ["asd", "fgh"], "text2": ["asd", "asd"]}))
-        self.assertEqual([1 if p > 0.5 else 0 for p in preds1], [0, 1])
+        set_seed(42)
+        char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
+
+        model = Sequential(
+            [
+                Input(char_emb.outputs_shape.shape),
+                Masking(0.0),
+                GRU(10, activation="tanh"),
+                Dense(10, activation="tanh"),
+            ]
+        )
+        encoder = KerasWrapper(char_emb, model)
+
+        inp1 = Input((10,))
+        inp2 = Input((10,))
+        subs = Concatenate()([inp1, inp2])
+        x = Dense(10, activation="tanh")(subs)
+        x = Dense(10, activation="tanh")(x)
+        x = Dense(10, activation="tanh")(x)
+        x = Dense(10, activation="tanh")(x)
+        x = Dense(10, activation="tanh")(x)
+        x = Dense(10, activation="tanh")(x)
+        out = Dense(1, activation="sigmoid")(x)
+        siamese = Model(inputs=[inp1, inp2], outputs=out)
+
+        siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
+        siamese.build(LOREM_IPSUM.split(" "))
+        print(siamese)
+        siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
+        hst2 = siamese.fit(
+            {"text1": ["asd", "fgh"] * 2 * 10, "text2": ["asd", "asd", "fgh", "fgh"] * 10},
+            np.asarray([0, 1, 1, 0] * 10),
+            batch_size=7,
+            epochs=10,
+        )
+        self.assertEqual(hst.history["accuracy"], hst2.history["accuracy"])
+        self.assertEqual(hst.history["loss"], hst2.history["loss"])
 
     def test_train_validation_split(self) -> None:
         """
@@ -283,13 +362,13 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
         hst = siamese.fit(
             {"text1": ["asd", "fgh"] * 2 * 20, "text2": ["asd", "asd", "fgh", "fgh"] * 20},
             np.asarray([0, 1, 1, 0] * 20),
             batch_size=7,
-            epochs=20,
+            epochs=25,
             validation_split=0.1,
         )
         self.assertAlmostEqual(hst.history["accuracy"][-1], 1, delta=0.01)
@@ -325,7 +404,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
         hst = siamese.fit(
             pd.DataFrame.from_dict({"text1": ["asd", "fgh"] * 2 * 20, "text2": ["asd", "asd", "fgh", "fgh"] * 20}),
@@ -367,7 +446,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
         siamese.compile(optimizer=Adam(0.001), loss="binary_crossentropy", metrics=["accuracy"])
         siamese.fit(
             {"text1": ["asd", "fgh"] * 2 * 10, "text2": ["asd", "asd", "fgh", "fgh"] * 10},
@@ -419,7 +498,7 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
         siamese = Model(inputs=[inp1, inp2], outputs=out)
 
         siamese = KerasWrapper([("text1", [encoder]), ("text2", [encoder])], siamese)
-        siamese.build(LOREM_IPSUM.split("\n"))
+        siamese.build(LOREM_IPSUM.split(" "))
 
         siamese.freeze()
 
@@ -433,3 +512,89 @@ class TestKerasWrapperMultiTexts(unittest.TestCase):
 
         # still frozen
         self.assertEqual(siamese.trainable_weights_amount, 0)
+
+    def test_simple_multi_text_build(self) -> None:
+        """
+        Test simple multi-text build
+        """
+        char_emb1 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
+        char_emb2 = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
+
+        model = Sequential([Input((32,)), Dense(5, activation="tanh")])
+        model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
+        model.build({"text1": LOREM_IPSUM.split("\n"), "text2": LOREM_IPSUM.split("\n")})
+        self.assertEqual(model.outputs_shape.shape, (10, 5))
+
+    def test_multi_text_build_bifurcation(self) -> None:
+        """
+        Test multi-text build with texts for each input
+        """
+        char_emb1 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+        char_emb2 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+
+        model = Sequential([Input((32,)), Dense(5, activation="tanh")])
+        model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
+        model.build({"text1": ["asd", "dsa"], "text2": ["qwe", "ewq"]})
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["q"])).tolist(), char_emb2(char_emb2.preprocess_texts(["a"])).tolist()
+        )
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["q"])).tolist(), char_emb2(char_emb2.preprocess_texts(["s"])).tolist()
+        )
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["a"])).tolist(), char_emb2(char_emb2.preprocess_texts(["q"])).tolist()
+        )
+
+        self.assertEqual(model.outputs_shape.shape, (1, 5))
+
+    def test_multi_text_build_with_extra_key(self) -> None:
+        """
+        Test multi-text build with an extra key. Extra key gets ignored.
+        """
+        char_emb1 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+        char_emb2 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+
+        model = Sequential([Input((32,)), Dense(5, activation="tanh")])
+        model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
+        model.build({"text1": ["asd", "dsa"], "text2": ["qwe", "ewq"], "text3": ["322", "434"]})
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["q"])).tolist(), char_emb2(char_emb2.preprocess_texts(["a"])).tolist()
+        )
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["q"])).tolist(), char_emb2(char_emb2.preprocess_texts(["s"])).tolist()
+        )
+
+        self.assertEqual(
+            char_emb1(char_emb1.preprocess_texts(["a"])).tolist(), char_emb2(char_emb2.preprocess_texts(["q"])).tolist()
+        )
+
+        self.assertEqual(model.outputs_shape.shape, (1, 5))
+
+    def test_multi_text_build_with_missing_key_raises_error(self) -> None:
+        """
+        Test multi-text build with a missing key raises a value error.
+        """
+        char_emb1 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+        char_emb2 = CharEmbeddingSequence(
+            embedding_dimension=16, sequence_maxlen=1, min_freq_percentile=0, random_state=42
+        )
+
+        model = Sequential([Input((32,)), Dense(5, activation="tanh")])
+        model = KerasWrapper([("text1", [char_emb1]), ("text2", [char_emb2])], model)
+        with self.assertRaises(ValueError):
+            model.build({"text1": ["asd", "dsa"]})

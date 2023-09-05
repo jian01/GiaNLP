@@ -26,7 +26,7 @@ class TestCharEmbeddingSequence(unittest.TestCase):
         char_emb = CharEmbeddingSequence(
             embedding_dimension=embedding_dimension, sequence_maxlen=sequence_maxlen, random_state=random_state
         )
-        char_emb.build(LOREM_IPSUM.split("\n"))
+        char_emb.build(LOREM_IPSUM.split(" "))
         return char_emb
 
     def test_preprocess(self) -> None:
@@ -45,7 +45,7 @@ class TestCharEmbeddingSequence(unittest.TestCase):
         char_emb = CharEmbeddingSequence(embedding_dimension=16, sequence_maxlen=10)
         self.assertIsNone(char_emb.weights_amount)
         self.assertIsNone(char_emb.trainable_weights_amount)
-        char_emb.build(LOREM_IPSUM.split("\n"))
+        char_emb.build(LOREM_IPSUM.split(" "))
         self.assertEqual(char_emb.weights_amount, char_emb.trainable_weights_amount)
 
     def test_maxlen(self) -> None:

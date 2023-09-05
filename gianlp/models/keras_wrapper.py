@@ -7,16 +7,16 @@ from typing import List, Union, Optional, Iterator, cast
 
 # pylint: disable=no-name-in-module
 from tensorflow import Tensor
-from tensorflow.keras.layers import Input, Concatenate
+from tensorflow.keras.layers import Input, Concatenate, Layer
 from tensorflow.keras.models import Model
 
 # pylint: enable=no-name-in-module
 
 from gianlp.logging import warning
-from gianlp.models.base_model import BaseModel, ModelInputs, ModelIOShape
+from gianlp.models.base_model import BaseModel, ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
 from gianlp.models.trainable_model import TrainableModel
-from gianlp.types import SimpleTypeTexts
+from gianlp.types import TextsInput, ModelInputsWrapper, ModelInputs
 
 
 class KerasWrapper(TrainableModel):
@@ -30,7 +30,7 @@ class KerasWrapper(TrainableModel):
     :var _keras_model: the internal keras model
     """
 
-    _inputs: ModelInputs
+    _inputs: ModelInputsWrapper
     _wrapped_model: Model
     _keras_model: Optional[Model]
 
@@ -40,7 +40,7 @@ class KerasWrapper(TrainableModel):
             for model in inputs[1:]:
                 if isinstance(model, tuple):
                     raise ValueError("Can't mix named inputs with unnamed inputs in the list.")
-                if model.has_multi_text_input() != inputs[0].has_multi_text_input():
+                if model.inputs.is_multi_text() != inputs[0].inputs.is_multi_text():
                     raise ValueError(
                         "Some models in the input list have multi-text input and others don't. " "This is not allowed."
                     )
@@ -50,7 +50,7 @@ class KerasWrapper(TrainableModel):
                 raise ValueError("Multi-text input should be used with at least two types of texts.")
             for _, models in inputs:
                 for model in models:
-                    if model.has_multi_text_input():
+                    if model.inputs.is_multi_text():
                         raise ValueError("Some models in the input dict have multi-text input. This is not allowed.")
             return inputs
         return [inputs]
@@ -81,18 +81,18 @@ class KerasWrapper(TrainableModel):
         if not wrapped_model.inputs:
             raise ValueError("The keras model to be wrapped should have a defined input.")
 
-        self._inputs = self.__validated_inputs(inputs)
+        self._inputs = ModelInputsWrapper(self.__validated_inputs(inputs))
 
         self._wrapped_model = wrapped_model
         self._keras_model = None
         super().__init__(**kwargs)
 
     @property
-    def inputs(self) -> ModelInputs:
+    def inputs(self) -> ModelInputsWrapper:
         """
         Method for getting all models that serve as input
 
-        :return: a list or list of tuples containing BaseModel objects
+        :return: a model inputs wrapper
         """
         return self._inputs
 
@@ -104,7 +104,7 @@ class KerasWrapper(TrainableModel):
         :return: a list of shape tuple or shape tuple
         """
         shapes: List[ModelIOShape] = []
-        for inp in self._iterate_model_inputs(self.inputs):
+        for inp in self.inputs:
             shapes += inp.inputs_shape if isinstance(inp.inputs_shape, list) else [inp.inputs_shape]
         if len(shapes) == 1:
             return shapes[0]
@@ -158,7 +158,7 @@ class KerasWrapper(TrainableModel):
                 "before that output shape is an estimate and does not assert inputs."
             )
             output_shapes = [
-                self.__compute_output_shape(o, self._wrapped_model, self._iterate_model_inputs(self._inputs))
+                self.__compute_output_shape(o, self._wrapped_model, self.inputs.__iter__())
                 for o in self._wrapped_model.outputs
             ]
 
@@ -166,7 +166,7 @@ class KerasWrapper(TrainableModel):
 
     def _get_keras_model(self) -> Model:
         """
-        Get's the internal keras model that is being serialized
+        Gets the internal keras model that is being serialized
 
         :return: The internal keras model
         """
@@ -174,7 +174,7 @@ class KerasWrapper(TrainableModel):
 
         return self._keras_model
 
-    def _unitary_build(self, texts: SimpleTypeTexts) -> None:
+    def _unitary_build(self, texts: TextsInput) -> None:
         """
         Builds the model using its inputs
 
@@ -182,8 +182,8 @@ class KerasWrapper(TrainableModel):
         """
         if not self._built:
             inputs = []
-            middle = []
-            for model in self._iterate_model_inputs(self.inputs):
+            middle: List[Layer] = []
+            for model in self.inputs:
                 input_shapes = (
                     [model.inputs_shape] if isinstance(model.inputs_shape, ModelIOShape) else model.inputs_shape
                 )
@@ -205,12 +205,12 @@ class KerasWrapper(TrainableModel):
 
         # BFS until if finds text inputs
         model_queue: Queue = Queue()
-        for model in self._iterate_model_inputs(self.inputs):
+        for model in self.inputs:
             if isinstance(model, TextRepresentation):
                 text_inputs.append(model)
             model_queue.put_nowait(model)
         while not model_queue.empty():
-            for model in self._iterate_model_inputs(model_queue.get_nowait().inputs):
+            for model in model_queue.get_nowait().inputs:
                 if isinstance(model, TextRepresentation):
                     text_inputs.append(model)
                 model_queue.put_nowait(model)
@@ -223,27 +223,25 @@ class KerasWrapper(TrainableModel):
 
         :return: a byte array
         """
-        if self.has_multi_text_input():
+        if self.inputs.is_multi_text():
             if self._built:
                 inputs_bytes = []
-                for name, inps in self.inputs:
+                for name, inps in self.inputs.items():
                     name_inputs = []
                     for inp in inps:
                         if isinstance(inp, TextRepresentation):
                             name_inputs.append(inp.serialize())
                         else:
-                            name_inputs += [
-                                ti.serialize() for ti in inp._find_text_inputs()  # type: ignore[union-attr]
-                            ]
+                            inp = cast("KerasWrapper", inp)
+                            name_inputs += [ti.serialize() for ti in inp._find_text_inputs()]
                     inputs_bytes.append((name, name_inputs))
             else:
-                inputs_bytes = [(name, [inp.serialize() for inp in inps]) for name, inps in self.inputs]
+                inputs_bytes = [(name, [inp.serialize() for inp in inps]) for name, inps in self.inputs.items()]
         else:
-            model_inputs = cast(List[BaseModel], self.inputs)
             if self._keras_model:
                 inputs_bytes = [inp.serialize() for inp in self._find_text_inputs()]
             else:
-                inputs_bytes = [inp.serialize() for inp in model_inputs]
+                inputs_bytes = [inp.serialize() for inp in self.inputs]
         wrapped_model_bytes = self.get_bytes_from_model(self._wrapped_model)
         keras_model_bytes = None
         if self._keras_model:
@@ -268,6 +266,7 @@ class KerasWrapper(TrainableModel):
             ]
         else:
             inputs = [BaseModel.deserialize(inp_bytes) for inp_bytes in inputs_bytes]
+
         obj = cls(inputs, cls.get_model_from_bytes(wrapped_model_bytes))
         if keras_model_bytes:
             obj._keras_model = cls.get_model_from_bytes(keras_model_bytes)

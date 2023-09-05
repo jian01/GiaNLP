@@ -1,38 +1,20 @@
 services:
-  test_tensorflow_23:
-    build:
-      dockerfile: .ci/nox_tests
-      context: ../
-    command: nox --sessions tests_tensorflow_23
-  test_tensorflow_24:
-    build:
-      dockerfile: .ci/nox_tests
-      context: ../
-    command: nox --sessions tests_tensorflow_24
-  test_tensorflow_25:
-    build:
-      dockerfile: .ci/nox_tests
-      context: ../
-    command: nox --sessions tests_tensorflow_25
-  test_tensorflow_26:
-    build:
-      dockerfile: .ci/nox_tests
-      context: ../
-    command: nox --sessions tests_tensorflow_26
-  test_tensorflow_27:
-    build:
-      dockerfile: .ci/nox_tests
-      context: ../
-    command: nox --sessions tests_tensorflow_27
   test_tensorflow_28:
     build:
       dockerfile: .ci/nox_tests
       context: ../
     command: nox --sessions tests_tensorflow_28
-  test_latest_tensorflow_version:
+
+  test_tensorflow_29:
     build:
       dockerfile: .ci/nox_tests
       context: ../
-    command: nox --sessions tests_tensorflow_latest
+    command: nox --sessions tests_tensorflow_29
+
+  tests_tensorflow_10:
+    build:
+      dockerfile: .ci/nox_tests
+      context: ../
+    command: nox --sessions tests_tensorflow_10
     volumes:
       - /tmp:/tmp

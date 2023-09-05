@@ -21,7 +21,7 @@ from tensorflow.keras.preprocessing import sequence as keras_seq
 from gianlp.keras_layers.masked_embedding import MaskedEmbedding
 from gianlp.models.base_model import ModelIOShape
 from gianlp.models.text_representations.text_representation import TextRepresentation
-from gianlp.types import SimpleTypeTexts, KerasInputOutput
+from gianlp.types import KerasInputOutput, SimpleTypeTexts
 
 
 class TrainableWordEmbeddingSequence(TextRepresentation):
@@ -95,7 +95,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
                     f"does not match the target embedding dimension {self._embedding_dimension}."
                 )
 
-        self._tokenizer = tokenizer  # type: ignore[assignment]
+        self._tokenizer = tokenizer
         self._keras_model = None
         self._sequence_maxlen = int(sequence_maxlen)
         self._pretrained_trainable = pretrained_trainable
@@ -114,12 +114,12 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
         """
         assert self._built
 
-        tokenized_texts = [self._tokenizer(text) for text in texts]
+        tokenized_texts = self.tokenize_texts(texts, self._tokenizer, sequence_maxlength=self._sequence_maxlen)  # type: ignore[arg-type]
         words = keras_seq.pad_sequences(
             [
                 [
                     self._word_indexes[w] if w in self._word_indexes else self._word_indexes[self._WORD_UNKNOWN_TOKEN]
-                    for w in words[: self._sequence_maxlen]
+                    for w in words
                 ]
                 for words in tokenized_texts
             ],
@@ -135,15 +135,17 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
         """
         Builds the model using its inputs
 
-        :param texts: a text list for building if needed
+        :param texts: the texts input
         """
         if not self._built:
             text_sample = texts.copy()
             random.seed(self._random_state)
             random.shuffle(text_sample)
             text_sample = text_sample[: min(len(text_sample), self._MAX_SAMPLE_TO_FIT)]
-            tokenized_texts = [token for text in text_sample for token in self._tokenizer(text)]
-            frequencies = Counter(tokenized_texts)
+            tokenized_texts = self.tokenize_texts(
+                text_sample, self._tokenizer, sequence_maxlength=self._sequence_maxlen  # type: ignore[arg-type]
+            )
+            frequencies = Counter([token for text in tokenized_texts for token in text])
             p_freq = np.percentile(list(frequencies.values()), self._min_freq_percentile)
             if (
                 not self._max_vocabulary is None
@@ -273,7 +275,7 @@ class TrainableWordEmbeddingSequence(TextRepresentation):
 
     def _get_keras_model(self) -> Model:
         """
-        Get's the internal keras model that is being serialized
+        Gets the internal keras model that is being serialized
 
         :return: The internal keras model
         """

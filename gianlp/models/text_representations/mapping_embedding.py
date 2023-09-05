@@ -64,7 +64,7 @@ class MappingEmbedding(TextRepresentation):
         """
         Builds the model using its inputs
 
-        :param texts: a text list for building if needed
+        :param texts: the texts input
         """
         if not self._built:
             embeddings = np.concatenate(
@@ -136,7 +136,7 @@ class MappingEmbedding(TextRepresentation):
 
     def _get_keras_model(self) -> Model:
         """
-        Get's the internal keras model that is being serialized
+        Gets the internal keras model that is being serialized
 
         :return: The internal keras model
         """
