@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run tests with tensorflow latest
-      run: docker-compose -f .ci/docker-compose.yml run test_latest_tensorflow_version
+      run: docker-compose -f .ci/docker-compose.yml run tests_tensorflow_10
     - name: Codecov
       uses: codecov/codecov-action@v3
       with:
