@@ -22,7 +22,6 @@ gianlp.models.trainable\_model.TrainableModel
       ~TrainableModel.deserialize
       ~TrainableModel.fit
       ~TrainableModel.freeze
-      ~TrainableModel.has_multi_text_input
       ~TrainableModel.predict
       ~TrainableModel.preprocess_texts
       ~TrainableModel.serialize

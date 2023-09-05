@@ -19,9 +19,10 @@ gianlp.models.text\_representations.fasttext\_embedding\_sequence.FasttextEmbedd
    
       ~FasttextEmbeddingSequence.build
       ~FasttextEmbeddingSequence.deserialize
-      ~FasttextEmbeddingSequence.has_multi_text_input
+      ~FasttextEmbeddingSequence.parallel_tokenizer
       ~FasttextEmbeddingSequence.preprocess_texts
       ~FasttextEmbeddingSequence.serialize
+      ~FasttextEmbeddingSequence.tokenize_texts
    
    
 

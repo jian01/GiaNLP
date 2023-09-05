@@ -19,9 +19,10 @@ gianlp.models.text\_representations.char\_embedding\_sequence.CharEmbeddingSeque
    
       ~CharEmbeddingSequence.build
       ~CharEmbeddingSequence.deserialize
-      ~CharEmbeddingSequence.has_multi_text_input
+      ~CharEmbeddingSequence.parallel_tokenizer
       ~CharEmbeddingSequence.preprocess_texts
       ~CharEmbeddingSequence.serialize
+      ~CharEmbeddingSequence.tokenize_texts
    
    
 

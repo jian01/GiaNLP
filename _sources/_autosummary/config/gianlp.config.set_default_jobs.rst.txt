@@ -1,0 +1,6 @@
+gianlp.config.set\_default\_jobs
+================================
+
+.. currentmodule:: gianlp.config
+
+.. autofunction:: set_default_jobs

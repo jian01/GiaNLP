@@ -1,0 +1,6 @@
+gianlp.config.is\_ipython
+=========================
+
+.. currentmodule:: gianlp.config
+
+.. autofunction:: is_ipython

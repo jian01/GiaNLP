@@ -19,9 +19,10 @@ gianlp.models.text\_representations.mapping\_embedding.MappingEmbedding
    
       ~MappingEmbedding.build
       ~MappingEmbedding.deserialize
-      ~MappingEmbedding.has_multi_text_input
+      ~MappingEmbedding.parallel_tokenizer
       ~MappingEmbedding.preprocess_texts
       ~MappingEmbedding.serialize
+      ~MappingEmbedding.tokenize_texts
    
    
 

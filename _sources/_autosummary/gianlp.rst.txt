@@ -26,6 +26,7 @@
    :template: _autosummary/modules.rst
    :recursive:
 
+      gianlp.config
       gianlp.keras_layers
       gianlp.models
       gianlp.utils

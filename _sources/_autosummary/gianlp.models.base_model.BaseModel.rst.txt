@@ -19,7 +19,6 @@ gianlp.models.base\_model.BaseModel
    
       ~BaseModel.build
       ~BaseModel.deserialize
-      ~BaseModel.has_multi_text_input
       ~BaseModel.preprocess_texts
       ~BaseModel.serialize
    

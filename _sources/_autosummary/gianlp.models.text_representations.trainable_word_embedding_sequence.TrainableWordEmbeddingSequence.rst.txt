@@ -19,9 +19,10 @@ gianlp.models.text\_representations.trainable\_word\_embedding\_sequence.Trainab
    
       ~TrainableWordEmbeddingSequence.build
       ~TrainableWordEmbeddingSequence.deserialize
-      ~TrainableWordEmbeddingSequence.has_multi_text_input
+      ~TrainableWordEmbeddingSequence.parallel_tokenizer
       ~TrainableWordEmbeddingSequence.preprocess_texts
       ~TrainableWordEmbeddingSequence.serialize
+      ~TrainableWordEmbeddingSequence.tokenize_texts
    
    
 

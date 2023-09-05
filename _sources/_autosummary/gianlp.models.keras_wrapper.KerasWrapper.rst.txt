@@ -22,7 +22,6 @@ gianlp.models.keras\_wrapper.KerasWrapper
       ~KerasWrapper.deserialize
       ~KerasWrapper.fit
       ~KerasWrapper.freeze
-      ~KerasWrapper.has_multi_text_input
       ~KerasWrapper.predict
       ~KerasWrapper.preprocess_texts
       ~KerasWrapper.serialize

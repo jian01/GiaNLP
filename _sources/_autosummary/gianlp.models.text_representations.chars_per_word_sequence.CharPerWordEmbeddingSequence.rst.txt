@@ -19,9 +19,10 @@ gianlp.models.text\_representations.chars\_per\_word\_sequence.CharPerWordEmbedd
    
       ~CharPerWordEmbeddingSequence.build
       ~CharPerWordEmbeddingSequence.deserialize
-      ~CharPerWordEmbeddingSequence.has_multi_text_input
+      ~CharPerWordEmbeddingSequence.parallel_tokenizer
       ~CharPerWordEmbeddingSequence.preprocess_texts
       ~CharPerWordEmbeddingSequence.serialize
+      ~CharPerWordEmbeddingSequence.tokenize_texts
    
    
 

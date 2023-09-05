@@ -19,9 +19,10 @@ gianlp.models.text\_representations.per\_chunk\_sequencer.PerChunkSequencer
    
       ~PerChunkSequencer.build
       ~PerChunkSequencer.deserialize
-      ~PerChunkSequencer.has_multi_text_input
+      ~PerChunkSequencer.parallel_tokenizer
       ~PerChunkSequencer.preprocess_texts
       ~PerChunkSequencer.serialize
+      ~PerChunkSequencer.tokenize_texts
    
    
 

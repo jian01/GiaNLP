@@ -19,9 +19,10 @@ gianlp.models.text\_representations.text\_representation.TextRepresentation
    
       ~TextRepresentation.build
       ~TextRepresentation.deserialize
-      ~TextRepresentation.has_multi_text_input
+      ~TextRepresentation.parallel_tokenizer
       ~TextRepresentation.preprocess_texts
       ~TextRepresentation.serialize
+      ~TextRepresentation.tokenize_texts
    
    
 

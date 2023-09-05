@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gianlp.keras_layers.masked_embedding.MaskedEmbedding &mdash; GiaNLP 0.0.1 documentation</title>
+  <title>gianlp.keras_layers.masked_embedding.MaskedEmbedding &mdash; GiaNLP 0.0.2 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> GiaNLP
           </a>
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -50,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../4_ner_tagger.html">Advanced example: Ner Tagger via BiLSTM-CRF</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Full API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="gianlp.html">gianlp</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gianlp.config.html">gianlp.config</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="gianlp.keras_layers.html">gianlp.keras_layers</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="gianlp.keras_layers.masked_embedding.html">gianlp.keras_layers.masked_embedding</a></li>
 </ul>
@@ -132,28 +133,34 @@ i.e. maximum integer index + 1.</p></li>
 <td><p>Adds a new variable to the layer.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></p></td>
-<td><p>Creates the variables of the layer (optional, for subclass implementers).</p></td>
+<td><p>Creates the variables of the layer (for subclass implementers).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gianlp.keras_layers.masked_embedding.MaskedEmbedding.call" title="gianlp.keras_layers.masked_embedding.MaskedEmbedding.call"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_from_config</span></code></p></td>
+<td><p>Builds the layer's states with the supplied config dict.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gianlp.keras_layers.masked_embedding.MaskedEmbedding.call" title="gianlp.keras_layers.masked_embedding.MaskedEmbedding.call"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call</span></code></a></p></td>
 <td><p>Wraps the original call for guaranteeing masking :param inputs: inputs to forward the layer :return: output of the forward pass</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_mask</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_mask</span></code></p></td>
 <td><p>Computes an output mask tensor.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_output_shape</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_output_shape</span></code></p></td>
 <td><p>Computes the output shape of the layer.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_output_signature</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_output_signature</span></code></p></td>
 <td><p>Compute the output tensor signature of the layer based on the inputs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_params</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_params</span></code></p></td>
 <td><p>Count the total number of scalars composing the weights.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">finalize_state</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">finalize_state</span></code></p></td>
 <td><p>Finalizes the layers state after updating layer weights.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_config</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_config</span></code></p></td>
 <td><p>Creates a layer from its config.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_build_config</span></code></p></td>
+<td><p>Returns a dictionary with the layer's input shape.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config</span></code></p></td>
 <td><p>Returns the config of the layer.</p></td>
@@ -178,6 +185,12 @@ i.e. maximum integer index + 1.</p></li>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_weights</span></code></p></td>
 <td><p>Returns the current weights of the layer, as NumPy arrays.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_own_variables</span></code></p></td>
+<td><p>Loads the state of the layer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_own_variables</span></code></p></td>
+<td><p>Saves the state of the layer.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_weights</span></code></p></td>
 <td><p>Sets the weights of the layer, from NumPy arrays.</p></td>

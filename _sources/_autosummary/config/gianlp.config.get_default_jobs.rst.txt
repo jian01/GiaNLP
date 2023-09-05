@@ -1,0 +1,6 @@
+gianlp.config.get\_default\_jobs
+================================
+
+.. currentmodule:: gianlp.config
+
+.. autofunction:: get_default_jobs

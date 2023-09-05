@@ -19,9 +19,10 @@ gianlp.models.text\_representations.pre\_trained\_word\_embedding\_sequence.PreT
    
       ~PreTrainedWordEmbeddingSequence.build
       ~PreTrainedWordEmbeddingSequence.deserialize
-      ~PreTrainedWordEmbeddingSequence.has_multi_text_input
+      ~PreTrainedWordEmbeddingSequence.parallel_tokenizer
       ~PreTrainedWordEmbeddingSequence.preprocess_texts
       ~PreTrainedWordEmbeddingSequence.serialize
+      ~PreTrainedWordEmbeddingSequence.tokenize_texts
    
    
 

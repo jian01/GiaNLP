@@ -1,0 +1,32 @@
+gianlp.config
+=============
+
+.. automodule:: gianlp.config
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: config
+   
+      get_default_jobs
+      is_ipython
+      set_default_jobs
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

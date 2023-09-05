@@ -23,6 +23,7 @@ gianlp.keras\_layers.masked\_embedding.MaskedEmbedding
       ~MaskedEmbedding.add_variable
       ~MaskedEmbedding.add_weight
       ~MaskedEmbedding.build
+      ~MaskedEmbedding.build_from_config
       ~MaskedEmbedding.call
       ~MaskedEmbedding.compute_mask
       ~MaskedEmbedding.compute_output_shape
@@ -30,6 +31,7 @@ gianlp.keras\_layers.masked\_embedding.MaskedEmbedding
       ~MaskedEmbedding.count_params
       ~MaskedEmbedding.finalize_state
       ~MaskedEmbedding.from_config
+      ~MaskedEmbedding.get_build_config
       ~MaskedEmbedding.get_config
       ~MaskedEmbedding.get_input_at
       ~MaskedEmbedding.get_input_mask_at
@@ -38,6 +40,8 @@ gianlp.keras\_layers.masked\_embedding.MaskedEmbedding
       ~MaskedEmbedding.get_output_mask_at
       ~MaskedEmbedding.get_output_shape_at
       ~MaskedEmbedding.get_weights
+      ~MaskedEmbedding.load_own_variables
+      ~MaskedEmbedding.save_own_variables
       ~MaskedEmbedding.set_weights
       ~MaskedEmbedding.with_name_scope
    

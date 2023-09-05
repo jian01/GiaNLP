@@ -22,7 +22,6 @@ gianlp.models.rnn\_digest.RNNDigest
       ~RNNDigest.deserialize
       ~RNNDigest.fit
       ~RNNDigest.freeze
-      ~RNNDigest.has_multi_text_input
       ~RNNDigest.predict
       ~RNNDigest.preprocess_texts
       ~RNNDigest.serialize
