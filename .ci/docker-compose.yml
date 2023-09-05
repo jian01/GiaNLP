@@ -4,6 +4,13 @@ services:
       dockerfile: .ci/nox_tests
       context: ../
     command: nox --sessions tests_tensorflow_28
+
+  test_tensorflow_29:
+    build:
+      dockerfile: .ci/nox_tests
+      context: ../
+    command: nox --sessions tests_tensorflow_29
+  
   test_latest_tensorflow_version:
     build:
       dockerfile: .ci/nox_tests
