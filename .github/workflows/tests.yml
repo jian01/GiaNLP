@@ -8,7 +8,7 @@ jobs:
     timeout-minutes: 50
     steps:
     - uses: actions/checkout@v2
-    - name: Run tests with tensorflow latest
+    - name: Run tests with tensorflow latest checked version
       run: docker-compose -f .ci/docker-compose.yml run tests_tensorflow_10
     - name: Codecov
       uses: codecov/codecov-action@v3

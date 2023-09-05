@@ -10,11 +10,11 @@ services:
       dockerfile: .ci/nox_tests
       context: ../
     command: nox --sessions tests_tensorflow_29
-  
-  test_latest_tensorflow_version:
+
+  tests_tensorflow_10:
     build:
       dockerfile: .ci/nox_tests
       context: ../
-    command: nox --sessions tests_tensorflow_latest
+    command: nox --sessions tests_tensorflow_10
     volumes:
       - /tmp:/tmp
